@@ -1,0 +1,17 @@
+{
+  "env": {
+    "browser": true
+  },
+  "extends": ["eslint:recommended", "prettier"],
+  //  if you use a value fo 2015 it will throw an error if you try to use syntax like const or let instead of var.
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "rules": {
+    "semi": ["error", "always"],
+    "quotes": ["error", "double"],
+    "camelcase": "warn"
+  },
+  "settings": {}
+}
