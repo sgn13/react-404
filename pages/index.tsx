@@ -17,7 +17,7 @@ function Welcome() {
   console.log("PORT", process.env.PORT);
   return (
     <div>
-      <Button>Auto import</Button>
+      <Button>I am a button</Button>
       <h1 className="color-red">Welcome Webpack Development Server.</h1>
       <img src={webpackLogo} alt="webpack-logo" style={{ width: 300, height: "auto" }} />
       <img

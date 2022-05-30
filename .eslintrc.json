@@ -9,6 +9,7 @@
     "eslint:recommended", // is config from @typescript-eslint/eslint-plugin
     "plugin:@typescript-eslint/recommended", // is config from @typescript-eslint/eslint-plugin
     "eslint-config-react-app",
+    "plugin:react/jsx-runtime",
     "eslint-config-airbnb",
     "eslint-config-airbnb-typescript",
     "eslint-config-prettier"
@@ -46,7 +47,13 @@
     "@typescript-eslint/no-unused-vars": "warn",
     "no-console": "warn"
   },
+  // setting shared across all the plugin rules
   "settings": {
+    "react": {
+      "pragma": "React", // Pragma to use, default to "React"
+      "fragment": "Fragment", // Fragment to use (may be a property of <pragma>), default to "Fragment"
+      "version": "detect" // React version. "detect" automatically picks the version you have installed.
+    },
     "import/resolver": {
       "webpack": {
         "alias": {
