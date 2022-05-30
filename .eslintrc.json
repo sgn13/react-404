@@ -2,16 +2,49 @@
   "env": {
     "browser": true
   },
-  "extends": ["eslint:recommended", "prettier"],
+
+  // :recommended syntax in extends is shorthand for setting both configs in extends[] and plugin in plugins[].
+  // But we don't want to use the shorthand, so we set both configs in extends[] and plugin in plugins[].
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "eslint-config-react-app",
+    "eslint-config-airbnb",
+    "eslint-config-airbnb-typescript",
+    "eslint-config-prettier"
+  ],
+
+  "plugins": [
+    "eslint-plugin-import",
+    "eslint-plugin-jsx-a11y",
+    "eslint-plugin-react",
+    "eslint-plugin-react-hooks",
+    "eslint-plugin-prettier"
+  ],
+  // Telling eslint to use the typescript parser.
+  "parser": "@typescript-eslint/parser",
   //  if you use a value fo 2015 it will throw an error if you try to use syntax like const or let instead of var.
   "parserOptions": {
+    "project": "./tsconfig.json",
     "ecmaVersion": 2018,
-    "sourceType": "module"
+    "sourceType": "module", // Allows using import/export statements
+    "ecmaFeatures": {
+      "jsx": true // Enable JSX since we're using React
+    }
   },
+
+  // only specifying code style or code quality rules which could introduce bugs.
   "rules": {
-    "semi": ["error", "always"],
-    "quotes": ["error", "double"],
-    "camelcase": "warn"
+    "prettier/prettier": ["error"],
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/require-default-props": "off",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-console": "warn"
   },
   "settings": {}
 }

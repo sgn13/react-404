@@ -1,0 +1,70 @@
+{
+  "editor.fontFamily": "Fira Code",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 20,
+  "editor.tabSize": 8,
+  "editor.cursorStyle": "line",
+  "editor.insertSpaces": false,
+  "editor.lineNumbers": "on",
+  "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
+  "editor.wordWrap": "off",
+  "editor.linkedEditing": true,
+  "auto-rename-tag.activationOnLanguage": ["*"],
+  "editor.tokenColorCustomizations": {
+    "comments": "#7a807e"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.iconTheme": "vscode-icons",
+  "workbench.colorTheme": "Community Material Theme",
+  "workbench.colorCustomizations": {
+    "editor.background": "#37373777",
+    "sideBar.background": "#37373777",
+    "editorGroupHeader.tabsBackground": "#373737",
+    "tab.inactiveBackground": "#373737",
+    "tab.activeBackground": "#2b2a2a",
+    "tab.hoverBackground": "#21212148",
+    "editorIndentGuide.background": "#bbac2641",
+    "terminal.background": "#212121",
+    "activityBar.activeBackground": "#212121",
+    "activityBar.background": "#373737",
+    "breadcrumb.background": "#2524245e",
+    "quickInput.background": "#212121",
+    "quickInput.foreground": "#fff",
+    "list.hoverBackground": "#3C3E3E",
+    "editorGutter.background": "#37373777",
+    "editorLineNumber.foreground": "#f1ad1b65",
+    "editor.rangeHighlightBackground": "#ff0000",
+    "editorLineNumbers": "#5544AA"
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "./node_modules/*": true
+  },
+  "terminal.integrated.fontFamily": "monospace",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "terminal.integrated.tabs.enabled": true,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false
+}

@@ -96,6 +96,11 @@ module.exports = (env) => {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,
           type: "asset/resource",
         },
+        // {
+        //   test: /\.(png|woff|woff2|eot|ttf|svg)$/, // to import images and fonts
+        //   loader: "url-loader",
+        //   options: { limit: false },
+        // },
       ],
     },
   };
