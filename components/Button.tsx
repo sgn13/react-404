@@ -1,8 +1,7 @@
 import React from "react";
 
-function Button({ name }: { name?: "string" }) {
-  console.log(name);
-  return <div>Button</div>;
+function Button({ children }) {
+  return <div>{children}</div>;
 }
 
 export default Button;

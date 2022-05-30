@@ -6,8 +6,8 @@
   // :recommended syntax in extends is shorthand for setting both configs in extends[] and plugin in plugins[].
   // But we don't want to use the shorthand, so we set both configs in extends[] and plugin in plugins[].
   "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
+    "eslint:recommended", // is config from @typescript-eslint/eslint-plugin
+    "plugin:@typescript-eslint/recommended", // is config from @typescript-eslint/eslint-plugin
     "eslint-config-react-app",
     "eslint-config-airbnb",
     "eslint-config-airbnb-typescript",
@@ -46,5 +46,29 @@
     "@typescript-eslint/no-unused-vars": "warn",
     "no-console": "warn"
   },
-  "settings": {}
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "alias": {
+          "map": [
+            ["containers", "./containers"],
+            ["components", "./components"],
+            ["configuration", "./configuration"],
+            ["constants", "./constants"],
+            ["pages", "./pages"],
+            ["store", "./store"],
+            ["types", "./types"],
+            ["utils", "./utils"],
+            ["theme", "./theme"],
+            ["assets", "./assets"],
+            ["mock", "./mock"],
+            ["hoc", "./hoc"],
+            ["lib", "./lib"],
+            ["app", "./app"]
+          ],
+          "extensions": [".ts", ".tsx", ".js", ".jsx", ".json"]
+        }
+      }
+    }
+  }
 }
