@@ -27,7 +27,7 @@
   //  if you use a value fo 2015 it will throw an error if you try to use syntax like const or let instead of var.
   "parserOptions": {
     "project": "./tsconfig.json",
-    "ecmaVersion": 2018,
+    "ecmaVersion": 2016,
     "sourceType": "module", // Allows using import/export statements
     "ecmaFeatures": {
       "jsx": true // Enable JSX since we're using React

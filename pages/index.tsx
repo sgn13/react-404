@@ -29,6 +29,4 @@ function Welcome() {
   );
 }
 
-const mountingNode = document.querySelector("#root");
-
-ReactDOM.render(<Welcome />, mountingNode);
+export default Welcome;

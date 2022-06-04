@@ -1,7 +1,10 @@
+@import "./reset.scss";
+@import "./variables.scss";
+
 .color-red {
-	color:red
+  color: $red-color;
 }
 
 .color-green {
-	color:green
+  color: green;
 }

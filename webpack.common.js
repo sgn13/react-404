@@ -30,7 +30,7 @@ module.exports = (env) => {
 
   return {
     mode: "none",
-    entry: "./pages/index.tsx",
+    entry: "./index.tsx",
     /* web is Default. Telling webpack to compile the code for the web. */
     target: "web",
     output: {
