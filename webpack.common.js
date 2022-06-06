@@ -38,6 +38,7 @@ module.exports = (env) => {
       filename: "bundle.[contentHash].js",
       path: path.resolve(__dirname, "build"),
       clean: true,
+      publicPath: "/",
     },
     plugins: [
       /* Creating a new index.html file in the build folder and injecting the bundle.js file into it. */

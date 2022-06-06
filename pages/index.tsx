@@ -10,11 +10,11 @@ const name = "firoj";
 function Welcome() {
   const [a, setA] = useState();
 
-  useEffect(() => {
-    console.log(a);
-  }, []);
+  // useEffect(() => {
+  //   console.log("a is ", a);
+  // }, []);
 
-  console.log("PORT", process.env.PORT);
+  // console.log("PORT", process.env.PORT);
   return (
     <div>
       <Button>I am a button</Button>

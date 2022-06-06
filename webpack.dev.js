@@ -11,7 +11,7 @@ module.exports = (env) =>
       static: { directory: path.join(__dirname, "public") },
       compress: true,
       port: Number(process.env.PORT) || 3000,
-      /* Telling the server to fallback to index.html if the route is not found. */
+      /* Telling the server to fallback to index.html if the route is not found at the backend server */
       historyApiFallback: true,
     },
   });

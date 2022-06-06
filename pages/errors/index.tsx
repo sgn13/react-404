@@ -1,41 +1,49 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+import Image400 from "assets/images/error/400.gif";
+import Image401 from "assets/images/error/401.gif";
+import Image403 from "assets/images/error/403.gif";
+import Image404 from "assets/images/error/404.gif";
+import Image500 from "assets/images/error/500.gif";
+import Image503 from "assets/images/error/503.gif";
+import Image504 from "assets/images/error/504.gif";
+import ImageUnderConstruction from "assets/images/error/under-construction.gif";
+import ReactErrorImage from "assets/images/error/react-error.gif";
 
-function Message({ mode = "react-error", message = "" }) {
+function Error({ mode = "react-error", message = "" }) {
   const method = {
     "400": {
-      image: require("assets/message/400.gif").default,
+      image: Image400,
       message: "Bad Request",
     },
     "401": {
-      image: require("assets/message/401.gif").default,
+      image: Image401,
       message: "Unauthorized",
     },
     "403": {
-      image: require("assets/message/403.gif").default,
+      image: Image403,
       message: "Forbidden",
     },
     "404": {
-      image: require("assets/message/404.gif").default,
+      image: Image404,
       message: "Page Not Found",
     },
     "500": {
-      image: require("assets/message/500.gif").default,
+      image: Image500,
       message: "Internal Server Error.",
     },
     "503": {
-      image: require("assets/message/503.gif").default,
+      image: Image503,
       message: "Service Unavailable",
     },
     "504": {
-      image: require("assets/message/504.gif").default,
+      image: Image504,
       message: "Gateway Timeout",
     },
     "under-construction": {
-      image: require("assets/message/under-construction.gif").default,
+      image: ImageUnderConstruction,
       message: "Something went wrong.",
     },
     "react-error": {
-      image: require("assets/message/react-error.gif").default,
+      image: ReactErrorImage,
       message: "Something went wrong.",
     },
   };
@@ -65,4 +73,4 @@ function Message({ mode = "react-error", message = "" }) {
   );
 }
 
-export default Message;
+export default Error;

@@ -2,10 +2,11 @@ import ReactDOM from "react-dom";
 import "theme/index.scss";
 import { ErrorBoundary } from "react-error-boundary";
 import { Provider } from "react-redux";
-import ReactError from "pages/messages/react-error";
+import ReactError from "pages/errors/react-error";
 import AppThemeProvider from "theme/provider";
 import { initializeStore } from "./store";
-import AppRouter from "./App";
+import Routes from "./routes";
+import { BrowserRouter } from "react-router-dom";
 
 const store = initializeStore();
 const errorHandler = (error: any, errorInfo: any) =>
@@ -17,7 +18,9 @@ function AppIndex() {
     <ErrorBoundary FallbackComponent={ReactError} onError={errorHandler}>
       <Provider store={store}>
         <AppThemeProvider>
-          <AppRouter />
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
         </AppThemeProvider>
       </Provider>
     </ErrorBoundary>
