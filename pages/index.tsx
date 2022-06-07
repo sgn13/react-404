@@ -1,32 +1,47 @@
-import ReactDOM from "react-dom";
 import webpackLogo from "assets/images/webpack-logo.png";
 import React, { useState, useEffect } from "react";
 import "theme/index.scss";
-import Button from "components/Button";
+import styled from "styled-components";
+import { backgroundColor, textColor } from "theme";
+import { connect, ConnectedProps } from "react-redux";
+import { changeTheme } from "store/theme/actions";
+import { AppState } from "store/reducer";
 
-const x = 5;
-const name = "firoj";
+const Container = styled.div`
+  background-color: ${backgroundColor};
+  color: ${textColor};
+  transition: all 0.5s ease;
+`;
 
-function Welcome() {
-  const [a, setA] = useState();
-
-  // useEffect(() => {
-  //   console.log("a is ", a);
-  // }, []);
-
-  // console.log("PORT", process.env.PORT);
+// eslint-disable-next-line @typescript-eslint/no-shadow
+function Welcome({ darkThemeEnabled, changeTheme }: React.FC<PropsFromRedux>) {
   return (
-    <div>
-      <Button>I am a button</Button>
-      <h1 className="color-red">Welcome Webpack Development Server.</h1>
+    <Container>
+      <h1>Welcome Webpack Development Server.</h1>
       <img src={webpackLogo} alt="webpack-logo" style={{ width: 300, height: "auto" }} />
       <img
         src="/images/typescript-logo.png"
         alt="webpack-logo"
         style={{ width: 300, height: "auto" }}
       />
-    </div>
+      <p>
+        <input type="checkbox" checked={darkThemeEnabled} onChange={changeTheme} />
+        <span>Use Dark Theme</span>
+      </p>
+    </Container>
   );
 }
 
-export default Welcome;
+const mapStateToProps = ({ themeState: { darkThemeEnabled } }: AppState) => ({
+  darkThemeEnabled,
+});
+
+const mapDispatchToProps = {
+  changeTheme,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(Welcome);

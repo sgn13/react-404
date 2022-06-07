@@ -20,6 +20,7 @@
     "@babel/preset-typescript": "^7.17.12",
     "@types/react-dom": "^18.0.4",
     "@types/styled-components": "^5.1.25",
+    "@types/styled-theming": "^2.2.5",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
     "babel-loader": "^8.2.5",
@@ -59,6 +60,7 @@
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "styled-theming": "^2.2.0"
   }
 }

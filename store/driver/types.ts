@@ -9,7 +9,7 @@ import {
   CREATE_DRIVER_DATA,
   REMOVE_DRIVER_DATA,
   UPDATE_DRIVER_DATA,
-} from './action-types';
+} from "./action-types";
 
 export interface DriverState {
   isLoading: boolean;

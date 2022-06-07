@@ -5,7 +5,19 @@ import reducer from "./reducer";
 // import socketMiddleware from "store/socket/middleware";
 // import { createLogger } from 'redux-logger';
 
-export function initializeStore(defaultState = {}): Store {
+const localStorageKey = "theme";
+const storedTheme = localStorage.getItem(localStorageKey) || "{}";
+const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+// first priority is theme set in localStorage and then fallback to prefers-color-scheme
+const isPreferedDark =
+  JSON.parse(storedTheme)?.darkThemeEnabled || (storedTheme === null && prefersDark);
+
+const initialStoreState = {
+  themeState: isPreferedDark ? { darkThemeEnabled: true } : { darkThemeEnabled: false },
+};
+
+export function initializeStore(defaultState = initialStoreState): Store {
   const middleware = [
     thunkMiddleware,
     // socketMiddleware(),
@@ -19,6 +31,14 @@ export function initializeStore(defaultState = {}): Store {
       ? composeWithDevTools(applyMiddleware(...middleware))
       : compose(applyMiddleware(...middleware)),
   );
+
+  // our callback is fired everytime when the store is updated
+  // subscribe is used to listen for changes to the store and react to them.
+  store.subscribe(() => {
+    const { themeState } = store.getState();
+    if (!themeState) return;
+    localStorage.setItem(localStorageKey, JSON.stringify(themeState));
+  });
 
   return store;
 }
