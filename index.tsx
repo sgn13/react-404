@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import "theme/index.scss";
+import "theme/sass/index.scss";
 import { ErrorBoundary } from "react-error-boundary";
 import { Provider as ReduxProvider } from "react-redux";
 import ReactError from "pages/errors/react-error";

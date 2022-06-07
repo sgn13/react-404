@@ -10,11 +10,11 @@ const storedTheme = localStorage.getItem(localStorageKey) || "{}";
 const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
 
 // first priority is theme set in localStorage and then fallback to prefers-color-scheme
-const isPreferedDark =
-  JSON.parse(storedTheme)?.darkThemeEnabled || (storedTheme === null && prefersDark);
+const preferredThemeName =
+  JSON.parse(storedTheme)?.themeName || (storedTheme === "{}" && prefersDark && "dark") || "light";
 
 const initialStoreState = {
-  themeState: isPreferedDark ? { darkThemeEnabled: true } : { darkThemeEnabled: false },
+  themeState: { themeName: preferredThemeName },
 };
 
 export function initializeStore(defaultState = initialStoreState): Store {

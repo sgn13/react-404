@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import GlobalStyle from "./GlobalStyle";
 
 function StyledThemeProvider({ children }: { children: React.ReactNode }) {
-  const darkThemeEnabled = useSelector((state) => state?.themeState?.darkThemeEnabled);
+  const themeName = useSelector((state) => state?.themeState?.themeName);
   return (
-    <ThemeProvider theme={{ theme: darkThemeEnabled ? "dark" : "light" }}>
+    <ThemeProvider theme={{ theme: themeName }}>
       <GlobalStyle />
       {children}
     </ThemeProvider>

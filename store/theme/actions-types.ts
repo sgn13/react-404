@@ -1,1 +1,1 @@
-export const TOGGLE_DARKTHEME = "TOGGLE_DARKTHEME";
+export const SET_THEME_DATA = "SET_THEME_DATA";

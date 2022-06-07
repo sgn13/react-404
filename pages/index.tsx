@@ -1,10 +1,9 @@
 import webpackLogo from "assets/images/webpack-logo.png";
 import React, { useState, useEffect } from "react";
-import "theme/index.scss";
 import styled from "styled-components";
 import { backgroundColor, textColor } from "theme";
 import { connect, ConnectedProps } from "react-redux";
-import { changeTheme } from "store/theme/actions";
+import { toggleLightDarkTheme, setTheme } from "store/theme/actions";
 import { AppState } from "store/reducer";
 
 const Container = styled.div`
@@ -14,7 +13,7 @@ const Container = styled.div`
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
-function Welcome({ darkThemeEnabled, changeTheme }: React.FC<PropsFromRedux>) {
+function Welcome({ themeName, toggleLightDarkTheme, setTheme }: React.FC<PropsFromRedux>) {
   return (
     <Container>
       <h1>Welcome Webpack Development Server.</h1>
@@ -25,19 +24,23 @@ function Welcome({ darkThemeEnabled, changeTheme }: React.FC<PropsFromRedux>) {
         style={{ width: 300, height: "auto" }}
       />
       <p>
-        <input type="checkbox" checked={darkThemeEnabled} onChange={changeTheme} />
+        <input type="checkbox" checked={themeName === "dark"} onChange={toggleLightDarkTheme} />
         <span>Use Dark Theme</span>
       </p>
+      <button type="button" onClick={() => setTheme("brand")}>
+        change to brand theme
+      </button>
     </Container>
   );
 }
 
-const mapStateToProps = ({ themeState: { darkThemeEnabled } }: AppState) => ({
-  darkThemeEnabled,
+const mapStateToProps = ({ themeState: { themeName } }: AppState) => ({
+  themeName,
 });
 
 const mapDispatchToProps = {
-  changeTheme,
+  toggleLightDarkTheme,
+  setTheme,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

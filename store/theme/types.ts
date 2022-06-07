@@ -1,12 +1,12 @@
-import { TOGGLE_DARKTHEME } from "./actions-types";
+import { SET_THEME_DATA } from "./actions-types";
 
 export interface ThemeState {
-  darkThemeEnabled: boolean;
+  themeName: string;
 }
 
-export type ToggleDarkThemeType = {
-  type: typeof TOGGLE_DARKTHEME;
-  payload?: any;
+export type ChangeThemeType = {
+  type: typeof SET_THEME_DATA;
+  payload?: string;
 };
 
-export type ThemeActionType = ToggleDarkThemeType;
+export type ThemeActionType = ChangeThemeType;
