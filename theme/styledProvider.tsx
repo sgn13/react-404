@@ -1,6 +1,6 @@
 import { ThemeProvider } from "styled-components";
 import { useSelector } from "react-redux";
-import GlobalStyle from "./GlobalStyle";
+import GlobalStyle from "./Global";
 
 function StyledThemeProvider({ children }: { children: React.ReactNode }) {
   const themeName = useSelector((state) => state?.themeState?.themeName);

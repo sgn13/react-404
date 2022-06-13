@@ -9,9 +9,10 @@ import Routes from "./App";
 import { initializeStore } from "./store";
 
 const store = initializeStore();
-const errorHandler = (error: any, errorInfo: any) =>
+const errorHandler = (error: any, errorInfo: any) => {
   // eslint-disable-next-line no-console
   console.error("Logging error", errorInfo, error);
+};
 
 function AppIndex() {
   return (

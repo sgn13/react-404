@@ -5,15 +5,74 @@ import { backgroundColor, textColor } from "theme";
 import { connect, ConnectedProps } from "react-redux";
 import { toggleLightDarkTheme, setTheme } from "store/theme/actions";
 import { AppState } from "store/reducer";
+import axios from "axios";
 
 const Container = styled.div`
   background-color: ${backgroundColor};
   color: ${textColor};
   transition: all 0.5s ease;
+  transition-property: color background-color;
+`;
+
+const StyledButton = styled.button`
+  background-color: ${backgroundColor};
+  color: ${textColor};
+  transition: all 0.5s ease;
+  transition-property: color background-color transform;
+
+  :hover {
+    color: white;
+    background-color: blue;
+    transform: scale(1.1);
+  }
+`;
+
+const Parent = styled.div`
+  width: 300px;
+  height: 300px;
+  background-color: black;
+  /* :hover .child {
+    transform: translateX(100%);
+  } */
+  :hover .child {
+    animation-play-state: paused;
+  }
+`;
+
+const Child = styled.div`
+  height: 50%;
+  width: 50%;
+  background-color: red;
+  /* transition: transform 0.7s; */
+  animation: slide-left-to-right 1s ease-in-out infinite alternate;
+  @keyframes slide-left-to-right {
+    0% {
+      transform: translateX(0);
+    }
+    33% {
+      transform: translateY(100%);
+    }
+    66% {
+      transform: translateX(100%) translateY(100%);
+    }
+    100% {
+      transform: translateX(100%);
+      background-color: green;
+    }
+  }
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
 function Welcome({ themeName, toggleLightDarkTheme, setTheme }: React.FC<PropsFromRedux>) {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios.get("/posts").then((response) => {
+      console.log("got response", response);
+      setData(response.data);
+    });
+  }, []);
+
   return (
     <Container>
       <h1>Welcome Webpack Development Server.</h1>
@@ -27,9 +86,12 @@ function Welcome({ themeName, toggleLightDarkTheme, setTheme }: React.FC<PropsFr
         <input type="checkbox" checked={themeName === "dark"} onChange={toggleLightDarkTheme} />
         <span>Use Dark Theme</span>
       </p>
-      <button type="button" onClick={() => setTheme("brand")}>
+      <StyledButton type="button" onClick={() => setTheme("brand")}>
         change to brand theme
-      </button>
+      </StyledButton>
+      {/* <Parent>
+        <Child className="child" />
+      </Parent> */}
     </Container>
   );
 }
