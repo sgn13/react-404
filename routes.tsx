@@ -4,9 +4,11 @@ import OwnUserProfile from "pages/MyProfile";
 import UserProfile from "pages/UserProfile";
 import Users from "pages/Users";
 import Index from "./pages/index";
+import Login from "./pages/auth/Login";
 
 const routes = [
   { path: "/", element: <Index /> },
+  { path: "/login", element: <Login /> },
   {
     path: "users",
     element: <Users />,

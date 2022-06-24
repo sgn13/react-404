@@ -1,15 +1,15 @@
-import { Action, ActionCreator, Dispatch } from 'redux';
-import { ThunkAction } from 'redux-thunk';
+import { Action, ActionCreator, Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
 
-import { SET_IS_LOADING, SET_REGISTRATIONS_DATA } from './action-types';
+import { SET_IS_LOADING, SET_REGISTRATIONS_DATA } from "./action-types";
 
-import { RegistrationState, SetIsLoadingType, SetRegistrationsDataType } from './types';
+import { RegistrationState, SetIsLoadingType, SetRegistrationsDataType } from "./types";
 
-import { api } from 'constants/url';
+import api from "constants/api";
 
-import { setErrorMessage } from 'store/app/actions';
+import { setErrorMessage } from "store/app/actions";
 
-import { network } from 'utils/network';
+import { network } from "utils/network";
 
 export type AppThunk = ActionCreator<
   ThunkAction<Promise<boolean>, RegistrationState, null, Action<string>>

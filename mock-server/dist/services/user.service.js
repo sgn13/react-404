@@ -62,6 +62,7 @@ const updateUsers = (type, id, payload) => __awaiter(void 0, void 0, void 0, fun
             if (type === "put") {
                 // replace item at index with another item
                 index_1.default.users.splice(payloadIndex, 1, payload);
+                // eslint-disable-next-line consistent-return
                 return index_1.default.users[payloadIndex];
             }
             if (type === "patch") {
@@ -71,6 +72,7 @@ const updateUsers = (type, id, payload) => __awaiter(void 0, void 0, void 0, fun
                         user[key] = payload[key];
                 });
                 index_1.default.users.splice(payloadIndex, 1, user);
+                // eslint-disable-next-line consistent-return
                 return index_1.default.users[payloadIndex];
             }
             const err = new Error("Bad Request.");

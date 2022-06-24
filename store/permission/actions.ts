@@ -28,7 +28,7 @@ import {
   UpdatePermissionDataType,
 } from "./types";
 
-import { api } from "constants/url";
+import api from "constants/api";
 
 import { setErrorMessage } from "store/app/actions";
 

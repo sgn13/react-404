@@ -28,7 +28,8 @@ import {
   UpdateDriverDataType,
 } from './types';
 
-import { app, api } from 'constants/url';
+import app from 'constants/app';
+import api from 'constants/api';
 
 import { generateMeta, generateQuery } from 'utils/store';
 import { setErrorMessage, setUploadingInfo } from 'store/app/actions';

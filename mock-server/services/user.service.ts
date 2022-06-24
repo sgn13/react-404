@@ -48,6 +48,7 @@ export const updateUsers = async (type: "put" | "patch", id: number, payload: an
       if (type === "put") {
         // replace item at index with another item
         database.users.splice(payloadIndex, 1, payload);
+        // eslint-disable-next-line consistent-return
         return database.users[payloadIndex];
       }
       if (type === "patch") {
@@ -57,6 +58,7 @@ export const updateUsers = async (type: "put" | "patch", id: number, payload: an
         });
 
         database.users.splice(payloadIndex, 1, user);
+        // eslint-disable-next-line consistent-return
         return database.users[payloadIndex];
       }
       const err: IErrorWithStatus = new Error("Bad Request.");

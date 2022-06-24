@@ -8,18 +8,20 @@ export interface IEnv {
     isProduction: boolean;
   };
   app: {
-    name: string;
-    host: string;
-    url: string;
+    name?: string;
+    host?: string;
+    url?: string;
     port: number;
-    prefix: string;
+    prefix?: string;
   };
   api: {
-    name: string;
-    host: string;
-    url: string;
+    name?: string;
+    host?: string;
+    url?: string;
     port: number;
-    prefix: string;
+    prefix?: string;
   };
-  ws: { url: string };
+  ws: { url?: string };
 }
+
+export type KeyValue = { [key: string]: string };

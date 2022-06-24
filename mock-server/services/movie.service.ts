@@ -48,6 +48,7 @@ export const updateMovies = async (type: "put" | "patch", id: number, payload: a
       if (type === "put") {
         // replace item at index with another item
         database.movies.splice(payloadIndex, 1, payload);
+        // eslint-disable-next-line consistent-return
         return database.movies[payloadIndex];
       }
       if (type === "patch") {
@@ -57,6 +58,7 @@ export const updateMovies = async (type: "put" | "patch", id: number, payload: a
         });
 
         database.movies.splice(payloadIndex, 1, movie);
+        // eslint-disable-next-line consistent-return
         return database.movies[payloadIndex];
       }
       const err: IErrorWithStatus = new Error("Bad Request.");

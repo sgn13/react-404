@@ -1,4 +1,4 @@
-import { app } from "constants/url";
+import app from "constants/app";
 import { FaTelegramPlane } from "react-icons/fa";
 import { FiSettings, FiUser } from "react-icons/fi";
 import { RiDashboardLine } from "react-icons/ri";

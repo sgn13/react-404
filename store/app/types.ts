@@ -14,7 +14,7 @@ import {
   SET_UPLOADING_INFO,
   SET_DOWNLOADING_INFO,
   SET_LAYOUT_COLLAPSED,
-} from './action-types';
+} from "./constants";
 
 export type NotificationPayloadType = {
   name: string;
@@ -99,10 +99,12 @@ export type SetUploadingInfoType = {
   type: typeof SET_UPLOADING_INFO;
   payload: any;
 };
+
 export type SetLayoutCollapsedType = {
   type: typeof SET_LAYOUT_COLLAPSED;
   payload: any;
 };
+
 export type ApplicationActionTypes =
   | SetIsLoadingType
   | SetIsSubmittingType

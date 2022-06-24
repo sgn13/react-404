@@ -5,7 +5,6 @@ import { backgroundColor, textColor } from "theme";
 import { connect, ConnectedProps } from "react-redux";
 import { toggleLightDarkTheme, setTheme } from "store/theme/actions";
 import { AppState } from "store/reducer";
-import axios from "axios";
 
 const Container = styled.div`
   background-color: ${backgroundColor};
@@ -66,12 +65,12 @@ const Child = styled.div`
 function Welcome({ themeName, toggleLightDarkTheme, setTheme }: React.FC<PropsFromRedux>) {
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    axios.get("/posts").then((response) => {
-      console.log("got response", response);
-      setData(response.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   axios.get("/posts").then((response) => {
+  //     console.log("got response", response);
+  //     setData(response.data);
+  //   });
+  // }, []);
 
   return (
     <Container>

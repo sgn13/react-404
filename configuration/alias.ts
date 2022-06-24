@@ -24,7 +24,7 @@ const pathList = [
 //   [key: string]: string | undefined;
 // };
 
-let alias = {};
+const alias = {};
 
 pathList.forEach((item) => {
   alias[`${item}`] = path.resolve(process.cwd(), item);

@@ -1,10 +1,10 @@
-import configuration from 'configuration/index';
-import { w3cwebsocket as W3CWebSocket } from 'websocket';
-import { ws } from 'constants/url';
-import { updateAtmData } from 'store/atm/actions';
-import { updateCctvData } from 'store/cctv/actions';
-import { updateFirewallData } from 'store/firewall/actions';
-import { PING_ATM, PING_CCTV, PING_FIREWALL } from 'store/socket/action-types';
+import configuration from "configuration/index";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+import ws from "constants/app";
+import { updateAtmData } from "store/atm/actions";
+import { updateCctvData } from "store/cctv/actions";
+import { updateFirewallData } from "store/firewall/actions";
+import { PING_ATM, PING_CCTV, PING_FIREWALL } from "store/socket/action-types";
 
 const socketMiddleware = () => {
   let atmClient = null;
@@ -14,7 +14,7 @@ const socketMiddleware = () => {
   return (store) => (next) => (action) => {
     if (!atmClient) {
       atmClient = new W3CWebSocket(
-        `${configuration.ws.url}${ws.atm}&token=${sessionStorage.getItem('accessToken')}`,
+        `${configuration.ws.url}${ws.atm}&token=${sessionStorage.getItem("accessToken")}`,
       );
     }
 
@@ -38,7 +38,7 @@ const socketMiddleware = () => {
         const maxCount = 10;
         var intervalID = setInterval(() => {
           atmClient = new W3CWebSocket(
-            `${configuration.ws.url}${ws.atm}&token=${sessionStorage.getItem('accessToken')}`,
+            `${configuration.ws.url}${ws.atm}&token=${sessionStorage.getItem("accessToken")}`,
           );
           // atmClient.onopen = () => {
           //   console.log('atm socket connected inside');
@@ -61,7 +61,7 @@ const socketMiddleware = () => {
 
     if (!cctvClient) {
       cctvClient = new W3CWebSocket(
-        `${configuration.ws.url}${ws.cctv}&token=${sessionStorage.getItem('accessToken')}`,
+        `${configuration.ws.url}${ws.cctv}&token=${sessionStorage.getItem("accessToken")}`,
       );
     }
 
@@ -82,7 +82,7 @@ const socketMiddleware = () => {
         const maxCount = 10;
         var intervalID = setInterval(() => {
           cctvClient = new W3CWebSocket(
-            `${configuration.ws.url}${ws.atm}&token=${sessionStorage.getItem('accessToken')}`,
+            `${configuration.ws.url}${ws.atm}&token=${sessionStorage.getItem("accessToken")}`,
           );
           cctvClient.onmessage = (message) => {
             const { atmState } = store.getState();
@@ -102,7 +102,7 @@ const socketMiddleware = () => {
 
     if (!firewallClient) {
       firewallClient = new W3CWebSocket(
-        `${configuration.ws.url}${ws.firewall}&token=${sessionStorage.getItem('accessToken')}`,
+        `${configuration.ws.url}${ws.firewall}&token=${sessionStorage.getItem("accessToken")}`,
       );
     }
 
@@ -124,7 +124,7 @@ const socketMiddleware = () => {
         const maxCount = 10;
         var intervalID = setInterval(() => {
           firewallClient = new W3CWebSocket(
-            `${configuration.ws.url}${ws.atm}&token=${sessionStorage.getItem('accessToken')}`,
+            `${configuration.ws.url}${ws.atm}&token=${sessionStorage.getItem("accessToken")}`,
           );
           firewallClient.onmessage = (message) => {
             const { atmState } = store.getState();

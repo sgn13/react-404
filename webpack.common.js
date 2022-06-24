@@ -1,4 +1,4 @@
-// const webpack = require("webpack");
+const webpack = require("webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const dotenv = require("dotenv");
@@ -27,7 +27,6 @@ module.exports = (env) => {
   // Loading all the keys from the .env file at given path into process.env and makes it available during compilation for webpack.
   // using for webpack-dev-server to get port dynamically from the our environment file
   dotenv.config({ path: envPath });
-
   return {
     mode: "none",
     entry: "./index.tsx",
@@ -46,9 +45,11 @@ module.exports = (env) => {
         filename: "index.html",
         template: "./public/index.html",
       }),
-
+      new webpack.ProvidePlugin({
+        process: "process/browser",
+      }),
       // Dotenv replaces each process.env.variableName in our application code with the value from the .env file at the path
-      // so that it becomes more secure that exposing all the keys of env file in process.env
+      // so that it becomes more secure than exposing all the keys of env file in process.env
       new Dotenv({
         path: envPath, // load this file instead of the ones in '.env'
         safe: true, // load '.env.example' to verify the '.env' variables are all set. Can also be a string to a different file.
@@ -62,6 +63,13 @@ module.exports = (env) => {
     resolve: {
       extensions: ["*", ".js", ".jsx", ".tsx", ".ts", "json", ".css", "..."],
       alias,
+      fallback: {
+        // no need of fs module in browser
+        fs: false,
+        // polyfill for os and path modules
+        os: require.resolve("os-browserify/browser"),
+        path: require.resolve("path-browserify"),
+      },
     },
     /* For correct error line number. */
     devtool: "inline-source-map",

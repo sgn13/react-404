@@ -1,54 +1,3 @@
-export const api = {
-  me: "/api/v1/profile/",
-  finacle: "api/finacle/",
-  report: "api/report",
-  permission: "/api/v1/auth/permissions/",
-  changepassword: "",
-  ssoLogin: "/api/v1/login/",
-  ssoRegister: "/api/v1/third-party/register/",
-  darta: "/api/v1/darta/",
-  chalani: "/api/v1/chalani/",
-  registration: "/api/v1/employee_create_data/",
-  driver: "/api/v1/drivers/",
-  driverShift: "/api/v1/vehicle-reservation/bulk-driver-shift-api",
-  shift: "/api/v1/driver-shift/",
-  vehicle: "/api/v1/vehicle/",
-  unassignedVehicle: "/api/v1/unassigned-vehicles/",
-  reservation: "/api/v1/reservation/",
-  reservationStatistics: "/api/v1/statistics/",
-  reserved: "/api/v1/reservation/",
-  recommended: "/api/v1/reservation/",
-  confirmed: "/api/v1/reservation/",
-  completed: "/api/v1/reservation/",
-  track: "/api/v1/track-reservation/",
-  courier: "/api/v1/courier/",
-  branch: "/api/v1/branch/",
-  department: "/api/v1/department/",
-  appBuilder: "/api/v1/form-builder/forms/",
-  appResponse: "/api/v1/form-builder/responses/",
-  employee: "/api/v1/employee/",
-  userEmail: "/api/v1/user-emails/",
-  minEmployee: "/api/v1/user-emails/",
-  user: "/api/v1/auth/user/",
-  userPermission: "/api/v1/user/edit-permission/",
-  staff: "/api/v1/user-emails/",
-  // staff: '/api/v1/user/',
-  group: "/api/v1/auth/group/",
-  downloadDriverForm: "/api/v1/vehicle-reservation/download-csv-driver-form",
-  downloadVehicleForm: "/api/v1/vehicle-reservation/download-csv-vehicle-form",
-  downloadReservationForm: "/api/v1/vehicle-reservation/download-csv-reservation-form",
-  uploadForm: "/api/v1/myfile/",
-  maintanence: "/api/v1/maintenance-log/",
-  exportCSV: {
-    formResponse: "/api/v1/form-response-csv/",
-    courier: "api/v1/courier-csv/",
-    darta: "/api/v1/darta-csv/",
-    chalani: "/api/v1/chalani-csv/",
-    report: "/api/v1/get-report/",
-  },
-  logout: "/api/v1/auth/token/logout/",
-};
-
 const appRoot = {
   driver: "/vehicle-reservation",
   courier: "/courier",
@@ -61,7 +10,7 @@ const appRoot = {
   user: "/user",
 };
 
-export const app = {
+const app = {
   me: "/",
   changepassword: "/change-password",
 
@@ -146,3 +95,5 @@ export const app = {
     execute: (id) => `${appRoot.role}/execute/${id}`,
   },
 };
+
+export default app;

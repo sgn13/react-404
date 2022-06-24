@@ -64,6 +64,7 @@ const updateMovies = (type, id, payload) => __awaiter(void 0, void 0, void 0, fu
             if (type === "put") {
                 // replace item at index with another item
                 index_1.default.movies.splice(payloadIndex, 1, payload);
+                // eslint-disable-next-line consistent-return
                 return index_1.default.movies[payloadIndex];
             }
             if (type === "patch") {
@@ -73,6 +74,7 @@ const updateMovies = (type, id, payload) => __awaiter(void 0, void 0, void 0, fu
                         movie[key] = payload[key];
                 });
                 index_1.default.movies.splice(payloadIndex, 1, movie);
+                // eslint-disable-next-line consistent-return
                 return index_1.default.movies[payloadIndex];
             }
             const err = new Error("Bad Request.");

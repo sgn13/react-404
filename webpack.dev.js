@@ -7,7 +7,7 @@ module.exports = (env) =>
   merge(common(env), {
     mode: "development",
     devServer: {
-      open: true, // auto open the browser
+      // open: true, // auto open the browser
       static: { directory: path.join(__dirname, "public") },
       compress: true,
       port: Number(process.env.PORT) || 3000,

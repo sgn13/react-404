@@ -1,6 +1,6 @@
 import { Action, ActionCreator, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { app } from "constants/url";
+import  app  from "constants/app";
 
 import {
   SET_IS_LOADING,
@@ -31,7 +31,7 @@ import {
   SetFcrsUserQueryResultDataDataType,
 } from "./types";
 
-import { api } from "constants/url";
+import  api  from "constants/api";
 
 import { formDataGenerator, generateQuery, generateMeta } from "utils/store";
 import { setErrorMessage } from "store/app/actions";

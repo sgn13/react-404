@@ -28,7 +28,7 @@ import {
   UpdateRoleDataType,
 } from "./types";
 
-import { api } from "constants/url";
+import api from "constants/api";
 
 import { formDataGenerator, generateQuery, generateMeta } from "utils/store";
 import { setErrorMessage } from "store/app/actions";
