@@ -3,7 +3,7 @@ import "theme/sass/index.scss";
 import { ErrorBoundary } from "react-error-boundary";
 import { Provider as ReduxProvider } from "react-redux";
 import ReactError from "pages/errors/react-error";
-import StyledThemeProvider from "theme/styledProvider";
+import { StyledThemeProvider } from "theme/styled";
 import { BrowserRouter } from "react-router-dom";
 import Routes from "./App";
 import { initializeStore } from "./store";
