@@ -7,6 +7,7 @@ import {
   putUsers,
   patchUsers,
 } from "../controllers/user.controller";
+
 const router = express.Router();
 
 router.get("/users", getAllUsers);

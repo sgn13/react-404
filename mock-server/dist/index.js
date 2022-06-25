@@ -5,7 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
+// eslint-disable-next-line import/no-extraneous-dependencies
 const morgan_1 = __importDefault(require("morgan"));
+const multer_1 = __importDefault(require("multer"));
 const index_1 = __importDefault(require("./routes/index"));
 const error_controller_1 = require("./controllers/error.controller");
 dotenv_1.default.config();
@@ -17,6 +19,8 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({
     extended: true,
 }));
+// for parsing multpart/formdata text only
+app.use((0, multer_1.default)().none());
 app.use((0, morgan_1.default)("tiny"));
 const corsConfig = {
     // Access-Control-Allow-Origin i.e client address

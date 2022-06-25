@@ -1,6 +1,8 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+// eslint-disable-next-line import/no-extraneous-dependencies
 import morgan from "morgan";
+import multer from "multer";
 import routes from "./routes/index";
 import {
   missedRouteCatcher,
@@ -22,8 +24,10 @@ app.use(express.json());
 app.use(
   express.urlencoded({
     extended: true,
-  })
+  }),
 );
+// for parsing multpart/formdata text only
+app.use(multer().none());
 
 app.use(morgan("tiny"));
 

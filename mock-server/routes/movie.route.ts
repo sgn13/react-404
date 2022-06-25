@@ -7,6 +7,7 @@ import {
   putMovies,
   patchMovies,
 } from "../controllers/movie.controller";
+
 const router = express.Router();
 
 router.get("/movies", getAllMovies);

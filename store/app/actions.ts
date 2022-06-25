@@ -104,23 +104,21 @@ export const login =
 
       // Create form data object  to plain object
       // let formDataAsObject = Object.fromEntries(values.entries());
-
+      // posting as multipart/formData
       const { data, status } = await network({ requireToken: false }).post(api.login, values);
-      // const status = result.status;
-      // if (status === 200 || status === 201) {
-      //   if (data) {
-      //     dispatch(setIsSubmitting(false));
-      //     sessionStorage.setItem("accessToken", data.jwt_token.access);
-      //     sessionStorage.setItem("refreshToken", data.jwt_token.refresh);
-
-      //     const redirectUrl = window.localStorage.getItem("redirectTo") || "/";
-      //     window.location.href = redirectUrl;
-
-      //     return data;
-      //   }
-      // } else {
-      //   dispatch(setIsSubmitting(false));
-      // }
+      if (status === 200 || status === 201) {
+        if (data) {
+          dispatch(setIsSubmitting(false));
+          sessionStorage.setItem("accessToken", data.token.access);
+          sessionStorage.setItem("refreshToken", data.token.refresh);
+          const redirectUrl = window.localStorage.getItem("redirectTo") || "/";
+          window.location.href = redirectUrl;
+          return data;
+        }
+      } else {
+        dispatch(setIsSubmitting(false));
+        return false;
+      }
     } catch (error) {
       dispatch(setIsSubmitting(false));
       console.log("got error", error);
