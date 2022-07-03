@@ -1,19 +1,13 @@
 import { Action, ActionCreator, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 
-import {
-  SET_IS_LOADING,
-  SET_IS_SUBMITTING,
-  SET_ROLE_DATA,
-  SET_ROLES_DATA,
-  SET_ROLES_METADATA,
-  SET_SEARCHED_ROLES_DATA,
-  RESET_SEARCHED_ROLES_DATA,
-  CREATE_ROLE_DATA,
-  REMOVE_ROLE_DATA,
-  UPDATE_ROLE_DATA,
-} from "./action-types";
+import api from "constants/api";
 
+import { formDataGenerator, generateQuery, generateMeta } from "utils/store";
+// import { setErrorMessage } from "store/app/actions";
+
+import { network } from "utils/network";
+import { defaultQuery } from "constants/query";
 import {
   RoleState,
   SetIsLoadingType,
@@ -27,14 +21,18 @@ import {
   RemoveRoleDataType,
   UpdateRoleDataType,
 } from "./types";
-
-import api from "constants/api";
-
-import { formDataGenerator, generateQuery, generateMeta } from "utils/store";
-import { setErrorMessage } from "store/app/actions";
-
-import { network } from "utils/network";
-import { defaultQuery } from "constants/query";
+import {
+  SET_IS_LOADING,
+  SET_IS_SUBMITTING,
+  SET_ROLE_DATA,
+  SET_ROLES_DATA,
+  SET_ROLES_METADATA,
+  SET_SEARCHED_ROLES_DATA,
+  RESET_SEARCHED_ROLES_DATA,
+  CREATE_ROLE_DATA,
+  REMOVE_ROLE_DATA,
+  UPDATE_ROLE_DATA,
+} from "./action-types";
 
 export type AppThunk = ActionCreator<
   ThunkAction<Promise<boolean>, RoleState, null, Action<string>>
@@ -106,7 +104,7 @@ export const fetchRole: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // if (error.response) dispatch(setErrorMessage(error));
       dispatch(setIsLoading(false));
       return false;
     }
@@ -134,7 +132,7 @@ export const fetchRoles: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // if (error.response) dispatch(setErrorMessage(error));
       dispatch(setIsLoading(false));
       return false;
     }
@@ -155,7 +153,7 @@ export const createRole: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // if (error.response) dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -177,7 +175,7 @@ export const updateRole: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // if (error.response) dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -197,7 +195,7 @@ export const deleteRole: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // if (error.response) dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }

@@ -9,7 +9,7 @@ import {
   CREATE_PERMISSION_DATA,
   REMOVE_PERMISSION_DATA,
   UPDATE_PERMISSION_DATA,
-} from './action-types';
+} from "./action-types";
 
 export interface PermissionState {
   isLoading: boolean;

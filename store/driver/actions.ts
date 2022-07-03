@@ -1,19 +1,14 @@
-import { Action, ActionCreator, Dispatch } from 'redux';
-import { ThunkAction } from 'redux-thunk';
+import { Action, ActionCreator, Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
 
-import {
-  SET_IS_LOADING,
-  SET_IS_SUBMITTING,
-  SET_DRIVER_DATA,
-  SET_DRIVERS_DATA,
-  SET_DRIVERS_METADATA,
-  SET_SEARCHED_DRIVERS_DATA,
-  RESET_SEARCHED_DRIVERS_DATA,
-  CREATE_DRIVER_DATA,
-  REMOVE_DRIVER_DATA,
-  UPDATE_DRIVER_DATA,
-} from './action-types';
+import app from "constants/app";
+import api from "constants/api";
 
+import { generateMeta, generateQuery } from "utils/store";
+// import { setErrorMessage, setUploadingInfo } from 'store/app/actions';
+
+import { network } from "utils/network";
+import { defaultQuery } from "constants/query";
 import {
   DriverState,
   SetIsLoadingType,
@@ -26,17 +21,19 @@ import {
   CreateDriverDataType,
   RemoveDriverDataType,
   UpdateDriverDataType,
-} from './types';
-
-import app from 'constants/app';
-import api from 'constants/api';
-
-import { generateMeta, generateQuery } from 'utils/store';
-import { setErrorMessage, setUploadingInfo } from 'store/app/actions';
-
-import { network } from 'utils/network';
-import { defaultQuery } from 'constants/query';
-import axios from 'axios';
+} from "./types";
+import {
+  SET_IS_LOADING,
+  SET_IS_SUBMITTING,
+  SET_DRIVER_DATA,
+  SET_DRIVERS_DATA,
+  SET_DRIVERS_METADATA,
+  SET_SEARCHED_DRIVERS_DATA,
+  RESET_SEARCHED_DRIVERS_DATA,
+  CREATE_DRIVER_DATA,
+  REMOVE_DRIVER_DATA,
+  UPDATE_DRIVER_DATA,
+} from "./action-types";
 
 export type AppThunk = ActionCreator<
   ThunkAction<Promise<boolean>, DriverState, null, Action<string>>
@@ -108,14 +105,14 @@ export const fetchDriver: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsLoading(false));
       return false;
     }
   };
 
 export const fetchDrivers: AppThunk =
-  ({ query = defaultQuery length = true, columns, searchable, search, accessToken }) =>
+  ({ query = defaultQuery, length = true, columns, searchable, search, accessToken }) =>
   async (dispatch: Dispatch): Promise<boolean> => {
     const link = generateQuery({
       url: api.driver,
@@ -131,6 +128,7 @@ export const fetchDrivers: AppThunk =
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {
           const metadata = generateMeta({ data: resData, query, results: data });
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           search ? dispatch(setSearchedDriversData(data)) : dispatch(setDriversData(data));
           dispatch(setIsLoading(false));
           dispatch(setDriversMetadata(metadata));
@@ -139,7 +137,7 @@ export const fetchDrivers: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsLoading(false));
       return false;
     }
@@ -160,7 +158,7 @@ export const createDriver: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -182,7 +180,7 @@ export const updateDriver: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -201,7 +199,7 @@ export const updateDriverShiftInBulk: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -221,7 +219,7 @@ export const deleteDriver: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -246,7 +244,7 @@ export const patchDriver: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -256,30 +254,30 @@ export const uploadForm: AppThunk =
   ({ formData }) =>
   async (dispatch: Dispatch) => {
     try {
-      dispatch(setUploadingInfo({ count: 1 }));
+      // dispatch(setUploadingInfo({ count: 1 }));
       dispatch(setIsSubmitting(true));
       const { data, status } = await network({
         dispatch,
         onUploadProgress: (progressEvent) => {
-          dispatch(
-            setUploadingInfo({
-              progress: progressEvent.total
-                ? Math.round((progressEvent.loaded * 100) / progressEvent.total)
-                : '.',
-            }),
-          );
+          // dispatch(
+          //   setUploadingInfo({
+          //     progress: progressEvent.total
+          //       ? Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          //       : '.',
+          //   }),
+          // );
         },
       }).post(`${api.uploadForm}`, formData);
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {
           dispatch(setIsSubmitting(false));
-          setTimeout(() => dispatch(setUploadingInfo({ count: 0 })), 1000);
+          // setTimeout(() => dispatch(setUploadingInfo({ count: 0 })), 1000);
           return true;
         }
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }

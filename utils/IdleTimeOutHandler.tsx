@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import moment from 'moment';
-import idle from 'constants/idle';
+import React, { useEffect, useState } from "react";
+import moment from "moment";
 
-import IdleTimeOutModal from 'components/IdleTimeOutModal';
+import IdleTimeOutModal from "components/IdleTimeOutModal";
 
-const IdleTimeOutHandler = props => {
-  let timerData = undefined;
+const idle = 15 * 60 * 60 * 1000;
+function IdleTimeOutHandler(props) {
+  let timerData: any;
+  const { logOut, timeOutInterval } = props;
   const [intervalData, setIntervalData] = useState(undefined);
 
   const [isLogout, setLogout] = useState(false);
@@ -14,11 +15,35 @@ const IdleTimeOutHandler = props => {
 
   const [showModal, setShowModal] = useState(false);
 
-  const events = ['click', 'load', 'keydown', 'mousemove'];
+  const events = ["click", "load", "keydown", "mousemove"];
 
-  const eventHandler = eventType => {
+  const startTimer = () => {
+    if (timerData) {
+      clearTimeout(timerData);
+    }
+    if (intervalData) {
+      clearInterval(intervalData);
+    }
+
+    timerData = setTimeout(() => {
+      const lastInteractionTime = localStorage.getItem("lastInteractionTime");
+      const diff = moment.duration(moment().diff(moment(lastInteractionTime)));
+      const timeoutInterval = timeOutInterval || idle;
+
+      if (!isLogout) {
+        // eslint-disable-next-line no-underscore-dangle
+        if (diff._milliseconds < timeoutInterval) {
+          startTimer();
+        } else {
+          setShowModal(true);
+        }
+      }
+    }, timeOutInterval || idle);
+  };
+
+  const eventHandler = () => {
     if (!isLogout) {
-      localStorage.setItem('lastInteractionTime', moment());
+      localStorage.setItem("lastInteractionTime", moment());
 
       if (timerData) {
         startTimer();
@@ -28,13 +53,13 @@ const IdleTimeOutHandler = props => {
 
   const addEvents = () => {
     startTimer();
-    events.forEach(eventName => {
+    events.forEach((eventName) => {
       window.addEventListener(eventName, eventHandler);
     });
   };
 
   const removeEvents = () => {
-    events.forEach(eventName => {
+    events.forEach((eventName) => {
       window.removeEventListener(eventName, eventHandler);
     });
   };
@@ -47,37 +72,14 @@ const IdleTimeOutHandler = props => {
     if (showModal) {
       setIntervalData(
         setInterval(() => {
-          setElaspedTime(prev => prev + 1000);
-        }, 1000)
+          setElaspedTime((prev) => prev + 1000);
+        }, 1000),
       );
     } else {
       clearInterval(intervalData);
       setElaspedTime(0);
     }
   }, [showModal]);
-
-  const startTimer = () => {
-    if (timerData) {
-      clearTimeout(timerData);
-    }
-    if (intervalData) {
-      clearInterval(intervalData);
-    }
-
-    timerData = setTimeout(() => {
-      let lastInteractionTime = localStorage.getItem('lastInteractionTime');
-      const diff = moment.duration(moment().diff(moment(lastInteractionTime)));
-      let timeOutInterval = props.timeOutInterval || idle.idleTime;
-
-      if (!isLogout) {
-        if (diff._milliseconds < timeOutInterval) {
-          startTimer();
-        } else {
-          setShowModal(true);
-        }
-      }
-    }, props.timeOutInterval || idle.idleTime);
-  };
 
   const handleContinueSession = () => {
     setShowModal(false);
@@ -93,9 +95,10 @@ const IdleTimeOutHandler = props => {
     setLogout(true);
     setShowModal(false);
 
-    props.logOut();
+    logOut();
 
-    new Notification('You have been logged out because of inactivity.');
+    // eslint-disable-next-line no-new
+    new Notification("You have been logged out because of inactivity.");
   };
 
   return (
@@ -106,6 +109,6 @@ const IdleTimeOutHandler = props => {
       elapsedTime={elapsedTime}
     />
   );
-};
+}
 
 export default IdleTimeOutHandler;

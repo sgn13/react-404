@@ -123,6 +123,7 @@ export const login =
       dispatch(setIsSubmitting(false));
       console.log("got error", error);
     }
+    return false;
   };
 
 // export const register =

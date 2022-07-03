@@ -1,4 +1,13 @@
-import { Reducer } from 'redux';
+import { Reducer } from "redux";
+
+import {
+  createState,
+  removeState,
+  updateState,
+  setSearchState,
+  resetSearchState,
+} from "utils/store";
+import { PermissionActionTypes, PermissionState } from "./types";
 
 import {
   SET_IS_LOADING,
@@ -11,15 +20,9 @@ import {
   CREATE_PERMISSION_DATA,
   REMOVE_PERMISSION_DATA,
   UPDATE_PERMISSION_DATA,
-} from './action-types';
+} from "./action-types";
 
-import { PermissionActionTypes, PermissionState } from './types';
-
-import { createState, removeState, updateState } from 'utils/store';
-import { setSearchState } from 'utils/store';
-import { resetSearchState } from 'utils/store';
-
-const entity = 'permissions';
+const entity = "permissions";
 
 export const initialState: PermissionState = {
   isLoading: false,
@@ -34,6 +37,7 @@ export const initialState: PermissionState = {
 };
 
 const reducer: Reducer<PermissionState> = (
+  // eslint-disable-next-line @typescript-eslint/default-param-last
   state = initialState,
   action: PermissionActionTypes,
 ): PermissionState => {

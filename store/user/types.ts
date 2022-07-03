@@ -10,7 +10,7 @@ import {
   REMOVE_USER_DATA,
   UPDATE_USER_DATA,
   SET_FCRS_USER_QUERY_RESULT_DATA,
-} from './action-types';
+} from "./action-types";
 
 export interface UserState {
   isLoading: boolean;

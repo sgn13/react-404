@@ -45,8 +45,28 @@
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-unused-vars": "warn",
-    "no-console": "warn"
+    "no-console": "warn",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "import/extensions": "off",
+    "no-shadow": "warn",
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "required": {
+          "some": ["nesting", "id"]
+        }
+      }
+    ],
+    "jsx-a11y/label-has-for": [
+      "error",
+      {
+        "required": {
+          "some": ["nesting", "id"]
+        }
+      }
+    ]
   },
+
   // setting shared across all the plugin rules
   "settings": {
     "react": {

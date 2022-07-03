@@ -1,21 +1,13 @@
 import { Action, ActionCreator, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
-import  app  from "constants/app";
 
-import {
-  SET_IS_LOADING,
-  SET_IS_SUBMITTING,
-  SET_USER_DATA,
-  SET_USERS_DATA,
-  SET_USERS_METADATA,
-  SET_SEARCHED_USERS_DATA,
-  RESET_SEARCHED_USERS_DATA,
-  CREATE_USER_DATA,
-  REMOVE_USER_DATA,
-  UPDATE_USER_DATA,
-  SET_FCRS_USER_QUERY_RESULT_DATA,
-} from "./action-types";
+import api from "constants/api";
 
+import { formDataGenerator, generateQuery, generateMeta } from "utils/store";
+// import { setErrorMessage } from "store/app/actions";
+
+import { network } from "utils/network";
+import { defaultQuery } from "constants/query";
 import {
   UserState,
   SetIsLoadingType,
@@ -30,16 +22,21 @@ import {
   UpdateUserDataType,
   SetFcrsUserQueryResultDataDataType,
 } from "./types";
+import {
+  SET_IS_LOADING,
+  SET_IS_SUBMITTING,
+  SET_USER_DATA,
+  SET_USERS_DATA,
+  SET_USERS_METADATA,
+  SET_SEARCHED_USERS_DATA,
+  RESET_SEARCHED_USERS_DATA,
+  CREATE_USER_DATA,
+  REMOVE_USER_DATA,
+  UPDATE_USER_DATA,
+  SET_FCRS_USER_QUERY_RESULT_DATA,
+} from "./action-types";
 
-import  api  from "constants/api";
-
-import { formDataGenerator, generateQuery, generateMeta } from "utils/store";
-import { setErrorMessage } from "store/app/actions";
-
-import { network } from "utils/network";
-import { defaultQuery } from "constants/query";
-
-import { updateSidebarData } from "../app/actions";
+// import { updateSidebarData } from "../app/actions";
 
 export type AppThunk = ActionCreator<
   ThunkAction<Promise<boolean>, UserState, null, Action<string>>
@@ -116,7 +113,7 @@ export const fetchUser: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsLoading(false));
       return false;
     }
@@ -144,7 +141,7 @@ export const fetchUsers: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsLoading(false));
       return false;
     }
@@ -165,7 +162,7 @@ export const createUser: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -189,7 +186,7 @@ export const updateUser: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -213,7 +210,7 @@ export const updateUserPermission: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -233,16 +230,16 @@ export const deleteUser: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
   };
 export const fetchFcrsUserSidebarMenu =
-  ({ query = defaultQuery search = false, columns, searchable, order }) =>
+  ({ query = defaultQuery, search = false, columns, searchable, order }) =>
   async (dispatch) => {
     try {
-      let link = generateQuery({
+      const link = generateQuery({
         url: api.user,
         query: { ...query, perPage: 1000 },
         columns,
@@ -256,34 +253,35 @@ export const fetchFcrsUserSidebarMenu =
         if (data) {
           const results = data.data;
 
-          dispatch(
-            updateSidebarData([
-              {
-                icon: "",
-                label: "Home",
-                location: "top",
-                path: "",
-              },
-              {
-                icon: "",
-                label: "Finacle Query",
-                location: "top",
-                path: app.finacle.execute(),
-              },
-              ...results.map((menu) => ({
-                icon: "",
-                label: menu.menu_name,
-                location: "top",
-                path: `/fcrs/user/execute/${menu.id}`,
-              })),
-            ]),
-          );
+          // dispatch(
+          //   updateSidebarData([
+          //     {
+          //       icon: "",
+          //       label: "Home",
+          //       location: "top",
+          //       path: "",
+          //     },
+          //     {
+          //       icon: "",
+          //       label: "Finacle Query",
+          //       location: "top",
+          //       path: app.finacle.execute(),
+          //     },
+          //     ...results.map((menu) => ({
+          //       icon: "",
+          //       label: menu.menu_name,
+          //       location: "top",
+          //       path: `/fcrs/user/execute/${menu.id}`,
+          //     })),
+          //   ]),
+          // );
           dispatch(setIsLoading(false));
           return true;
         }
       }
     } catch (error) {
       dispatch(setIsLoading(false));
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
     }
+    return false;
   };

@@ -60,7 +60,9 @@ function Error({ mode = "react-error", message = "" }) {
       }}
     >
       <img src={method[mode].image} alt="error" />
-      <label>{message || method[mode].message}</label>
+      <label id="message" htmlFor="message">
+        {message || method[mode].message}
+      </label>
       <button
         type="button"
         onClick={() => {

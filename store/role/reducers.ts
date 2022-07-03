@@ -1,5 +1,6 @@
-import { Reducer } from 'redux';
+import { Reducer } from "redux";
 
+import { createState, removeState, updateState } from "utils/store";
 import {
   SET_IS_LOADING,
   SET_IS_SUBMITTING,
@@ -11,11 +12,9 @@ import {
   CREATE_ROLE_DATA,
   REMOVE_ROLE_DATA,
   UPDATE_ROLE_DATA,
-} from './action-types';
+} from "./action-types";
 
-import { RoleActionTypes, RoleState } from './types';
-
-import { createState, removeState, updateState } from 'utils/store';
+import { RoleActionTypes, RoleState } from "./types";
 
 export const initialState: RoleState = {
   isLoading: false,
@@ -29,6 +28,7 @@ export const initialState: RoleState = {
   metadata: undefined,
 };
 
+// eslint-disable-next-line @typescript-eslint/default-param-last
 const reducer: Reducer<RoleState> = (state = initialState, action: RoleActionTypes): RoleState => {
   switch (action.type) {
     case SET_IS_LOADING:
@@ -57,7 +57,7 @@ const reducer: Reducer<RoleState> = (state = initialState, action: RoleActionTyp
         state,
         action,
         local: state.roles,
-        entity: 'roles',
+        entity: "roles",
       });
 
     case UPDATE_ROLE_DATA:
@@ -65,7 +65,7 @@ const reducer: Reducer<RoleState> = (state = initialState, action: RoleActionTyp
         state,
         action,
         local: state.roles,
-        entity: 'roles',
+        entity: "roles",
       });
 
     case REMOVE_ROLE_DATA:
@@ -73,7 +73,7 @@ const reducer: Reducer<RoleState> = (state = initialState, action: RoleActionTyp
         state,
         action,
         local: state.roles,
-        entity: 'roles',
+        entity: "roles",
       });
 
     default:

@@ -2,7 +2,8 @@ import { SOCKET_CONNECTED, SOCKET_DISCONNECTED } from "./action-types";
 
 const initialState = { connected: false };
 
-const reducer = (state = initialState, action) => {
+// eslint-disable-next-line @typescript-eslint/default-param-last
+const reducer = (state = initialState, action: any) => {
   switch (action.type) {
     case SOCKET_CONNECTED: {
       return { ...state, connected: true };

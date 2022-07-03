@@ -1,5 +1,4 @@
 import { connect } from "react-redux";
-import { useState } from "react";
 import { login } from "store/app/actions";
 import { AppState } from "store/reducer";
 import { Formik } from "formik";
@@ -15,6 +14,8 @@ const initialValues = {
   password: "test",
 };
 
+// eslint-disable-next-line no-shadow
+// eslint-disable-next-line @typescript-eslint/no-shadow
 function Login({ login, isSubmitting }) {
   return (
     <Formik
@@ -29,8 +30,8 @@ function Login({ login, isSubmitting }) {
         }
       }}
       validateOnMount={false}
-      validateOnBlur={true}
-      validateOnChange={true}
+      validateOnBlur
+      validateOnChange
       enableReinitialize={false}
     >
       {({
@@ -40,6 +41,8 @@ function Login({ login, isSubmitting }) {
         handleChange,
         handleBlur,
         handleSubmit,
+        // eslint-disable-next-line no-shadow
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         isSubmitting,
         setFieldValue,
       }) => (
@@ -49,14 +52,18 @@ function Login({ login, isSubmitting }) {
               Login Page
             </legend>
             <div>
-              <label>Email:</label>
+              <label id="email" htmlFor="email">
+                Email:
+              </label>
               <br />
               <input type="email" name="email" onChange={handleChange} value={values.email} />
               <br />
               {(values.email || (errors.email && touched.email)) && errors.email}
             </div>
             <div>
-              <label>Password:</label>
+              <label id="password" htmlFor="password">
+                Password:
+              </label>
               <br />
               <input
                 type="password"

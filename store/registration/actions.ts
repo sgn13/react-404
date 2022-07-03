@@ -1,15 +1,13 @@
 import { Action, ActionCreator, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 
-import { SET_IS_LOADING, SET_REGISTRATIONS_DATA } from "./action-types";
-
-import { RegistrationState, SetIsLoadingType, SetRegistrationsDataType } from "./types";
-
 import api from "constants/api";
 
-import { setErrorMessage } from "store/app/actions";
+// import { setErrorMessage } from "store/app/actions";
 
 import { network } from "utils/network";
+import { RegistrationState, SetIsLoadingType, SetRegistrationsDataType } from "./types";
+import { SET_IS_LOADING, SET_REGISTRATIONS_DATA } from "./action-types";
 
 export type AppThunk = ActionCreator<
   ThunkAction<Promise<boolean>, RegistrationState, null, Action<string>>
@@ -26,7 +24,7 @@ export const setRegistrationsData = (payload): SetRegistrationsDataType => ({
 });
 
 export const fetchRegistrations: AppThunk =
-  ({}) =>
+  () =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       dispatch(setIsLoading(true));
@@ -41,7 +39,7 @@ export const fetchRegistrations: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsLoading(false));
       return false;
     }

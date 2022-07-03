@@ -19,5 +19,5 @@ export const generateDelete = ({ path, entity }) => `${path}/delete${entity && `
 
 export const generatePrintPage = ({ path, entity }) => `${path}/print${entity && `-${entity}`}/:id`;
 
-export const generateAction = ({ path = '', entity = '', action = '', id = ':id' }) =>
-  `${path}${(action || entity) && '/'}${action}${entity && `-${entity}`}/${id}`;
+export const generateAction = ({ path = "", entity = "", action = "", id = ":id" }) =>
+  `${path}${(action || entity) && "/"}${action}${entity && `-${entity}`}/${id}`;

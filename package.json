@@ -7,7 +7,12 @@
     "start": "will run mock api server with axios adaptor",
     "dev": "webpack serve --config webpack.dev.js --env development --node-env development",
     "build": "webpack --config webpack.prod.js --env production --node-env production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "lint-staged",
+    "prettier": "prettier --config .prettierrc.json '**/*' --write",
+    "eslint": "eslint --debug . ",
+    "eslint:fix": "eslint --debug . --fix",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -18,13 +23,18 @@
     "@babel/preset-env": "^7.18.0",
     "@babel/preset-react": "^7.17.12",
     "@babel/preset-typescript": "^7.17.12",
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
     "@types/react-dom": "^18.0.4",
     "@types/styled-components": "^5.1.25",
     "@types/styled-theming": "^2.2.5",
+    "@types/websocket": "^1.0.5",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
     "babel-loader": "^8.2.5",
+    "commitizen": "^4.2.4",
     "css-loader": "^6.7.1",
+    "cz-conventional-changelog": "^3.3.0",
     "dotenv-webpack": "^7.1.0",
     "dotnet": "^1.1.4",
     "eslint": "^8.16.0",
@@ -39,6 +49,8 @@
     "eslint-plugin-react": "^7.30.0",
     "eslint-plugin-react-hooks": "^4.5.0",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.6.2",
     "process": "^0.11.10",
     "sass": "^1.52.1",
@@ -68,6 +80,12 @@
     "redux-thunk": "^2.4.1",
     "styled-components": "^5.3.5",
     "styled-theming": "^2.2.0",
+    "websocket": "^1.0.34",
     "yup": "^0.32.11"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

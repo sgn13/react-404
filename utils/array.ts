@@ -26,7 +26,8 @@ export const shallowEqual = ({ object1, object2 }) => {
   if (keys1.length !== keys2.length) {
     return false;
   }
-  for (let key of keys1) {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const key of keys1) {
     if (object1[key] !== object2[key]) {
       return false;
     }
@@ -37,11 +38,11 @@ export const shallowEqual = ({ object1, object2 }) => {
 export const includesEvery = ({ arr = [], target = [] }) => target.every((v) => arr.includes(v));
 
 export const getQuery = (filter) => {
-  let query = '';
+  let query = "";
 
-  Object.entries(filter).map((item) => {
-    if (item[1] && item[1] !== null && item[1] !== undefined && item[1] !== 'null') {
-      query = query + `${item[0]}=${item[1]}&`;
+  Object.entries(filter).forEach((item) => {
+    if (item[1] && item[1] !== null && item[1] !== undefined && item[1] !== "null") {
+      query += `${item[0]}=${item[1]}&`;
     }
   });
 

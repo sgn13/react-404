@@ -9,7 +9,7 @@ import {
   CREATE_ROLE_DATA,
   REMOVE_ROLE_DATA,
   UPDATE_ROLE_DATA,
-} from './action-types';
+} from "./action-types";
 
 export interface RoleState {
   isLoading: boolean;

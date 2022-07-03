@@ -1,19 +1,11 @@
 import { Action, ActionCreator, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 
-import {
-  SET_IS_LOADING,
-  SET_IS_SUBMITTING,
-  SET_PERMISSION_DATA,
-  SET_PERMISSIONS_DATA,
-  SET_PERMISSIONS_METADATA,
-  SET_SEARCHED_PERMISSIONS_DATA,
-  RESET_SEARCHED_PERMISSIONS_DATA,
-  CREATE_PERMISSION_DATA,
-  REMOVE_PERMISSION_DATA,
-  UPDATE_PERMISSION_DATA,
-} from "./action-types";
+import api from "constants/api";
 
+// import { setErrorMessage } from "store/app/actions";
+
+import { network } from "utils/network";
 import {
   PermissionState,
   SetIsLoadingType,
@@ -27,12 +19,18 @@ import {
   RemovePermissionDataType,
   UpdatePermissionDataType,
 } from "./types";
-
-import api from "constants/api";
-
-import { setErrorMessage } from "store/app/actions";
-
-import { network } from "utils/network";
+import {
+  SET_IS_LOADING,
+  SET_IS_SUBMITTING,
+  SET_PERMISSION_DATA,
+  SET_PERMISSIONS_DATA,
+  SET_PERMISSIONS_METADATA,
+  SET_SEARCHED_PERMISSIONS_DATA,
+  RESET_SEARCHED_PERMISSIONS_DATA,
+  CREATE_PERMISSION_DATA,
+  REMOVE_PERMISSION_DATA,
+  UPDATE_PERMISSION_DATA,
+} from "./action-types";
 
 export type AppThunk = ActionCreator<
   ThunkAction<Promise<boolean>, PermissionState, null, Action<string>>
@@ -104,14 +102,14 @@ export const fetchPermission: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsLoading(false));
       return false;
     }
   };
 
 export const fetchPermissions: AppThunk =
-  ({}) =>
+  () =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       dispatch(setIsLoading(true));
@@ -126,7 +124,7 @@ export const fetchPermissions: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsLoading(false));
       return false;
     }
@@ -147,7 +145,7 @@ export const createPermission: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -172,7 +170,7 @@ export const updatePermission: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -192,7 +190,7 @@ export const deletePermission: AppThunk =
       }
       return false;
     } catch (error) {
-      error.response && dispatch(setErrorMessage(error));
+      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }

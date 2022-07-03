@@ -19,3 +19,4 @@ Dockerfile
 docker*
 
 .storybook/
+mock-server/

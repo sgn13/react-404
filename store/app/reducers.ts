@@ -20,6 +20,7 @@ export const initialState: ApplicationState = {
 };
 
 const reducer: Reducer<ApplicationState> = (
+  // eslint-disable-next-line @typescript-eslint/default-param-last
   state: ApplicationState = initialState,
   action: ApplicationActionTypes,
 ): ApplicationState => {

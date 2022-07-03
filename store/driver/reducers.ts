@@ -1,5 +1,12 @@
-import { Reducer } from 'redux';
+import { Reducer } from "redux";
 
+import {
+  createState,
+  removeState,
+  updateState,
+  setSearchState,
+  resetSearchState,
+} from "utils/store";
 import {
   SET_IS_LOADING,
   SET_IS_SUBMITTING,
@@ -11,19 +18,11 @@ import {
   CREATE_DRIVER_DATA,
   REMOVE_DRIVER_DATA,
   UPDATE_DRIVER_DATA,
-} from './action-types';
+} from "./action-types";
 
-import { DriverActionTypes, DriverState } from './types';
+import { DriverActionTypes, DriverState } from "./types";
 
-import {
-  createState,
-  removeState,
-  updateState,
-  setSearchState,
-  resetSearchState,
-} from 'utils/store';
-
-const entity = 'drivers';
+const entity = "drivers";
 
 export const initialState: DriverState = {
   isLoading: false,
@@ -38,6 +37,7 @@ export const initialState: DriverState = {
 };
 
 const reducer: Reducer<DriverState> = (
+  // eslint-disable-next-line @typescript-eslint/default-param-last
   state = initialState,
   action: DriverActionTypes,
 ): DriverState => {

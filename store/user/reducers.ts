@@ -1,5 +1,6 @@
-import { Reducer } from 'redux';
+import { Reducer } from "redux";
 
+import { createState, removeState, updateState } from "utils/store";
 import {
   SET_IS_LOADING,
   SET_IS_SUBMITTING,
@@ -12,11 +13,9 @@ import {
   REMOVE_USER_DATA,
   UPDATE_USER_DATA,
   SET_FCRS_USER_QUERY_RESULT_DATA,
-} from './action-types';
+} from "./action-types";
 
-import { UserActionTypes, UserState } from './types';
-
-import { createState, removeState, updateState } from 'utils/store';
+import { UserActionTypes, UserState } from "./types";
 
 export const initialState: UserState = {
   isLoading: false,
@@ -30,6 +29,7 @@ export const initialState: UserState = {
   metadata: undefined,
 };
 
+// eslint-disable-next-line @typescript-eslint/default-param-last
 const reducer: Reducer<UserState> = (state = initialState, action: UserActionTypes): UserState => {
   switch (action.type) {
     case SET_IS_LOADING:
@@ -58,7 +58,7 @@ const reducer: Reducer<UserState> = (state = initialState, action: UserActionTyp
         state,
         action,
         local: state.users,
-        entity: 'users',
+        entity: "users",
       });
 
     case UPDATE_USER_DATA:
@@ -66,7 +66,7 @@ const reducer: Reducer<UserState> = (state = initialState, action: UserActionTyp
         state,
         action,
         local: state.users,
-        entity: 'users',
+        entity: "users",
       });
 
     case REMOVE_USER_DATA:
@@ -74,7 +74,7 @@ const reducer: Reducer<UserState> = (state = initialState, action: UserActionTyp
         state,
         action,
         local: state.users,
-        entity: 'users',
+        entity: "users",
       });
     case SET_FCRS_USER_QUERY_RESULT_DATA:
       return { ...state, userQueryResult: action.payload };

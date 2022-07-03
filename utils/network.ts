@@ -3,6 +3,7 @@ import env from "constants/env";
 
 export const network = ({ requireToken = true, accessToken = "" }): AxiosInstance => {
   const axiosConfig = {
+    // eslint-disable-next-line no-unsafe-optional-chaining
     baseURL: env?.api?.url + env?.api?.prefix || "http://localhost:8080",
     headers: {
       "Content-Type": "application/json",

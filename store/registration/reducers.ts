@@ -12,6 +12,7 @@ export const initialState: RegistrationState = {
 };
 
 const reducer: Reducer<RegistrationState> = (
+  // eslint-disable-next-line @typescript-eslint/default-param-last
   state = initialState,
   action: RegistrationActionTypes,
 ): RegistrationState => {

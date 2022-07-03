@@ -1,4 +1,4 @@
-import { SET_IS_LOADING, SET_REGISTRATIONS_DATA } from './action-types';
+import { SET_IS_LOADING, SET_REGISTRATIONS_DATA } from "./action-types";
 
 export interface RegistrationState {
   isLoading: boolean;
