@@ -31,3 +31,9 @@ function AppIndex() {
 const mountingNode = document.querySelector("#root");
 
 ReactDOM.render(<AppIndex />, mountingNode);
+
+// "config": {
+//   "commitizen": {
+//     "path": "./node_modules/cz-conventional-changelog"
+//   }
+// }
