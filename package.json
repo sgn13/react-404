@@ -89,13 +89,8 @@
     "yup": "^0.32.11"
   },
   "config": {
-    "commitizen": {
-      "path": "cz-customizable"
-    },
-    "cz-customizable": {
-      "config": ".commitizenrc.json"
-    }
+  "commitizen": {
+    "path": "./node_modules/cz-conventional-changelog"
   }
-  
 }
-
+}
