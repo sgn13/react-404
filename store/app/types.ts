@@ -1,4 +1,14 @@
-import { SET_IS_LOADING, SET_ME, SET_IS_SUBMITTING, UPDATE_ME } from "./constants";
+import {
+  SET_IS_LOADING,
+  SET_ME,
+  SET_IS_SUBMITTING,
+  UPDATE_ME,
+  SET_DOWNLOADING_INFO,
+  SET_UPLOADING_INFO,
+  SET_NOTIFICATION_DATA,
+  RESET_NOTIFICATION_DATA,
+  SET_SIDEBAR,
+} from "./constants";
 
 export type NotificationPayloadType = {
   name: string;
@@ -21,15 +31,6 @@ export interface ApplicationState {
   collapsed: boolean;
 }
 
-export type SetIsLoadingType = {
-  type: typeof SET_IS_LOADING;
-  payload: boolean;
-};
-export type SetIsSubmittingType = {
-  type: typeof SET_IS_SUBMITTING;
-  payload: boolean;
-};
-
 export type SetMeType = {
   type: typeof SET_ME;
   payload: any;
@@ -39,8 +40,46 @@ export type UpdateMeType = {
   payload: any;
 };
 
+export type SetIsLoadingType = {
+  type: typeof SET_IS_LOADING;
+  payload: boolean;
+};
+export type SetIsSubmittingType = {
+  type: typeof SET_IS_SUBMITTING;
+  payload: boolean;
+};
+
+export type SetNotificationDataType = {
+  type: typeof SET_NOTIFICATION_DATA;
+  payload: NotificationPayloadType;
+};
+
+export type ResetNotificationDataType = {
+  type: typeof RESET_NOTIFICATION_DATA;
+};
+
+export type SetDownloadingInfoType = {
+  type: typeof SET_DOWNLOADING_INFO;
+  payload: any;
+};
+
+export type SetUploadingInfoType = {
+  type: typeof SET_UPLOADING_INFO;
+  payload: any;
+};
+
+export type SetSidebarType = {
+  type: typeof SET_SIDEBAR;
+  payload: any;
+};
+
 export type ApplicationActionTypes =
   | SetIsLoadingType
   | SetIsSubmittingType
   | SetMeType
-  | UpdateMeType;
+  | UpdateMeType
+  | SetUploadingInfoType
+  | SetDownloadingInfoType
+  | SetNotificationDataType
+  | ResetNotificationDataType
+  | SetSidebarType;

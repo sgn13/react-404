@@ -1,7 +1,8 @@
 node_modules/
 mock-server/node_modules/
+mock-server/dist/
 
 build/
 tbuild/
 
-.env
+# .env

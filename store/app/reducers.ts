@@ -1,6 +1,6 @@
 import { Reducer } from "redux";
 
-import { SET_IS_LOADING, SET_IS_SUBMITTING, SET_ME, UPDATE_ME } from "./constants";
+import { SET_IS_LOADING, SET_IS_SUBMITTING, SET_ME, SET_SIDEBAR, UPDATE_ME } from "./constants";
 
 import { ApplicationState, ApplicationActionTypes } from "./types";
 
@@ -9,13 +9,14 @@ export const initialState: ApplicationState = {
   isLoading: false,
   isSubmitting: false,
   isPermissionLoading: false,
-  notification: [],
   me: undefined,
   sidebar: [],
   appName: "default",
-  validPermissions: undefined,
+  notification: [],
   upload: { count: 0, progress: 0, meta: "" },
   download: { count: 0, progress: 0, meta: "" },
+  validPermissions: undefined,
+
   collapsed: false,
 };
 
@@ -45,6 +46,10 @@ const reducer: Reducer<ApplicationState> = (
     }
     case UPDATE_ME: {
       return { ...state, me: { ...state.me, ...action.payload } };
+    }
+
+    case SET_SIDEBAR: {
+      return { ...state, sidebar: action.payload };
     }
 
     default:

@@ -3,12 +3,17 @@ import E404 from "pages/errors/E404";
 import OwnUserProfile from "pages/MyProfile";
 import UserProfile from "pages/UserProfile";
 import Users from "pages/Users";
-import Index from "./pages/index";
-import Login from "./pages/auth/Login";
+import Index from "pages/index";
+import Login from "pages/auth/Login";
+
+export const authRoutes = [{ path: "/login", element: <Login /> }];
+export const messageRoutes = [];
 
 const routes = [
-  { path: "/", element: <Index /> },
-  { path: "/login", element: <Login /> },
+  {
+    path: "/desk/welcome",
+    element: <Index />,
+  },
   {
     path: "users",
     element: <Users />,

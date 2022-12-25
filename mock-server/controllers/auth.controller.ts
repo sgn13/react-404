@@ -13,18 +13,23 @@ import {
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password } = req.body;
+    console.log(email, password);
     const results = await readAllUsers();
     if (results) {
       const user = results.find((user) => user.email === email);
       if (user) {
         if (user.password === password) {
+          console.log("user", user);
           delete user.password;
           const token = {
             email: user.email,
             access: `${user.id}${user.email}${user.name}${user.city}`,
             refresh: `${user.name}${user.city}${user.id}${user.email}`,
           };
+
           const session = await readSessionsByEmail(user.email);
+          console.log("session", session);
+
           if (!session) {
             await createSession(token);
             res.status(200).json({
@@ -34,7 +39,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
             });
             return;
           }
-          res.status(400).json({ message: "User already logged in" });
+          res
+            .status(200)
+            .json({ message: "User already logged in", profile: user, token: session });
           return;
         }
         res.status(401).json({

@@ -1,30 +1,29 @@
-import React, { Suspense } from "react";
-import { Link, useRoutes } from "react-router-dom";
-import routes from "./routes";
+import { Loader } from "components/Spinner/Spinner";
+import Layout from "containers/Layout";
+import React, { Suspense, useEffect } from "react";
+import { Link, useNavigate, useRoutes, useLocation } from "react-router-dom";
+import routes, { authRoutes, messageRoutes } from "./routes";
 
-function AllRoutes() {
-  const allRoutes = useRoutes(routes);
-  return allRoutes;
-}
+const AuthContents = () => useRoutes(authRoutes);
+const MessageContents = () => useRoutes(messageRoutes);
 
-function Navbar() {
-  return (
-    <nav style={{ display: "flex", justifyContent: "space-around" }}>
-      <Link to="/">Home</Link>
-      <Link to="users">Users</Link>
-      <Link to="users/userId">User Profile</Link>
-      <Link to="users/me">My Profile</Link>
-      <Link to="support/chat">Chat</Link>
-    </nav>
-  );
-}
-
+// All those routes which does not shared the layout, are rendered here.
+// Remaining routes will be rendered inside the Layout Component because they all will be sharing the same layout.
 function AppRouter() {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (!sessionStorage.getItem("accessToken")) return navigate("/login");
+    if (pathname === "/login") return navigate("/");
+  }, []);
+
   return (
     <div>
-      <Suspense fallback={<>loading</>}>
-        <Navbar />
-        <AllRoutes />
+      <Suspense fallback={<Loader />}>
+        <AuthContents />
+        <MessageContents />
+        {sessionStorage.getItem("accessToken") && <Layout />}
       </Suspense>
     </div>
   );

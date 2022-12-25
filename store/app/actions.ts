@@ -2,15 +2,34 @@ import { Action, ActionCreator, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { network } from "utils/network";
 import api from "constants/api";
-import { SET_IS_LOADING, SET_IS_SUBMITTING, SET_ME, UPDATE_ME } from "./constants";
-import { SetIsLoadingType, SetIsSubmittingType, SetMeType, UpdateMeType } from "./types";
+import {
+  SET_IS_LOADING,
+  SET_IS_SUBMITTING,
+  SET_ME,
+  SET_UPLOADING_INFO,
+  SET_DOWNLOADING_INFO,
+  UPDATE_ME,
+  SET_NOTIFICATION_DATA,
+  SET_SIDEBAR,
+} from "./constants";
+import {
+  SetIsLoadingType,
+  SetIsSubmittingType,
+  SetMeType,
+  UpdateMeType,
+  ApplicationState,
+  SetUploadingInfoType,
+  SetDownloadingInfoType,
+  SetNotificationDataType,
+  SetSidebarType,
+} from "./types";
 
-export const setMe = (payload): SetMeType => ({
+export const setMe = (payload: any): SetMeType => ({
   type: SET_ME,
   payload,
 });
 
-export const updateMe = (payload): UpdateMeType => ({
+export const updateMe = (payload: any): UpdateMeType => ({
   type: UPDATE_ME,
   payload,
 });
@@ -25,48 +44,185 @@ export const setIsSubmitting = (payload: boolean): SetIsSubmittingType => ({
   payload,
 });
 
-// export const logOut = () => async (dispatch) => {
-//   try {
-//     dispatch(setIsLoading(true));
-//     await network({ dispatch, sso: true }).post(api.logout, {
-//       refresh: sessionStorage.getItem("refreshToken"),
-//       access: sessionStorage.getItem("accessToken"),
-//     });
+export const setUploadingInfo = (payload: {
+  count?: any;
+  progress?: any;
+  meta?: any;
+}): SetUploadingInfoType => ({
+  type: SET_UPLOADING_INFO,
+  payload,
+});
 
-//     sessionStorage.removeItem("accessToken");
-//     sessionStorage.removeItem("refreshToken");
-//     localStorage.removeItem("accessToken");
-//     localStorage.removeItem("refreshToken");
-//     window.localStorage.setItem("logout", Date.now().toString());
-//     window.location.href = "/login";
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+export const setDownloadingInfo = (payload: {
+  count?: any;
+  progress?: any;
+  meta?: any;
+}): SetDownloadingInfoType => ({
+  type: SET_DOWNLOADING_INFO,
+  payload,
+});
 
-// export const fetchMe =
-//   ({}) =>
-//   async (dispatch: Dispatch): Promise<boolean> => {
-//     try {
-//       dispatch(setIsLoading(true));
+export const setSidebar = (payload): SetSidebarType => ({
+  type: SET_SIDEBAR,
+  payload,
+});
 
-//       const { data, status } = await network({
-//         dispatch,
-//         sso: true,
-//       }).get(api.me);
-//       if (status === 200) {
-//         if (data) {
-//           dispatch(updateMe({ ...data }));
-//           dispatch(setIsLoading(false));
-//         }
-//         return true;
-//       }
-//       return false;
-//     } catch (error) {
-//       console.log(error);
-//       return false;
-//     }
-//   };
+export const setErrorMessage = (err): SetNotificationDataType => {
+  let message;
+  if (err && err.response && err.response.data) {
+    const errorKeyArray = Object.keys(err.response.data);
+    const errorMessageArray = Object.values(err.response.data);
+    if (errorMessageArray.length && errorMessageArray[0].length) {
+      message = `${errorMessageArray[0]} : ${errorKeyArray.length && errorKeyArray[0]}`;
+    }
+  }
+  return {
+    type: SET_NOTIFICATION_DATA,
+    payload: {
+      name: (err && err.response && err.response.name) || "Error",
+      message: message || "Error has occurred",
+      level: "error",
+    },
+  };
+};
+
+export const setLoginErrorMessage = (err): SetNotificationDataType => {
+  const error = Object.values(err);
+
+  return {
+    type: SET_NOTIFICATION_DATA,
+    payload: {
+      name: (err && err.response && err.response.name) || "Error",
+      message: error.length ? (error[0] as string) : "Error has occurred",
+      level: "error",
+    },
+  };
+};
+
+export const setErrorResponse = ({ message }): SetNotificationDataType => {
+  return {
+    type: SET_NOTIFICATION_DATA,
+    payload: {
+      name: "Error",
+      message: message || "Error has occurred",
+      level: "error",
+    },
+  };
+};
+
+export type AppThunk = ActionCreator<
+  ThunkAction<Promise<boolean>, ApplicationState, null, Action<string>>
+>;
+
+export const login =
+  ({ values }) =>
+  async (dispatch) => {
+    try {
+      dispatch(setIsSubmitting(true));
+
+      // Convert form data object  to plain object
+      // let formDataAsObject = Object.fromEntries(values.entries());
+      // posting as multipart/formData
+      const { data, status } = await network({ requireToken: false }).post(api.login, values);
+      if (status === 200 || status === 201) {
+        if (data) {
+          dispatch(setIsSubmitting(false));
+          sessionStorage.setItem("accessToken", data.token.access);
+          sessionStorage.setItem("refreshToken", data.token.refresh);
+          const redirectUrl = window.sessionStorage.getItem("redirectTo") || "/";
+          window.location.href = redirectUrl;
+          return data;
+        }
+        return true;
+      }
+      dispatch(setLoginErrorMessage(data));
+      dispatch(setIsSubmitting(false));
+      return false;
+    } catch (error) {
+      dispatch(setIsSubmitting(false));
+      if (error.response) dispatch(setErrorMessage(error));
+      return false;
+    }
+  };
+
+export const uploadFile: AppThunk =
+  ({ formData }) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(setUploadingInfo({ count: 1 }));
+      dispatch(setIsSubmitting(true));
+      const { data, status } = await network({
+        dispatch,
+        onUploadProgress: (progressEvent) => {
+          dispatch(
+            setUploadingInfo({
+              progress: progressEvent.total
+                ? Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                : ".",
+            }),
+          );
+        },
+      }).post(`${api.uploadFile}`, formData);
+
+      if (status === 200 || (status > 200 && status < 300)) {
+        if (data) {
+          dispatch(setIsSubmitting(false));
+          setTimeout(() => dispatch(setUploadingInfo({ count: 0 })), 1000);
+          return true;
+        }
+      }
+      return false;
+    } catch (error) {
+      if (error.response) dispatch(setErrorMessage(error));
+      dispatch(setIsSubmitting(false));
+      return false;
+    }
+  };
+
+export const logOut = () => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    // logout from server
+    await network({ dispatch, sso: true }).post(api.logout, {
+      refresh: sessionStorage.getItem("refreshToken"),
+      access: sessionStorage.getItem("accessToken"),
+    });
+
+    // logout locally from browser
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("refreshToken");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.setItem("logout", Date.now().toString());
+    location.href = "/login";
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchMe =
+  ({}) =>
+  async (dispatch: Dispatch): Promise<boolean> => {
+    try {
+      dispatch(setIsLoading(true));
+
+      const { data, status } = await network({
+        dispatch,
+        sso: true,
+      }).get(api.me);
+      if (status === 200) {
+        if (data) {
+          dispatch(updateMe({ ...data }));
+          dispatch(setIsLoading(false));
+        }
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
 
 // export const changepassword =
 //   ({ values }) =>
@@ -95,36 +251,6 @@ export const setIsSubmitting = (payload: boolean): SetIsSubmittingType => ({
 //       console.log(error);
 //     }
 //   };
-
-export const login =
-  ({ values }) =>
-  async (dispatch) => {
-    try {
-      dispatch(setIsSubmitting(true));
-
-      // Create form data object  to plain object
-      // let formDataAsObject = Object.fromEntries(values.entries());
-      // posting as multipart/formData
-      const { data, status } = await network({ requireToken: false }).post(api.login, values);
-      if (status === 200 || status === 201) {
-        if (data) {
-          dispatch(setIsSubmitting(false));
-          sessionStorage.setItem("accessToken", data.token.access);
-          sessionStorage.setItem("refreshToken", data.token.refresh);
-          const redirectUrl = window.localStorage.getItem("redirectTo") || "/";
-          window.location.href = redirectUrl;
-          return data;
-        }
-      } else {
-        dispatch(setIsSubmitting(false));
-        return false;
-      }
-    } catch (error) {
-      dispatch(setIsSubmitting(false));
-      console.log("got error", error);
-    }
-    return false;
-  };
 
 // export const register =
 //   ({ values }) =>

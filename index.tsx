@@ -1,4 +1,4 @@
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import "theme/sass/index.scss";
 import { ErrorBoundary } from "react-error-boundary";
 import { Provider as ReduxProvider } from "react-redux";
@@ -7,12 +7,15 @@ import { StyledThemeProvider } from "theme/styled";
 import { BrowserRouter } from "react-router-dom";
 import Routes from "./App";
 import { initializeStore } from "./store";
+import React from "react";
 
 const store = initializeStore();
 const errorHandler = (error: any, errorInfo: any) => {
   // eslint-disable-next-line no-console
   console.error("Logging error", errorInfo, error);
 };
+
+// on every referesh, Index.tsx-->App.tsx --> Layout.tsx --> HOC --> HOCComponent is the execution order.
 
 function AppIndex() {
   return (
@@ -28,12 +31,9 @@ function AppIndex() {
   );
 }
 
-const mountingNode = document.querySelector("#root");
-
-ReactDOM.render(<AppIndex />, mountingNode);
-
-// "config": {
-//   "commitizen": {
-//     "path": "./node_modules/cz-conventional-changelog"
-//   }
-// }
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+root.render(
+  <React.StrictMode>
+    <AppIndex />
+  </React.StrictMode>,
+);
