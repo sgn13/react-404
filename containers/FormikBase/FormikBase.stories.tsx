@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/react";
-import FormikBase from "./FormikBase";
 import { FormikHelpers, FormikProps } from "formik";
 import * as Yup from "yup";
 import React from "react";
+import FormikBase from "./FormikBase";
 
 const initialValues = {
   email: "",
@@ -65,8 +65,8 @@ storiesOf("Containers/FormikBase", module).add("Demo", () => (
     validationSchema={validationSchema}
     onSubmit={handleSubmit}
     validateOnMount={false}
-    validateOnBlur={true}
-    validateOnChange={true}
+    validateOnBlur
+    validateOnChange
     enableReinitialize={false}
     renderForm={form}
   />

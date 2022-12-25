@@ -10,13 +10,13 @@ export const withSidebar = (WrappedComponent) => {
 
   // The HOC will receive all the props passed by the redux connector to its component.
   // This way we don't have to set sidebar in each component separately
-  const HOC = ({ setSidebar, ...rest }) => {
+  function HOC({ setSidebar, ...rest }) {
     useEffect(() => {
       setSidebar(IndexSidebar({}));
     }, []);
 
     return <WrappedComponent {...rest} />;
-  };
+  }
 
   const mapStateToProps = ({}) => ({});
 

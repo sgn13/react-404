@@ -8,8 +8,8 @@ export const getArrayOfCountingNumbers2 = (length = 10) => Array.from({ length }
 export const getQueryString = (obj: any) => new URLSearchParams(obj).toString();
 
 export const consoleLogFormData = (formData) => {
-  for (var pair of formData.entries()) {
-    console.info(pair[0] + " = " + pair[1]);
+  for (const pair of formData.entries()) {
+    console.info(`${pair[0]} = ${pair[1]}`);
   }
 };
 
@@ -19,7 +19,7 @@ export const shallowEqual = ({ object1, object2 }) => {
   if (keys1.length !== keys2.length) {
     return false;
   }
-  for (let key of keys1) {
+  for (const key of keys1) {
     if (object1[key] !== object2[key]) {
       return false;
     }
@@ -54,7 +54,7 @@ export const parseJwt = (token) => {
     atob(base64)
       .split("")
       .map(function (c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        return `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`;
       })
       .join(""),
   );

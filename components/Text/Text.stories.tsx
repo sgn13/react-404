@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
-import Text from "./Text";
 import { MdError } from "react-icons/md";
 import { BiHelpCircle } from "react-icons/bi";
+import Text from "./Text";
 
 storiesOf("Components/Text", module)
   .add("Text", () => <Text>Hello World</Text>)

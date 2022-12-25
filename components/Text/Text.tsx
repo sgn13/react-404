@@ -30,7 +30,7 @@ const textSizes = {
 };
 
 const StyledText = styled.span<TextProps>`
-  font-size: ${({ size }) => (size ? textSizes[size] : textSizes["md"])};
+  font-size: ${({ size }) => (size ? textSizes[size] : textSizes.md)};
 
   color: ${({ color = "black" }) => color};
 

@@ -10,8 +10,8 @@ const Group = styled.div`
   justify-content: flex-end;
 `;
 
-const ButtonGroup = ({ children, ...rest }: PropsWithChildren<{ children; rest?: any }>) => {
+function ButtonGroup({ children, ...rest }: PropsWithChildren<{ children; rest?: any }>) {
   return <Group {...rest}>{children}</Group>;
-};
+}
 
 export default ButtonGroup;

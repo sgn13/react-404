@@ -7,7 +7,7 @@ import Button from "components/Button";
 import DataViewTable from "components/DataViewTable";
 import env from "constants/env";
 
-const DownloadView = ({
+function DownloadView({
   url,
   filename,
   children,
@@ -24,7 +24,7 @@ const DownloadView = ({
   method: Method;
   buttonTitle?: string;
   body?: any;
-}) => {
+}) {
   const dispatch = useDispatch();
   const downloadFile = (url) => {
     try {
@@ -76,15 +76,15 @@ const DownloadView = ({
       )}
     </span>
   );
-};
+}
 
-export const MultiDownloadView = ({
+export function MultiDownloadView({
   source = [
     { docfile0: "http://example.com/download/filename.txt" },
     { docfile1: "http://example.com/download/filename.txt" },
   ],
   maxFile,
-}) => {
+}) {
   const data = [];
 
   // An array of counting numbers
@@ -117,6 +117,6 @@ export const MultiDownloadView = ({
       <DataViewTable data={[...data]} />
     </>
   );
-};
+}
 
 export default DownloadView;

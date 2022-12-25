@@ -39,7 +39,7 @@ function AppBar() {
   const [elevate, setElevate] = React.useState(false);
 
   useEffect(() => {
-    let initialScrollPosition = 0;
+    const initialScrollPosition = 0;
     let previousScrollPosition = initialScrollPosition;
 
     const pageHeight = document.body.offsetHeight;

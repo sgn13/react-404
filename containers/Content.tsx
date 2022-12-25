@@ -36,7 +36,7 @@ export const PageContainer = styled.div`
 
 const LayoutContents = () => useRoutes(routes);
 
-const Content = ({ setActive }) => {
+function Content({ setActive }) {
   return (
     <ContentBody>
       <Suspense fallback={<Loader />}>
@@ -58,6 +58,6 @@ const Content = ({ setActive }) => {
       </Suspense>
     </ContentBody>
   );
-};
+}
 
 export default React.memo(Content);

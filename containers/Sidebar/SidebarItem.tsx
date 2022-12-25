@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { FaChevronDown, FaChevronLeft } from "react-icons/fa";
 import styled from "theme/styled";
-import { StyledSidebarItemType } from "./types";
 import { useNavigate } from "react-router-dom";
 import { primary, testColor, secondary, sidebar } from "theme";
+import { StyledSidebarItemType } from "./types";
 
 type BaseSidebarItemType = React.ComponentProps<"a"> & StyledSidebarItemType & { ref?: any };
 

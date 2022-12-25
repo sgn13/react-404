@@ -5,10 +5,10 @@ import { connect } from "react-redux";
 import { AppState } from "store/reducer";
 
 export const withAuth = (WrappedComponent) => {
-  const HOC = (props) => {
+  function HOC(props) {
     useEffect(() => {}, []);
     return <WrappedComponent {...props} />;
-  };
+  }
 
   const mapStateToProps = ({}: AppState) => ({});
 

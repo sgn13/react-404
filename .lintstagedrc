@@ -4,6 +4,6 @@
     "npm run eslint"
   ],
   "**/*.scss": [
-    "stylelint --syntax scss"
+    "stylelint scss"
   ]
 }

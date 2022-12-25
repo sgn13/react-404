@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import See from "./see.svg";
 import styled from "theme/styled";
 import Input, { InputComponentProps } from "components/Input/Input";
 import { Label } from "components/Text/Text";
+import See from "./see.svg";
 
 type BaseInputType = React.ComponentProps<"input"> & { ref?: any };
 
@@ -85,13 +85,13 @@ const ForgotPassword = styled.p`
   }
 `;
 
-const PasswordInput = ({
+function PasswordInput({
   label,
   showForgotPassword = true,
   ...rest
 }: InputComponentProps & {
   showForgotPassword?: boolean;
-}) => {
+}) {
   const [typeIsPassword, setTypeIsPassword] = useState(true);
 
   return (
@@ -106,6 +106,6 @@ const PasswordInput = ({
       </PasswordInputWrapper>
     </>
   );
-};
+}
 
 export default PasswordInput;

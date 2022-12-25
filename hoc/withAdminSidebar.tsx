@@ -5,12 +5,12 @@ import { AdminSidebar } from "constants/sidebar";
 import withAuth from "hoc/withAuth";
 
 export const withSidebar = (WrappedComponent) => {
-  const HOC = ({ setSidebar, ...rest }) => {
+  function HOC({ setSidebar, ...rest }) {
     useEffect(() => {
       setSidebar(AdminSidebar({}));
     }, []);
     return <WrappedComponent {...rest} />;
-  };
+  }
 
   const mapStateToProps = ({}) => ({});
 

@@ -62,7 +62,7 @@ const initialValues = {
   username: "",
 };
 
-export const AuthForm = ({ elements, onSubmit, isSubmitting }) => {
+export function AuthForm({ elements, onSubmit, isSubmitting }) {
   const validationSchema = Yup.object().shape({
     email: elements?.email ? Yup.string().required().label("Email") : Yup.string().optional(),
     username: elements?.username
@@ -176,4 +176,4 @@ export const AuthForm = ({ elements, onSubmit, isSubmitting }) => {
       }}
     </FormikBase>
   );
-};
+}

@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
-import Sidebar from "./index2";
 import { FaRegNewspaper, FaRegSun } from "react-icons/fa";
+import Sidebar from "./index2";
 
 storiesOf("Sidebar", module).add("default", () => {
   const [collapsed, setCollapsed] = React.useState(false);

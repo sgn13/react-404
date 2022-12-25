@@ -1,24 +1,42 @@
-# react-project-structure
+# React Project Structure Boilerplate
 
-- Webpack Setup
-- Different Loader Setup
-- Typescript Setup
+- Webpack 5 Setup
+
+  - webpack 4 pollyfills
+  - typescript
+  - babel
+  - loaders
+    - scss loaders
+  - prettier
+  - eslint
+  - lint-staged
+  - commitzen
+  - husky
+    - pre-commit
+      - npm run lint
+    - pre-push
+      - npm run build
+
 - Redux Setup
 - Routing Setup
+
+  - Public and Private routes
+  - Layout and Non-Layout routes
+
 - Authentication Setup
+
 - Custom font setup
 - Themeing Setup
 - Components Setup
+  - Animations folder
 - Hooks Setup
 - Containers setup
-- commintzen setup
+- Pages setup with common messages pages
 
-- Different messages pages Setup
 - Data Grid with server side pagination setup
 - Data Grid with client side pagination setup
 - Download and Upload Setup with progress bar
 - Working Configuation with Mock server
-- Setup with Common Loaders and Animations
 
 - Socket Setup
 - Webrtc Setup

@@ -5,9 +5,9 @@ import { Provider as ReduxProvider } from "react-redux";
 import ReactError from "pages/errors/react-error";
 import { StyledThemeProvider } from "theme/styled";
 import { BrowserRouter } from "react-router-dom";
+import React from "react";
 import Routes from "./App";
 import { initializeStore } from "./store";
-import React from "react";
 
 const store = initializeStore();
 const errorHandler = (error: any, errorInfo: any) => {

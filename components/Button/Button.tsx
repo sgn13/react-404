@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, ComponentPropsWithRef } from "react";
 import styled from "styled-components";
-import Text from "../Text/Text";
 import shadows from "constants/css/shadows";
+import Text from "../Text/Text";
 import { InputContainerProps } from "../Input/Input";
 
 type SizeType = "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
@@ -91,12 +91,12 @@ const StyledButton = styled.button<StyledButtonProps>`
     width: 24px;
   }
   :before {
-    border-top: 2px solid ${backgroundColor ? backgroundColor : "#CD171F"};
+    border-top: 2px solid ${backgroundColor || "#CD171F"};
     left: 0px;
     top: -5px;
   }
   :after {
-    border-bottom: 2px solid ${backgroundColor ? backgroundColor : "#CD171F"};
+    border-bottom: 2px solid ${backgroundColor || "#CD171F"};
     bottom: -5px;
     right: 0px;
   }
@@ -197,18 +197,16 @@ function Button(props: PropsWithChildren<ButtonComponentProps>) {
       shadow={shadows[elevation]}
       {...rest}
     >
-      {
-        <StyledText
-          size={size}
-          color={color}
-          icon={icon}
-          style={textStyle}
-          noTextShadow={noTextShadow}
-          dropdown={dropdown}
-        >
-          {children}
-        </StyledText>
-      }
+      <StyledText
+        size={size}
+        color={color}
+        icon={icon}
+        style={textStyle}
+        noTextShadow={noTextShadow}
+        dropdown={dropdown}
+      >
+        {children}
+      </StyledText>
     </StyledButton>
   );
 }

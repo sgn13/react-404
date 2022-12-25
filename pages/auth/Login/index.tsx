@@ -1,5 +1,4 @@
 import React from "react";
-import { AuthForm } from "./AuthForm";
 import loginImage from "assets/images/login-left-image.svg";
 import logo from "assets/logo.png";
 import { login } from "store/app/actions";
@@ -10,6 +9,7 @@ import { Box, Col, Container, Row } from "containers/Grid/Grid";
 import { PageContainer } from "containers/Content";
 import niceIcon from "assets/icons/nice.svg";
 import { primary } from "theme";
+import { AuthForm } from "./AuthForm";
 
 const LogoHolder = styled.div`
   max-width: 220px;

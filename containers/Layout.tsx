@@ -34,7 +34,7 @@ const AppBody = styled.div`
   overflow-y: auto;
 `;
 
-const Layout = ({ sidebar, me, isLoading }) => {
+function Layout({ sidebar, me, isLoading }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -93,7 +93,7 @@ const Layout = ({ sidebar, me, isLoading }) => {
       )} */}
     </>
   );
-};
+}
 
 const mapStateToProps = ({ appState: { sidebar, me, notification, isLoading } }: AppState) => ({
   sidebar,
