@@ -1,10 +1,7 @@
 // import configuration from "configuration/index";
-import { w3cwebsocket as W3CWebSocket } from "websocket";
-import ws from "constants/app";
 // import { updateAtmData } from "store/atm/actions";
 // import { updateCctvData } from "store/cctv/actions";
 // import { updateFirewallData } from "store/firewall/actions";
-import { PING_ATM, PING_CCTV, PING_FIREWALL } from "store/socket/action-types";
 
 const socketMiddleware = () => {
   // let atmClient = null;

@@ -1,7 +1,6 @@
 import { Action, ActionCreator, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 
-import app from "constants/app";
 import api from "constants/api";
 
 import { generateMeta, generateQuery } from "utils/store";
@@ -10,28 +9,28 @@ import { generateMeta, generateQuery } from "utils/store";
 import { network } from "utils/network";
 import { defaultQuery } from "constants/query";
 import {
+  CreateDriverDataType,
   DriverState,
-  SetIsLoadingType,
-  SetIsSubmittingType,
+  RemoveDriverDataType,
+  ResetSearchedDriversDataType,
   SetDriverDataType,
   SetDriversDataType,
   SetDriversMetadataType,
+  SetIsLoadingType,
+  SetIsSubmittingType,
   SetSearchedDriversDataType,
-  ResetSearchedDriversDataType,
-  CreateDriverDataType,
-  RemoveDriverDataType,
   UpdateDriverDataType,
 } from "./types";
 import {
-  SET_IS_LOADING,
-  SET_IS_SUBMITTING,
-  SET_DRIVER_DATA,
-  SET_DRIVERS_DATA,
-  SET_DRIVERS_METADATA,
-  SET_SEARCHED_DRIVERS_DATA,
-  RESET_SEARCHED_DRIVERS_DATA,
   CREATE_DRIVER_DATA,
   REMOVE_DRIVER_DATA,
+  RESET_SEARCHED_DRIVERS_DATA,
+  SET_DRIVERS_DATA,
+  SET_DRIVERS_METADATA,
+  SET_DRIVER_DATA,
+  SET_IS_LOADING,
+  SET_IS_SUBMITTING,
+  SET_SEARCHED_DRIVERS_DATA,
   UPDATE_DRIVER_DATA,
 } from "./action-types";
 

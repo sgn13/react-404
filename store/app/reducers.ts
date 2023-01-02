@@ -2,7 +2,7 @@ import { Reducer } from "redux";
 
 import { SET_IS_LOADING, SET_IS_SUBMITTING, SET_ME, SET_SIDEBAR, UPDATE_ME } from "./constants";
 
-import { ApplicationState, ApplicationActionTypes } from "./types";
+import { ApplicationActionTypes, ApplicationState } from "./types";
 
 export const initialState: ApplicationState = {
   token: "",

@@ -1,5 +1,4 @@
 import { defaultQuery } from "constants/query";
-import { string } from "yup";
 
 export const updateState = ({ state, local, action, entity, key = "id" }: any) => {
   const oldData = local.find((item: any) => item[`${key}`] === action.payload[`${key}`]);

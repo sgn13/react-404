@@ -1,23 +1,21 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import axios, { Method } from "axios";
-import { setDownloadingInfo } from "store/app/actions";
-import { getFileExtension } from "utils/general";
 import Button from "components/Button";
 import DataViewTable from "components/DataViewTable";
 import env from "constants/env";
+import { useDispatch } from "react-redux";
+import { setDownloadingInfo } from "store/app/actions";
+import { getFileExtension } from "utils/general";
 
 function DownloadView({
-  url,
+  urlLink,
   filename,
   children,
   ext,
-
   buttonTitle,
   method = "GET",
   body,
 }: {
-  url: string;
+  urlLink: string;
   filename: string;
   children?: any;
   ext: string;
@@ -26,7 +24,7 @@ function DownloadView({
   body?: any;
 }) {
   const dispatch = useDispatch();
-  const downloadFile = (url) => {
+  const downloadFile = (url: string) => {
     try {
       dispatch(setDownloadingInfo({ count: 1, meta: filename }));
 
@@ -50,23 +48,28 @@ function DownloadView({
           );
         },
       }).then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const downloadUrl = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
-        link.href = url;
+        link.href = downloadUrl;
         link.setAttribute("download", `${String(filename).replace(`.${ext}`, "")}.${ext}`);
         document.body.appendChild(link);
         link.click();
 
         setTimeout(() => dispatch(setDownloadingInfo({ count: 0, meta: "", progress: 0 })), 3000);
       });
-    } catch (e) {}
+    } catch (e) {
+      console.error("error in downloading", e);
+    }
   };
 
   return (
     <span
       style={{ cursor: "pointer", color: "skyblue" }}
       title="Click to Download"
-      onClick={() => downloadFile(url)}
+      onClick={() => downloadFile(urlLink)}
+      onKeyDown={() => downloadFile(urlLink)}
+      role="button"
+      tabIndex={0}
     >
       {children}
       {buttonTitle && (
@@ -88,11 +91,11 @@ export function MultiDownloadView({
   const data = [];
 
   // An array of counting numbers
-  Array.from({ length: maxFile }, (_, i) => i + 1).map((number, index) => {
+  Array.from({ length: maxFile }, (_, i) => i + 1).forEach((number, index) => {
     const fileName = String(source[`docfile${number}`]);
     const splittedFileName = fileName && fileName.split("/");
 
-    source[`docfile${number}`] &&
+    if (source[`docfile${number}`])
       data.push({
         key: `Doc ${index + 1}`,
         value: (

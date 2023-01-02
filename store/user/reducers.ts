@@ -2,17 +2,17 @@ import { Reducer } from "redux";
 
 import { createState, removeState, updateState } from "utils/store";
 import {
-  SET_IS_LOADING,
-  SET_IS_SUBMITTING,
-  SET_USER_DATA,
-  SET_USERS_DATA,
-  SET_USERS_METADATA,
-  SET_SEARCHED_USERS_DATA,
-  RESET_SEARCHED_USERS_DATA,
   CREATE_USER_DATA,
   REMOVE_USER_DATA,
-  UPDATE_USER_DATA,
+  RESET_SEARCHED_USERS_DATA,
   SET_FCRS_USER_QUERY_RESULT_DATA,
+  SET_IS_LOADING,
+  SET_IS_SUBMITTING,
+  SET_SEARCHED_USERS_DATA,
+  SET_USERS_DATA,
+  SET_USERS_METADATA,
+  SET_USER_DATA,
+  UPDATE_USER_DATA,
 } from "./action-types";
 
 import { UserActionTypes, UserState } from "./types";

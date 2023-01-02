@@ -3,20 +3,20 @@ import { Reducer } from "redux";
 import {
   createState,
   removeState,
-  updateState,
-  setSearchState,
   resetSearchState,
+  setSearchState,
+  updateState,
 } from "utils/store";
 import {
-  SET_IS_LOADING,
-  SET_IS_SUBMITTING,
-  SET_DRIVER_DATA,
-  SET_DRIVERS_DATA,
-  SET_DRIVERS_METADATA,
-  SET_SEARCHED_DRIVERS_DATA,
-  RESET_SEARCHED_DRIVERS_DATA,
   CREATE_DRIVER_DATA,
   REMOVE_DRIVER_DATA,
+  RESET_SEARCHED_DRIVERS_DATA,
+  SET_DRIVERS_DATA,
+  SET_DRIVERS_METADATA,
+  SET_DRIVER_DATA,
+  SET_IS_LOADING,
+  SET_IS_SUBMITTING,
+  SET_SEARCHED_DRIVERS_DATA,
   UPDATE_DRIVER_DATA,
 } from "./action-types";
 

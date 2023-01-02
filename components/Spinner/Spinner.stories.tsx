@@ -1,13 +1,13 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import {
-  Loader,
   BouncingLoader,
-  Spinner,
-  LazySpinner,
   Buffering,
   Gears,
+  LazySpinner,
+  Loader,
   ProgressLoader,
+  Spinner,
 } from "./Spinner";
 
 storiesOf("Animations/CSS/Spinner", module)

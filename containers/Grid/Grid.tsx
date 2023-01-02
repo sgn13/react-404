@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithRef } from "react";
+import { ComponentPropsWithRef } from "react";
 import styled, { css } from "styled-components";
 
 const getFlexbasisValue = (number, col = 12) => (number ? ` ${(number / col) * 100}%` : "auto");
@@ -47,7 +47,7 @@ const breakpoints = {
   xxxl: "1920px",
 };
 
-type breakpointPropsType = {
+type BreakpointPropsType = {
   xxs?: number;
   xs?: number;
   sm?: number;
@@ -58,7 +58,7 @@ type breakpointPropsType = {
   xxxl?: number;
 };
 
-type ColPropsType = BoxPropsType & breakpointPropsType & {};
+type ColPropsType = BoxPropsType & BreakpointPropsType;
 
 // Mobile First Responsive Design
 const dynamicMediaQueries = (props) =>

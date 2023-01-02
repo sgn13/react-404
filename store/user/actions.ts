@@ -3,37 +3,37 @@ import { ThunkAction } from "redux-thunk";
 
 import api from "constants/api";
 
-import { formDataGenerator, generateQuery, generateMeta } from "utils/store";
+import { formDataGenerator, generateMeta, generateQuery } from "utils/store";
 // import { setErrorMessage } from "store/app/actions";
 
 import { network } from "utils/network";
 import { defaultQuery } from "constants/query";
 import {
-  UserState,
+  CreateUserDataType,
+  RemoveUserDataType,
+  ResetSearchedUsersDataType,
+  SetFcrsUserQueryResultDataDataType,
   SetIsLoadingType,
   SetIsSubmittingType,
+  SetSearchedUsersDataType,
   SetUserDataType,
   SetUsersDataType,
   SetUsersMetadataType,
-  SetSearchedUsersDataType,
-  ResetSearchedUsersDataType,
-  CreateUserDataType,
-  RemoveUserDataType,
   UpdateUserDataType,
-  SetFcrsUserQueryResultDataDataType,
+  UserState,
 } from "./types";
 import {
-  SET_IS_LOADING,
-  SET_IS_SUBMITTING,
-  SET_USER_DATA,
-  SET_USERS_DATA,
-  SET_USERS_METADATA,
-  SET_SEARCHED_USERS_DATA,
-  RESET_SEARCHED_USERS_DATA,
   CREATE_USER_DATA,
   REMOVE_USER_DATA,
-  UPDATE_USER_DATA,
+  RESET_SEARCHED_USERS_DATA,
   SET_FCRS_USER_QUERY_RESULT_DATA,
+  SET_IS_LOADING,
+  SET_IS_SUBMITTING,
+  SET_SEARCHED_USERS_DATA,
+  SET_USERS_DATA,
+  SET_USERS_METADATA,
+  SET_USER_DATA,
+  UPDATE_USER_DATA,
 } from "./action-types";
 
 // import { updateSidebarData } from "../app/actions";

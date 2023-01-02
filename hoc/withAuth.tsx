@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { connect } from "react-redux";
 
@@ -10,7 +10,7 @@ export const withAuth = (WrappedComponent) => {
     return <WrappedComponent {...props} />;
   }
 
-  const mapStateToProps = ({}: AppState) => ({});
+  const mapStateToProps = ({ appState: { me } }: AppState) => ({ me });
 
   const mapDispatchToProps = {};
 

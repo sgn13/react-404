@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ComponentPropsWithRef } from "react";
+import React, { ComponentPropsWithRef, PropsWithChildren } from "react";
 import styled from "styled-components";
 import shadows from "constants/css/shadows";
 import Text from "../Text/Text";
@@ -131,7 +131,8 @@ const createRipple = (event: React.MouseEvent<HTMLButtonElement>) => {
   const diameter = Math.max(button.clientWidth, button.clientHeight);
   const radius = diameter / 2;
 
-  circle.style.width = circle.style.height = `${diameter}px`;
+  circle.style.width = `${diameter}px`;
+  circle.style.height = `${diameter}px`;
   circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
   circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
   circle.classList.add("ripple");
@@ -158,7 +159,7 @@ const handleClick = ({
   if (!noRipple) createRipple(event);
 
   // executing user onClick handler
-  !disabled && onClick();
+  if (!disabled) onClick();
 };
 
 const StyledText = styled(Text)<{ noTextShadow: boolean }>`

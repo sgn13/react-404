@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { setSidebar } from "store/app/actions";
 import { IndexSidebar } from "constants/sidebar";
@@ -10,15 +10,18 @@ export const withSidebar = (WrappedComponent) => {
 
   // The HOC will receive all the props passed by the redux connector to its component.
   // This way we don't have to set sidebar in each component separately
+
+  // eslint-disable-next-line no-shadow
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   function HOC({ setSidebar, ...rest }) {
     useEffect(() => {
-      setSidebar(IndexSidebar({}));
+      setSidebar(IndexSidebar());
     }, []);
 
     return <WrappedComponent {...rest} />;
   }
 
-  const mapStateToProps = ({}) => ({});
+  const mapStateToProps = ({ appState: { me } }) => ({ me });
 
   const mapDispatchToProps = {
     setSidebar,

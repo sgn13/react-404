@@ -2,7 +2,7 @@ import React from "react";
 import loginImage from "assets/images/login-left-image.svg";
 import logo from "assets/logo.png";
 import { login } from "store/app/actions";
-import { connect, ConnectedProps } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import { AppState } from "store/reducer";
 import styled from "styled-components";
 import { Box, Col, Container, Row } from "containers/Grid/Grid";
@@ -57,6 +57,7 @@ const Caption = styled.div`
   margin-bottom: 2rem;
 `;
 
+/* eslint-disable-next-line */
 function Index({ login, isSubmitting }: PropsFromRedux) {
   return (
     <PageContainer>

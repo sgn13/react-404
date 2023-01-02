@@ -1,15 +1,12 @@
-import React from "react";
-
 import * as Yup from "yup";
 
 import FormikBase from "containers/FormikBase/FormikBase";
-import { Form, FormikHelpers, FormikProps } from "formik";
+import { Form } from "formik";
 
-import PasswordInput from "components/PasswordInput";
 import Button from "components/Button/Button";
-import niceIcon from "assets/icons/nice.svg";
-import styled from "theme/styled";
 import Input from "components/Input/Input";
+import PasswordInput from "components/PasswordInput";
+import styled from "theme/styled";
 
 const Footer = styled.p`
   font-family: "Poppins";
@@ -169,7 +166,7 @@ export function AuthForm({ elements, onSubmit, isSubmitting }) {
             )}
 
             <Footer>
-              Don't Have an account? <Signup>Signup</Signup>{" "}
+              {"Don't"} Have an account? <Signup>Signup</Signup>{" "}
             </Footer>
           </FormikForm>
         );

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ComponentPropsWithRef } from "react";
+import React, { PropsWithChildren } from "react";
 import styled from "../../theme/styled";
 
 const Group = styled.div`

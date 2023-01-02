@@ -1,6 +1,6 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
-import { Container, Row, Col } from "./Grid";
+import { Col, Container, Row } from "./Grid";
 
 storiesOf("Containers/Layout", module)
   .add("All Equal Width", () => {

@@ -3,7 +3,6 @@ export * from "./months";
 export * from "./islamicMonths";
 export * from "./lowercases";
 export * from "./uppercases";
-export * from "./months";
 export * from "./specialChars";
 export * from "./languages";
 export * from "./countries";

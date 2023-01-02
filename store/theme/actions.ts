@@ -1,6 +1,6 @@
 import { Action, ActionCreator, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { ThemeState, ChangeThemeType } from "./types";
+import { ChangeThemeType, ThemeState } from "./types";
 import { SET_THEME_DATA } from "./actions-types";
 
 export type AppThunk = ActionCreator<

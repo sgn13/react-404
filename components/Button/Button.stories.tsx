@@ -2,7 +2,6 @@ import { storiesOf } from "@storybook/react";
 import { FaCheckCircle } from "react-icons/fa";
 import React from "react";
 import Button from "./Button";
-import styled from "../../theme/styled";
 
 storiesOf("Components/Button", module)
   .add("No Icon", () => (

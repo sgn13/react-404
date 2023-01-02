@@ -10,7 +10,7 @@ import Sidebar from "containers/Sidebar/index";
 import { AppState } from "store/reducer";
 
 import { Loader } from "components/Spinner/Spinner";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import styled from "theme/styled";
 import { IndexSidebar } from "constants/sidebar";

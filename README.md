@@ -1,5 +1,9 @@
 # React Project Structure Boilerplate
 
+- Problem with webpack setup
+  - _npm run eslint_ listing some errors. fix them
+  - _npm run prettier_ check if this is working
+  - _npm run build_ check if this is working
 - Webpack 5 Setup
 
   - webpack 4 pollyfills
@@ -9,6 +13,8 @@
     - scss loaders
   - prettier
   - eslint
+    - auto import
+    - auto remove unused imports (not working right now)
   - lint-staged
   - commitzen
   - husky

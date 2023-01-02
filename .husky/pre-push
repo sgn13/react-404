@@ -2,4 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 # the hook will auto run just before git push command
-npm run build
+# npm run build

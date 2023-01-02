@@ -74,8 +74,8 @@ export const sidebarFilter = ({ item, permissions, me }) => {
 
   item.children &&
     item.children.length &&
-    item.children.map((item) => {
-      if (checkPermission({ permissions, permission: item.permission })) {
+    item.children.forEach((childItem) => {
+      if (checkPermission({ permissions, permission: childItem.permission })) {
         childrenPermission = true;
       }
     });
@@ -95,7 +95,7 @@ export const sidebarFilter = ({ item, permissions, me }) => {
   );
 };
 
-const BaseSidebar: React.FC<BaseSidebarType> = (props) => {
+function BaseSidebar(props: BaseSidebarType) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { mobile, sidebarItems, collapsed, setCollapsed, active, setActive, me } = props;
@@ -103,7 +103,7 @@ const BaseSidebar: React.FC<BaseSidebarType> = (props) => {
   // navigation and refresh fix
   useEffect(() => {
     if (pathname && sidebarItems.length) {
-      const sidebarItem = sidebarItems.find((item) => item.path === pathname);
+      const sidebarItem = sidebarItems.find((sideItem) => sideItem.path === pathname);
       if (sidebarItem?.label) setActive(sidebarItem?.label);
     } else {
       // make first item of sidebar as active
@@ -138,6 +138,8 @@ const BaseSidebar: React.FC<BaseSidebarType> = (props) => {
               </LogoHolder>
             ) : null}
             <div
+              role="button"
+              tabIndex={0}
               style={{
                 cursor: "pointer",
                 marginLeft: 10,
@@ -145,27 +147,31 @@ const BaseSidebar: React.FC<BaseSidebarType> = (props) => {
                 marginBottom: collapsed ? 10 : 0,
               }}
               onClick={() => setCollapsed(!collapsed)}
+              onKeyDown={() => setCollapsed(!collapsed)}
             >
               <img src={ExpandIcon} alt="expand icon" style={{ width: "18px" }} />
             </div>
           </div>
           {sidebarItems
-            .filter((item) => sidebarFilter({ item, permissions: me?.permissions || [], me }))
-            .filter((item) => item.location === "top")
-            .map((item) => (
-              <BaseSidebarItem
-                item={item}
-                collapsed={collapsed}
-                setCollapsed={setCollapsed}
-                active={active}
-                onClick={() => {
-                  setActive(item.label);
-                  navigate(item.path);
-                }}
-                history={history}
-                setActive={setActive}
-              />
-            ))}
+            .filter((sidebarItem) =>
+              sidebarFilter({ item: sidebarItem, permissions: me?.permissions || [], me }),
+            )
+            .filter((sidebarItem) => sidebarItem.location === "top")
+            .map((sidebarItem) => {
+              return (
+                <BaseSidebarItem
+                  item={sidebarItem}
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                  active={active}
+                  onClick={() => {
+                    setActive(sidebarItem.label);
+                    navigate(sidebarItem.path);
+                  }}
+                  setActive={setActive}
+                />
+              );
+            })}
         </NavTop>
       </div>
 
@@ -186,17 +192,19 @@ const BaseSidebar: React.FC<BaseSidebarType> = (props) => {
           <hr style={{ marginTop: "10px", marginBottom: "10px", width: "85%" }} />
         ) : null}
         {sidebarItems
-          .filter((item) => sidebarFilter({ item, permissions: me?.permissions || [], me }))
-          .filter((item) => item.location === "bottom")
-          .map((item) => (
+          .filter((sidebarItemBottom) =>
+            sidebarFilter({ item: sidebarItemBottom, permissions: me?.permissions || [], me }),
+          )
+          .filter((sidebarItemBottom) => sidebarItemBottom.location === "bottom")
+          .map((sidebarItemBottom) => (
             <BaseSidebarItem
-              item={item}
+              item={sidebarItemBottom}
               collapsed={collapsed}
               setCollapsed={setCollapsed}
               active={active}
               onClick={() => {
-                setActive(item.label);
-                navigate(item.path);
+                setActive(sidebarItemBottom.label);
+                navigate(sidebarItemBottom.path);
               }}
               setActive={setActive}
             />
@@ -204,6 +212,6 @@ const BaseSidebar: React.FC<BaseSidebarType> = (props) => {
       </NavBottom>
     </StyledSidebarWrapper>
   );
-};
+}
 
 export default BaseSidebar;

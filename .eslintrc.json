@@ -20,7 +20,8 @@
     "eslint-plugin-jsx-a11y",
     "eslint-plugin-react",
     "eslint-plugin-react-hooks",
-    "eslint-plugin-prettier"
+    "eslint-plugin-prettier",
+    "unused-imports"
   ],
   // Telling eslint to use the typescript parser.
   "parser": "@typescript-eslint/parser",
@@ -44,8 +45,8 @@
     "react/require-default-props": "off",
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
     "no-console": "warn",
+    "no-nested-ternary": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "import/extensions": "off",
     "no-shadow": "warn",
@@ -64,7 +65,29 @@
           "some": ["nesting", "id"]
         }
       }
-    ]
+    ],
+    "react/jsx-props-no-spreading": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "import/prefer-default-export": "off",
+    "consistent-return": "warn",
+    "react/no-array-index-key": "warn",
+    "@typescript-eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+    ],
+    "sort-imports": [
+      "error",
+      {
+        "ignoreDeclarationSort": true
+      }
+    ],
+    "global-require": "off",
+    "react/no-children-prop": "off",
+    "react/no-unused-prop-types": "warn",
+    "@typescript-eslint/no-unused-expressions": "warn",
+    "react/jsx-curly-brace-presence": "off"
   },
 
   // setting shared across all the plugin rules

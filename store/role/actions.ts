@@ -3,12 +3,14 @@ import { ThunkAction } from "redux-thunk";
 
 import api from "constants/api";
 
-import { formDataGenerator, generateQuery, generateMeta } from "utils/store";
+import { generateMeta, generateQuery } from "utils/store";
 // import { setErrorMessage } from "store/app/actions";
 
 import { network } from "utils/network";
-import { defaultQuery } from "constants/query";
 import {
+  CreateRoleDataType,
+  RemoveRoleDataType,
+  ResetSearchedRolesDataType,
   RoleState,
   SetIsLoadingType,
   SetIsSubmittingType,
@@ -16,21 +18,18 @@ import {
   SetRolesDataType,
   SetRolesMetadataType,
   SetSearchedRolesDataType,
-  ResetSearchedRolesDataType,
-  CreateRoleDataType,
-  RemoveRoleDataType,
   UpdateRoleDataType,
 } from "./types";
 import {
-  SET_IS_LOADING,
-  SET_IS_SUBMITTING,
-  SET_ROLE_DATA,
-  SET_ROLES_DATA,
-  SET_ROLES_METADATA,
-  SET_SEARCHED_ROLES_DATA,
-  RESET_SEARCHED_ROLES_DATA,
   CREATE_ROLE_DATA,
   REMOVE_ROLE_DATA,
+  RESET_SEARCHED_ROLES_DATA,
+  SET_IS_LOADING,
+  SET_IS_SUBMITTING,
+  SET_ROLES_DATA,
+  SET_ROLES_METADATA,
+  SET_ROLE_DATA,
+  SET_SEARCHED_ROLES_DATA,
   UPDATE_ROLE_DATA,
 } from "./action-types";
 

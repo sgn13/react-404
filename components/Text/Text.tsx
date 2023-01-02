@@ -2,10 +2,10 @@ import { ComponentProps, PropsWithChildren, RefObject } from "react";
 // using facade for styled-components.
 import styled from "../../theme/styled";
 
-export type textSizeType = "xs" | "sm" | "md" | "lg" | "xl";
+export type TextSizeType = "xs" | "sm" | "md" | "lg" | "xl";
 
 export type TextProps = ComponentProps<"span"> & {
-  size?: textSizeType;
+  size?: TextSizeType;
   textType?: "title" | "label" | "error" | "help";
   color?: string;
   icon?: JSX.Element;

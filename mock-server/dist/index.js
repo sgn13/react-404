@@ -1,9 +1,7 @@
 "use strict";
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -18,26 +16,24 @@ const app = (0, express_1.default)();
 // for parsing json data, is built-in replacement for body-parser middleware
 app.use(express_1.default.json());
 // for parsing x-www-form-data
-app.use(
-  express_1.default.urlencoded({
+app.use(express_1.default.urlencoded({
     extended: true,
-  }),
-);
+}));
 // for parsing multpart/formdata text only
 app.use((0, multer_1.default)().none());
 app.use((0, morgan_1.default)("tiny"));
 const corsConfig = {
-  // Access-Control-Allow-Origin i.e client address
-  origin: ["http://localhost:3000"],
-  methods: ["POST", "GET", "PUT", "OPTIONS"],
-  // Access-Control-Allow-Credentials
-  credentials: true,
+    // Access-Control-Allow-Origin i.e client address
+    origin: ["http://localhost:3000"],
+    methods: ["POST", "GET", "PUT", "OPTIONS"],
+    // Access-Control-Allow-Credentials
+    credentials: true,
 };
 // enable options request for all headers and methods rather than only delete method.
 app.options("*", cors(corsConfig));
 app.use(cors(corsConfig));
 app.get("/", (req, res) => {
-  res.send("<h1>Hello from the TypeScript world!</h1>");
+    res.send("<h1>Hello from the TypeScript world!</h1>");
 });
 //-------------------------------------------------------
 // ALL ROUTERS
@@ -56,6 +52,6 @@ app.use(error_controller_1.errorResponder);
 // starting server
 const httpPort = process.env.PORT || 2000;
 app.listen(httpPort, () => {
-  console.log(`Mock server is listening at ${httpPort} ⚡`);
+    console.log(`Mock server is listening at ${httpPort} ⚡`);
 });
 exports.default = express_1.default;

@@ -1,6 +1,6 @@
-import React, { PropsWithChildren, ComponentPropsWithRef } from "react";
-import Text, { Label, TextProps } from "../Text/Text";
+import { ComponentPropsWithRef, PropsWithChildren } from "react";
 import styled from "../../theme/styled";
+import Text, { Label, TextProps } from "../Text/Text";
 
 export type SizeType = "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
 

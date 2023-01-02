@@ -4,7 +4,6 @@ import { useRoutes } from "react-router-dom";
 
 import { Loader } from "components/Spinner/Spinner";
 
-import Body from "containers/Body";
 import routes from "routes";
 import styled from "theme/styled";
 

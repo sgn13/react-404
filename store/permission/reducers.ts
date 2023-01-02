@@ -3,22 +3,22 @@ import { Reducer } from "redux";
 import {
   createState,
   removeState,
-  updateState,
-  setSearchState,
   resetSearchState,
+  setSearchState,
+  updateState,
 } from "utils/store";
 import { PermissionActionTypes, PermissionState } from "./types";
 
 import {
-  SET_IS_LOADING,
-  SET_IS_SUBMITTING,
-  SET_PERMISSION_DATA,
-  SET_PERMISSIONS_DATA,
-  SET_PERMISSIONS_METADATA,
-  SET_SEARCHED_PERMISSIONS_DATA,
-  RESET_SEARCHED_PERMISSIONS_DATA,
   CREATE_PERMISSION_DATA,
   REMOVE_PERMISSION_DATA,
+  RESET_SEARCHED_PERMISSIONS_DATA,
+  SET_IS_LOADING,
+  SET_IS_SUBMITTING,
+  SET_PERMISSIONS_DATA,
+  SET_PERMISSIONS_METADATA,
+  SET_PERMISSION_DATA,
+  SET_SEARCHED_PERMISSIONS_DATA,
   UPDATE_PERMISSION_DATA,
 } from "./action-types";
 

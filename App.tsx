@@ -1,8 +1,8 @@
 import { Loader } from "components/Spinner/Spinner";
 import Layout from "containers/Layout";
 import React, { Suspense, useEffect } from "react";
-import { Link, useNavigate, useRoutes, useLocation } from "react-router-dom";
-import routes, { authRoutes, messageRoutes } from "./routes";
+import { useLocation, useNavigate, useRoutes } from "react-router-dom";
+import { authRoutes, messageRoutes } from "./routes";
 
 const AuthContents = () => useRoutes(authRoutes);
 const MessageContents = () => useRoutes(messageRoutes);
@@ -16,6 +16,7 @@ function AppRouter() {
   useEffect(() => {
     if (!sessionStorage.getItem("accessToken")) return navigate("/login");
     if (pathname === "/login") return navigate("/");
+    return undefined;
   }, []);
 
   return (

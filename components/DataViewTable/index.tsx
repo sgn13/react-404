@@ -1,5 +1,3 @@
-import React from "react";
-
 function DataViewTable({ data = [] }) {
   return (
     <table className="table " style={{ textAlign: "left" }}>

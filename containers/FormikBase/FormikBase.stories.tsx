@@ -1,7 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import { FormikHelpers, FormikProps } from "formik";
 import * as Yup from "yup";
-import React from "react";
 import FormikBase from "./FormikBase";
 
 const initialValues = {
@@ -16,7 +15,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().min(8).required().label("Password"),
 });
 
-const handleSubmit = (values: Values, { setSubmitting }: FormikHelpers<Values>) => {
+const handleSubmitCallback = (values: Values, { setSubmitting }: FormikHelpers<Values>) => {
   setTimeout(() => {
     alert(JSON.stringify(values, null, 2));
     setSubmitting(false);
@@ -35,9 +34,12 @@ const form = ({
 }: FormikProps<Values>) => (
   <form onSubmit={handleSubmit}>
     <div>
-      <label>Email:</label>
+      <label htmlFor="email" id="email-label">
+        Email:
+      </label>
       <br />
       <input
+        id="email"
         type="email"
         name="email"
         onChange={(event) => {
@@ -49,9 +51,17 @@ const form = ({
       {(values.email || (errors.email && touched.email)) && errors.email}
     </div>
     <div>
-      <label>Password:</label>
+      <label htmlFor="password" id="password-label">
+        Password:
+      </label>
       <br />
-      <input type="password" name="password" onChange={handleChange} value={values.password} />
+      <input
+        id="password"
+        type="password"
+        name="password"
+        onChange={handleChange}
+        value={values.password}
+      />
       <br />
       {(values.password || (errors.password && touched.password)) && errors.password}
     </div>
@@ -63,7 +73,7 @@ storiesOf("Containers/FormikBase", module).add("Demo", () => (
   <FormikBase
     initialValues={initialValues}
     validationSchema={validationSchema}
-    onSubmit={handleSubmit}
+    onSubmit={handleSubmitCallback}
     validateOnMount={false}
     validateOnBlur
     validateOnChange

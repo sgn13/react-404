@@ -3,25 +3,25 @@ import { ThunkAction } from "redux-thunk";
 import { network } from "utils/network";
 import api from "constants/api";
 import {
+  SET_DOWNLOADING_INFO,
   SET_IS_LOADING,
   SET_IS_SUBMITTING,
   SET_ME,
-  SET_UPLOADING_INFO,
-  SET_DOWNLOADING_INFO,
-  UPDATE_ME,
   SET_NOTIFICATION_DATA,
   SET_SIDEBAR,
+  SET_UPLOADING_INFO,
+  UPDATE_ME,
 } from "./constants";
 import {
+  ApplicationState,
+  SetDownloadingInfoType,
   SetIsLoadingType,
   SetIsSubmittingType,
   SetMeType,
-  UpdateMeType,
-  ApplicationState,
-  SetUploadingInfoType,
-  SetDownloadingInfoType,
   SetNotificationDataType,
   SetSidebarType,
+  SetUploadingInfoType,
+  UpdateMeType,
 } from "./types";
 
 export const setMe = (payload: any): SetMeType => ({
@@ -194,14 +194,14 @@ export const logOut = () => async (dispatch) => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     localStorage.setItem("logout", Date.now().toString());
-    location.href = "/login";
+    window.location.href = "/login";
   } catch (error) {
     console.log(error);
   }
 };
 
 export const fetchMe =
-  ({}) =>
+  () =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       dispatch(setIsLoading(true));

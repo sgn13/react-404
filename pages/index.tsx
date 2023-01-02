@@ -1,9 +1,9 @@
 import webpackLogo from "assets/images/webpack-logo.png";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { backgroundColor, textColor } from "theme";
-import { connect, ConnectedProps } from "react-redux";
-import { toggleLightDarkTheme, setTheme } from "store/theme/actions";
+import { ConnectedProps, connect } from "react-redux";
+import { setTheme, toggleLightDarkTheme } from "store/theme/actions";
 import { AppState } from "store/reducer";
 import withSidebar from "hoc/withSidebar";
 

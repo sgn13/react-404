@@ -4,7 +4,6 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import styled from "theme/styled";
 import Input, { InputComponentProps } from "components/Input/Input";
 import { Label } from "components/Text/Text";
-import See from "./see.svg";
 
 type BaseInputType = React.ComponentProps<"input"> & { ref?: any };
 

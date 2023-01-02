@@ -1,5 +1,4 @@
 import { AiOutlineHome } from "react-icons/ai";
-import React from "react";
 import app from "./app";
 
 export const sidebar = [

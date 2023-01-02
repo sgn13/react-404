@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import Button from "components/Button";
-import theme, { styled } from "theme/styled-components";
+import { styled } from "theme/styled-components";
 
 const BodyHeaderWrapper = styled.div`
   position: relative;
@@ -19,11 +19,15 @@ const Title = styled.div`
   font-size: 1.5em;
 `;
 
-const Body: React.FC<{
+function Body({
+  children,
+  title = "",
+  config,
+}: {
   title?: string;
   goBack?: boolean;
   config?: { use: boolean; title: boolean; goBack: boolean };
-}> = ({ children, title = "", config }) => {
+}) {
   useEffect(() => {
     if (title) {
       document.title = title || "";
@@ -48,6 +52,6 @@ const Body: React.FC<{
       {children}
     </>
   );
-};
+}
 
 export default Body;

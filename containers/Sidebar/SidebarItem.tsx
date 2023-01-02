@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FaChevronDown, FaChevronLeft } from "react-icons/fa";
 import styled from "theme/styled";
 import { useNavigate } from "react-router-dom";
-import { primary, testColor, secondary, sidebar } from "theme";
+import { primary } from "theme";
 import { StyledSidebarItemType } from "./types";
 
 type BaseSidebarItemType = React.ComponentProps<"a"> & StyledSidebarItemType & { ref?: any };
@@ -77,7 +77,7 @@ const NavigationMenuItem = styled.div<{ isOpen; active; collapsed; item }>`
   }
 `;
 
-const BaseSidebarItem: React.FC<BaseSidebarItemType> = (props) => {
+function BaseSidebarItem(props: BaseSidebarItemType) {
   const navigate = useNavigate();
   const { collapsed, setCollapsed, active, item, setActive } = props;
   const [isOpen, setIsOpen] = useState(false);
@@ -95,16 +95,16 @@ const BaseSidebarItem: React.FC<BaseSidebarItemType> = (props) => {
       </NavigationMenuItem>
       {isOpen &&
         !!(item.children && item.children.length) &&
-        item.children.map((item, i) => (
+        item.children.map((childItem, i) => (
           <div key={i} style={{ marginLeft: !collapsed && "2rem" }}>
             {" "}
             <BaseSidebarItem
-              item={item}
+              item={childItem}
               collapsed={collapsed}
               active={active}
               onClick={() => {
-                setActive(item.path);
-                navigate(item.path);
+                setActive(childItem.path);
+                navigate(childItem.path);
               }}
               setActive={setActive}
             />
@@ -112,6 +112,6 @@ const BaseSidebarItem: React.FC<BaseSidebarItemType> = (props) => {
         ))}
     </>
   );
-};
+}
 
 export default BaseSidebarItem;
