@@ -2,7 +2,7 @@ const api = {
   login: "/login/",
   logout: "/logout/",
   me: "/profile/",
-  users: "/users/",
+  user: "/users/",
   uploadFile: "/upload/file",
 };
 

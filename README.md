@@ -42,10 +42,12 @@
 - Data Grid with server side pagination setup
 - Data Grid with client side pagination setup
 - Download and Upload Setup with progress bar
+- Notification Setup
 - Working Configuation with Mock server
 
 - Socket Setup
 - Webrtc Setup
+- CRUD with SORTING, SEARCHING, FILTERING & PAGINATION
 
 ## How to use it ?
 

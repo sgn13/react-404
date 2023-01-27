@@ -1,9 +1,4 @@
 {
-  "*.{ts,js,tsx,jsx}": [
-    "npm run prettier",
-    "npm run eslint"
-  ],
-  "**/*.scss": [
-    "stylelint scss"
-  ]
+  "*.{ts,js,tsx,jsx}": ["npm run prettier", "npm run eslint"],
+  "**/*.scss": ["stylelint scss"]
 }

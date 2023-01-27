@@ -22,9 +22,18 @@ export const IndexSidebar = () => [
 
   {
     icon: <AiOutlineHome />,
-    label: "Dashboard",
+    label: "Online Users",
     location: "top",
-    path: app.desk.root,
+    path: app.desk.online,
+    role: "user",
+    permission: [],
+  },
+
+  {
+    icon: <AiOutlineHome />,
+    label: "Movie Management",
+    location: "top",
+    path: app.desk.movie.root(),
     role: "user",
     permission: [],
   },

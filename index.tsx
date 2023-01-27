@@ -2,7 +2,7 @@ import ReactDOM from "react-dom/client";
 import "theme/sass/index.scss";
 import { ErrorBoundary } from "react-error-boundary";
 import { Provider as ReduxProvider } from "react-redux";
-import ReactError from "pages/errors/react-error";
+import ReactError from "pages/Errors/react-error";
 import { StyledThemeProvider } from "theme/styled";
 import { BrowserRouter } from "react-router-dom";
 import React from "react";

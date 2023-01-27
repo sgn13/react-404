@@ -9,53 +9,59 @@ import {
   deleteSession,
   readSessionsByEmail,
 } from "../services/auth.service";
+import { allPermissions } from "../constants/permissions";
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
     const results = await readAllUsers();
-    if (results) {
-      const user = results.find((user) => user.email === email);
-      if (user) {
-        if (user.password === password) {
-          console.log("user", user);
-          delete user.password;
-          const token = {
-            email: user.email,
-            access: `${user.id}${user.email}${user.name}${user.city}`,
-            refresh: `${user.name}${user.city}${user.id}${user.email}`,
-          };
 
-          const session = await readSessionsByEmail(user.email);
-          console.log("session", session);
+    if (!results) {
+      res.status(404).end();
+      return;
+    }
 
-          if (!session) {
-            await createSession(token);
-            res.status(200).json({
-              message: "Login Successful",
-              profile: user,
-              token,
-            });
-            return;
-          }
-          res
-            .status(200)
-            .json({ message: "User already logged in", profile: user, token: session });
-          return;
-        }
-        res.status(401).json({
-          message: "Invalid Email or Password",
-        });
-        return;
-      }
+    const foundUser = results.find((user) => user.email === email);
+    const user: any = { ...foundUser };
+
+    if (!user) {
       res.status(401).json({
-        message: "Invalid Email or Password",
+        message: "Invalid Email",
       });
       return;
     }
 
-    res.status(404).end();
+    if (user.password !== password) {
+      res.status(401).json({
+        message: "Invalid Password",
+      });
+      return;
+    }
+
+    delete user.password;
+    const session = await readSessionsByEmail(user.email);
+    if (session) {
+      res.status(200).json({
+        message: "User already logged in",
+        profile: user,
+        token: session,
+        permission: allPermissions,
+      });
+      return;
+    }
+
+    const token = {
+      email: user.email,
+      access: `${user.id}${user.email}${user.name}${user.city}`,
+      refresh: `${user.name}${user.city}${user.id}${user.email}`,
+    };
+    await createSession(token);
+    res.status(200).json({
+      message: "Login Successful",
+      profile: user,
+      token,
+      permission: allPermissions,
+    });
     return;
   } catch (err) {
     next(err);

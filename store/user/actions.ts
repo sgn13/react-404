@@ -4,10 +4,11 @@ import { ThunkAction } from "redux-thunk";
 import api from "constants/api";
 
 import { formDataGenerator, generateMeta, generateQuery } from "utils/store";
-// import { setErrorMessage } from "store/app/actions";
+import { setErrorMessage } from "store/app/actions";
 
 import { network } from "utils/network";
 import { defaultQuery } from "constants/query";
+
 import {
   CreateUserDataType,
   RemoveUserDataType,
@@ -113,14 +114,14 @@ export const fetchUser: AppThunk =
       }
       return false;
     } catch (error) {
-      // error.response && dispatch(setErrorMessage(error));
+      if (error.response) dispatch(setErrorMessage(error));
       dispatch(setIsLoading(false));
       return false;
     }
   };
 
 export const fetchUsers: AppThunk =
-  ({ query = q }) =>
+  ({ query = defaultQuery }) =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       const link = generateQuery({ url: api.user, query });
@@ -129,7 +130,7 @@ export const fetchUsers: AppThunk =
       const { data, status } = await network({ dispatch }).get(link);
 
       if (status === 200 || (status > 200 && status < 300)) {
-        const { data: results } = data;
+        const { results } = data;
         const metadata = generateMeta({ data, query, results });
 
         if (results) {
@@ -141,8 +142,8 @@ export const fetchUsers: AppThunk =
       }
       return false;
     } catch (error) {
-      // error.response && dispatch(setErrorMessage(error));
       dispatch(setIsLoading(false));
+      if (error.response) dispatch(setErrorMessage(error));
       return false;
     }
   };
@@ -162,7 +163,7 @@ export const createUser: AppThunk =
       }
       return false;
     } catch (error) {
-      // error.response && dispatch(setErrorMessage(error));
+      if (error.response) dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -186,11 +187,12 @@ export const updateUser: AppThunk =
       }
       return false;
     } catch (error) {
-      // error.response && dispatch(setErrorMessage(error));
+      if (error.response) dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
   };
+
 export const updateUserPermission: AppThunk =
   ({ userId, values }) =>
   async (dispatch: Dispatch) => {
@@ -210,7 +212,7 @@ export const updateUserPermission: AppThunk =
       }
       return false;
     } catch (error) {
-      // error.response && dispatch(setErrorMessage(error));
+      if (error.response) dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -230,58 +232,8 @@ export const deleteUser: AppThunk =
       }
       return false;
     } catch (error) {
-      // error.response && dispatch(setErrorMessage(error));
+      if (error.response) dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
-  };
-export const fetchFcrsUserSidebarMenu =
-  ({ query = defaultQuery, search = false, columns, searchable, order }) =>
-  async (dispatch) => {
-    try {
-      const link = generateQuery({
-        url: api.user,
-        query: { ...query, perPage: 1000 },
-        columns,
-        searchable,
-        order,
-      });
-
-      dispatch(setIsLoading(true));
-      const { data, status } = await network({ dispatch }).get(link);
-      if (status === 200 || status === 201) {
-        if (data) {
-          const results = data.data;
-
-          // dispatch(
-          //   updateSidebarData([
-          //     {
-          //       icon: "",
-          //       label: "Home",
-          //       location: "top",
-          //       path: "",
-          //     },
-          //     {
-          //       icon: "",
-          //       label: "Finacle Query",
-          //       location: "top",
-          //       path: app.finacle.execute(),
-          //     },
-          //     ...results.map((menu) => ({
-          //       icon: "",
-          //       label: menu.menu_name,
-          //       location: "top",
-          //       path: `/fcrs/user/execute/${menu.id}`,
-          //     })),
-          //   ]),
-          // );
-          dispatch(setIsLoading(false));
-          return true;
-        }
-      }
-    } catch (error) {
-      dispatch(setIsLoading(false));
-      // error.response && dispatch(setErrorMessage(error));
-    }
-    return false;
   };

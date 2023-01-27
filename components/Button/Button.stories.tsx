@@ -1,6 +1,5 @@
 import { storiesOf } from "@storybook/react";
 import { FaCheckCircle } from "react-icons/fa";
-import React from "react";
 import Button from "./Button";
 
 storiesOf("Components/Button", module)

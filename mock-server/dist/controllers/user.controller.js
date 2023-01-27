@@ -23,32 +23,44 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUsers = exports.patchUsers = exports.putUsers = exports.postUsers = exports.getUsersById = exports.getAllUsers = void 0;
 const user_service_1 = require("../services/user.service");
 const getAllUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    // // paginating user model
-    // const page = parseInt(req.query.page, 10);
-    // const limit = parseInt(req.query.limit, 10);
-    // const { sort } = req.query;
-    // const startIndex = (page - 1) * limit;
-    // const endIndex = page * limit;
-    // const results: any = {};
-    // // endIndex number is less than total Documents number, it means next page must be there
-    // if (endIndex < (await findUsersCount())) {
-    //   results.next = {
-    //     page: page + 1, // since index starts at 0
-    //     limit: limit,
-    //   };
-    // }
-    // // if 1 or more documents are skipped at the begining, it means previous page exists containing those skipped documents
-    // if (startIndex > 0) {
-    //   results.previous = {
-    //     page: page - 1,
-    //     limit: limit,
-    //   };
-    // }
     try {
-        // results.results = await findAllUsers(sort, startIndex, limit);
-        const results = yield (0, user_service_1.readAllUsers)();
+        // paginating user model
+        const { page = "1", perPage = "10", order = "ASC", orderBy = "fullName" } = req.query;
+        let prev = null;
+        const current = {
+            page: page ? parseInt(page, 10) : 1,
+            perPage: perPage ? parseInt(perPage, 10) : 10,
+        };
+        let next = null;
+        const fromIndex = current.page ? (current.page - 1) * current.perPage : 0;
+        const toIndex = current.page ? current.page * current.perPage : 0;
+        let results = yield (0, user_service_1.readAllUsers)();
+        const totalCount = results.length;
+        if (totalCount)
+            results = results.slice(fromIndex, toIndex);
+        // endIndex number is less than total Documents number, it means next page must be there
+        if (toIndex < totalCount) {
+            next = {
+                page: current.page + 1,
+                perPage: current.perPage,
+            };
+        }
+        // if 1 or more documents are skipped at the begining, it means previous page exists containing those skipped documents
+        if (fromIndex > 0) {
+            prev = {
+                page: current.page - 1,
+                perPage: current.perPage,
+            };
+        }
         if (results) {
-            res.status(200).json(results);
+            res.status(200).json({
+                results,
+                count: totalCount,
+                next,
+                prev,
+                order: "",
+                orderBy: "",
+            });
             return;
         }
         res.status(404).end();

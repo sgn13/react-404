@@ -51,17 +51,18 @@ export const formDataGenerator = ({ data }: any) => {
 
 export const generateMeta = ({ data, query, results }: any) => {
   let totalCount = data.count;
-  const { recordsFiltered } = data;
-  if (results && results.length) {
-    const firstElement = results[0];
-    if (firstElement && firstElement.totalFilteredCount) {
-      totalCount = firstElement.totalFilteredCount;
-    }
-  }
+  // const { recordsFiltered } = data;
 
-  if (recordsFiltered === 0 || recordsFiltered) {
-    totalCount = recordsFiltered;
-  }
+  // if (results && results.length) {
+  //   const firstElement = results[0];
+  //   if (firstElement && firstElement.totalFilteredCount) {
+  //     totalCount = firstElement.totalFilteredCount;
+  //   }
+  // }
+
+  // if (recordsFiltered === 0 || recordsFiltered) {
+  //   totalCount = recordsFiltered;
+  // }
 
   return {
     totalCount,
@@ -81,7 +82,6 @@ export const generateQuery = ({
   useColumn = true,
   columns = [],
   searchable = [],
-  datatables = true,
 }: any) => {
   let columnGeneration = "";
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -91,40 +91,36 @@ export const generateQuery = ({
     order,
     order_by,
     search,
-    start: (page - 1) * perPage || 0,
+    page: page || 0,
     ...otherQueries,
   };
 
   if (length) {
-    finalQuery = { ...finalQuery, length: perPage || 10 };
+    finalQuery = { ...finalQuery, perPage: perPage || 10 };
   }
 
-  if (datatables) {
-    finalQuery = { ...finalQuery, format: "datatables" };
-  }
+  // if (columns.length) {
+  //   columnGeneration = ``;
 
-  if (columns.length) {
-    columnGeneration = ``;
-
-    // searchable.length
-    //   ? columns.map((column, i) => {
-    //       columnGeneration =
-    //         columnGeneration +
-    //         getColumItem({
-    //           i: i,
-    //           item: column,
-    //           searchable: searchable.includes(column),
-    //         });
-    //     })
-    //   : columns.map((column, i) => {
-    //       columnGeneration = columnGeneration + getColumItem({ i: i, item: column });
-    //     });
-  }
+  //   searchable.length
+  //     ? columns.map((column, i) => {
+  //         columnGeneration =
+  //           columnGeneration +
+  //           getColumItem({
+  //             i: i,
+  //             item: column,
+  //             searchable: searchable.includes(column),
+  //           });
+  //       })
+  //     : columns.map((column, i) => {
+  //         columnGeneration = columnGeneration + getColumItem({ i: i, item: column });
+  //       });
+  // }
 
   let link = `${url}?${useColumn ? columnGeneration : ""}`;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  finalQuery &&
+  if (finalQuery)
     Object.entries(finalQuery).forEach((item) => {
       link += item[1] || item[1] === false || item[1] === 0 ? `&${item[0]}=${item[1]}` : "";
     });

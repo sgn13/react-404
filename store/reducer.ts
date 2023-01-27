@@ -1,7 +1,6 @@
 import { combineReducers } from "redux";
 import themeState from "./theme/reducers";
 import appState from "./app/reducers";
-import registerationState from "./registration/reducers";
 import permissionState from "./permission/reducers";
 import roleState from "./role/reducers";
 import driverState from "./driver/reducers";
@@ -15,7 +14,6 @@ const rootReducer = combineReducers({
   driverState,
   roleState,
   userState,
-  registerationState,
   socketState,
 });
 
