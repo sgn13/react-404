@@ -10,7 +10,7 @@ function FormikBase({
   validateOnMount = false,
   validateOnBlur = false,
   validateOnChange = false,
-  enableReinitialize = false, // false is formik default
+  enableReinitialize = true, // false is formik default
   renderForm,
   ...rest
 }: FormikConfig<any> & CustomProps) {

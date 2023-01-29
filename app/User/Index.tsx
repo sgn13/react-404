@@ -1,9 +1,8 @@
-import configuration from "configuration";
 import { useEffect, useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { AppState } from "store/reducer";
 import styled from "theme/styled";
-import Button from "components/Button";
+import Button from "components/Button/Button";
 import { setMe } from "store/app/actions";
 import { useNavigate } from "react-router-dom";
 import app from "constants/app";

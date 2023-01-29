@@ -103,6 +103,7 @@
           "map": [
             ["containers", "./containers"],
             ["components", "./components"],
+            ["hooks", "./hooks"],
             ["configuration", "./configuration"],
             ["constants", "./constants"],
             ["pages", "./pages"],

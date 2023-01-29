@@ -10,6 +10,7 @@ export type InputContainerProps = ComponentPropsWithRef<"div"> & {
   icon?: JSX.Element;
   required?: boolean;
   errors?: { [key: string]: string } | any;
+  errorStyle?: object;
   helpText?: string;
   onClear?: () => void;
   style?: any;
@@ -63,7 +64,6 @@ function scrollToElementByNameSelector(selectorName) {
   // scroll to error field if it is the first error field
   const nameSelector = `[name='${selectorName}']`;
   // const idSelector = `[id='${selectorName}']`;
-  console.log("nameSelector", nameSelector);
   const errorElement = document.querySelector(nameSelector) as HTMLElement;
   if (errorElement) {
     errorElement.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -155,6 +155,7 @@ export function InputContainer(props: PropsWithChildren<InputContainerProps>) {
     textSize,
 
     labelAndInputWrapperStyle,
+    errorStyle = {},
     ...wrapperProps
   } = props;
 
@@ -170,7 +171,10 @@ export function InputContainer(props: PropsWithChildren<InputContainerProps>) {
         {children}
       </LabelAndInputWrapper>
       {!!Object.values(errors).length && (
-        <Error textType="error"> {getError({ name, touched, errors })}</Error>
+        <Error textType="error" style={errorStyle}>
+          {" "}
+          {getError({ name, touched, errors })}
+        </Error>
       )}
       {helpText && <Help textType="help"> {helpText}</Help>}
     </StyledBaseComponent>

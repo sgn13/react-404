@@ -103,7 +103,7 @@ export const fetchUser: AppThunk =
     try {
       dispatch(setIsLoading(true));
       // const { data, status } = await network({ dispatch }).get(`${api.user}${userId}/`);
-      const { data, status } = await network({ dispatch, sso: true }).get(`${api.me}${userId}/`);
+      const { data, status } = await network({ dispatch, sso: true }).get(`${api.user}${userId}/`);
 
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {
@@ -173,10 +173,10 @@ export const updateUser: AppThunk =
   ({ userId, values }) =>
   async (dispatch: Dispatch) => {
     try {
-      const body = formDataGenerator({ data: values });
+      // const body = formDataGenerator({ data: values });
 
       dispatch(setIsSubmitting(true));
-      const { data, status } = await network({ dispatch }).patch(`${api.user}${userId}/`, body);
+      const { data, status } = await network({ dispatch }).patch(`${api.user}${userId}`, values);
 
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {
