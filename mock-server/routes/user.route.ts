@@ -7,13 +7,15 @@ import {
   putUsers,
   patchUsers,
 } from "../controllers/user.controller";
+import { uploadFileToLocalStorage, parseOnlyTextFormdata } from "../middlewares";
 
 const router = express.Router();
 
 router.get("/users", getAllUsers);
 router.get("/users/:id", getUsersById);
-router.post("/users", postUsers);
-router.put("/users/:id", putUsers);
+router.post("/users", uploadFileToLocalStorage().single("profilePic"), postUsers);
+
+router.put("/users/:id", uploadFileToLocalStorage().single("profilePic"), putUsers);
 router.patch("/users/:id", patchUsers);
 router.delete("/users/:id", deleteUsers);
 

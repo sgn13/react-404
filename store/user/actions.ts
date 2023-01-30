@@ -97,6 +97,10 @@ export const setFcrsUserQueryResultData = (payload): SetFcrsUserQueryResultDataD
   payload,
 });
 
+export const setUser: AppThunk = (payload) => (dispatch: Dispatch) => {
+  dispatch(setUserData(payload));
+};
+
 export const fetchUser: AppThunk =
   ({ userId }) =>
   async (dispatch: Dispatch) => {
@@ -176,7 +180,7 @@ export const updateUser: AppThunk =
       // const body = formDataGenerator({ data: values });
 
       dispatch(setIsSubmitting(true));
-      const { data, status } = await network({ dispatch }).patch(`${api.user}${userId}`, values);
+      const { data, status } = await network({ dispatch }).put(`${api.user}${userId}`, values);
 
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {

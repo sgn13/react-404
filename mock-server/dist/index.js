@@ -7,9 +7,9 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 // eslint-disable-next-line import/no-extraneous-dependencies
 const morgan_1 = __importDefault(require("morgan"));
-const multer_1 = __importDefault(require("multer"));
 const index_1 = __importDefault(require("./routes/index"));
 const error_controller_1 = require("./controllers/error.controller");
+const directories_1 = require("./constants/directories");
 dotenv_1.default.config();
 const cors = require("cors");
 const app = (0, express_1.default)();
@@ -19,13 +19,11 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({
     extended: true,
 }));
-// for parsing multpart/formdata text only
-app.use((0, multer_1.default)().none());
 app.use((0, morgan_1.default)("tiny"));
 const corsConfig = {
     // Access-Control-Allow-Origin i.e client address
     origin: ["http://localhost:3000"],
-    methods: ["POST", "GET", "PUT", "OPTIONS"],
+    methods: ["POST", "GET", "PUT", "PATCH", "OPTIONS"],
     // Access-Control-Allow-Credentials
     credentials: true,
 };
@@ -39,6 +37,9 @@ app.get("/", (req, res) => {
 // ALL ROUTERS
 //-------------------------------------------------------
 app.use(index_1.default);
+// for serving static assets
+// Usage: http://localhost:2000/profilePictures/1675095090806.png
+app.use(directories_1.directories.PROFILE_PICTURE_MOUNTPOINT, express_1.default.static(directories_1.directories.PROFILE_PICTURE_UPLOAD_DIR));
 //-------------------------------------------------------
 // ERROR-HANDLING
 //-------------------------------------------------------

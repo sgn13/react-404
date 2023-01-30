@@ -22,6 +22,8 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUsers = exports.patchUsers = exports.putUsers = exports.postUsers = exports.getUsersById = exports.getAllUsers = void 0;
 const user_service_1 = require("../services/user.service");
+const utils_1 = require("../utils");
+const directories_1 = require("../constants/directories");
 const getAllUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // paginating user model
@@ -75,7 +77,7 @@ exports.getAllUsers = getAllUsers;
 const getUsersById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const user = yield (0, user_service_1.readUsersById)(Number(id));
+        const user = yield (0, user_service_1.readUsersById)(id);
         if (user) {
             res.status(200).json(user);
             return;
@@ -91,6 +93,9 @@ exports.getUsersById = getUsersById;
 const postUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const payload = req.body;
+        const uploadedFileUrl = `${req.protocol}://${req.get("host")}${directories_1.directories.PROFILE_PICTURE_MOUNTPOINT}/${req.uploadedFilename}`;
+        payload.id = (0, utils_1.getShortId)();
+        payload.profilePic = uploadedFileUrl;
         const user = yield (0, user_service_1.createUsers)(payload);
         res.status(200).json(user);
         return user;
@@ -107,9 +112,10 @@ const putUsers = (req, res, next) => {
         const type = "put";
         const { id } = req.params;
         const _a = req.body, { id: excludingId } = _a, payload = __rest(_a, ["id"]);
-        const user = (0, user_service_1.updateUsers)(type, Number(id), payload);
+        console.log("payload", payload);
+        const user = (0, user_service_1.updateUsers)(type, id, payload);
         res.status(200).json(user);
-        return user;
+        return true;
     }
     catch (err) {
         next(err);
@@ -123,9 +129,9 @@ const patchUsers = (req, res, next) => {
         const type = "patch";
         const { id } = req.params;
         const _a = req.body, { id: excludingId } = _a, remainingPayload = __rest(_a, ["id"]);
-        const user = (0, user_service_1.updateUsers)(type, Number(id), remainingPayload);
+        const user = (0, user_service_1.updateUsers)(type, id, remainingPayload);
         res.status(200).json(user);
-        return user;
+        return true;
     }
     catch (err) {
         next(err);

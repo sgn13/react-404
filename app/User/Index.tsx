@@ -182,7 +182,7 @@ function LiveClients({
         <ClientItem key={item.email}>
           <PrimaryInfo>
             <Group>
-              {item?.profile_pic ? (
+              {item?.profilePic ? (
                 <div
                   style={{
                     position: "relative",
@@ -301,9 +301,8 @@ function LiveClients({
           size="md"
           style={{
             textShadow: "none",
-            position: "absolute",
-            right: "1em",
-            top: -30,
+            // position: "absolute",
+            // right: "1em",
             borderRadius: "2em",
           }}
           onClick={() => navigate(app.desk.user.create())}

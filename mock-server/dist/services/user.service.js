@@ -26,7 +26,7 @@ const readAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
 exports.readAllUsers = readAllUsers;
 const readUsersById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = index_1.default.users.find((item) => item.id === id);
+        const user = index_1.default.users.find((item) => String(item.id) === String(id));
         return user;
     }
     catch (err) {
@@ -56,11 +56,11 @@ const updateUsers = (type, id, payload) => __awaiter(void 0, void 0, void 0, fun
             return;
         // eslint-disable-next-line no-param-reassign
         payload.id = id; // overwrite the id with the id passed in so that id is not changed
-        const user = index_1.default.users.find((item) => item.id === id);
+        const user = index_1.default.users.find((item) => String(item.id) === String(id));
         if (user) {
-            const payloadIndex = index_1.default.users.findIndex((item) => item.id === id);
+            const payloadIndex = index_1.default.users.findIndex((item) => String(item.id) === String(id));
             if (type === "put") {
-                // replace item at index with another item
+                // replace(put) item at index with another item
                 index_1.default.users.splice(payloadIndex, 1, payload);
                 // eslint-disable-next-line consistent-return
                 return index_1.default.users[payloadIndex];
@@ -88,7 +88,7 @@ const updateUsers = (type, id, payload) => __awaiter(void 0, void 0, void 0, fun
 exports.updateUsers = updateUsers;
 const deleteUsers = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const payloadIndex = index_1.default.users.findIndex((item) => item.id === id);
+        const payloadIndex = index_1.default.users.findIndex((item) => String(item.id) === String(id));
         if (payloadIndex > -1) {
             // remove at index
             const deletedItem = index_1.default.users.splice(payloadIndex, 1);

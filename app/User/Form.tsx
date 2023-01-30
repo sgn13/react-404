@@ -17,6 +17,7 @@ import ImageInput from "components/ImageInput/ImageInput";
 // import FileContainer from "components/File/FileContainer";
 
 import styled from "theme/styled";
+import { getModifiedValues } from "utils/general";
 
 const InputWrapper = styled.div`
   position: relative;
@@ -71,30 +72,30 @@ const UserForm = ({
 
   const initialValues = formData
     ? {
-        profile_pic: formData ? [formData?.profilePic] : [],
-        full_name: formData?.fullName,
+        profilePic: formData ? [formData?.profilePic] : [],
+        fullName: formData?.fullName,
         email: formData?.email,
-        branch_name: formData?.branchName,
-        branch_code: formData?.branchCode,
+        branchName: formData?.branchName,
+        branchCode: formData?.branchCode,
         department: formData?.department,
-        functional_title: formData?.functionalTitle,
+        functionalTitle: formData?.functionalTitle,
         password: formData?.password,
-        re_password: formData?.rePassword,
+        rePassword: formData?.rePassword,
       }
     : {
-        profile_pic: [],
-        full_name: "",
+        profilePic: [],
+        fullName: "",
         email: "",
-        branch_name: "",
-        branch_code: "",
+        branchName: "",
+        branchCode: "",
         department: "",
-        functional_title: "",
+        functionalTitle: "",
         password: "",
-        re_password: "",
+        rePassword: "",
       };
 
   const validationSchema = Yup.object().shape({
-    profile_pic: Yup.array()
+    profilePic: Yup.array()
       .label("Profile_Picture")
       .test("no-empty", "You must add an image.", async function validate(item: any) {
         if (formData && typeof item[0] === "string") return true; // image during update is optional
@@ -139,16 +140,16 @@ const UserForm = ({
         // });
       }),
 
-    full_name: Yup.string().required().label("Name"),
+    fullName: Yup.string().required().label("Name"),
     email: Yup.string().email().required().label("Email"),
-    branch_name: Yup.string().required().label("Branch Name"),
-    branch_code: Yup.string().required().label("Branch Code"),
+    branchName: Yup.string().required().label("Branch Name"),
+    branchCode: Yup.string().required().label("Branch Code"),
     department: Yup.string().required().label("Department"),
-    functional_title: Yup.string().required().label("Functional Title"),
+    functionalTitle: Yup.string().required().label("Functional Title"),
     password: formData
       ? Yup.string().optional().label("Password")
       : Yup.string().required().label("Password"),
-    re_password: formData
+    rePassword: formData
       ? Yup.string().optional().label("Confirm Password")
       : Yup.string().required().label("Confirm Password"),
   });
@@ -165,37 +166,40 @@ const UserForm = ({
   return (
     <FormikBase
       initialValues={initialValues}
-      onSubmit={(props, otherProps) => {
+      onSubmit={(values, otherProps) => {
+        // const modifiedValues = getModifiedValues(values, initialValues);
+
         const {
-          profile_pic,
-          full_name,
+          profilePic,
+          fullName,
           email,
-          branch_name,
-          branch_code,
+          branchName,
+          branchCode,
           department,
-          functional_title,
+          functionalTitle,
           password,
-          re_password,
-        } = props;
-        const values = new FormData();
-        if (profile_pic && profile_pic?.length) {
-          values.append("profile_pic", profile_pic[0]);
+          rePassword,
+        } = values;
+
+        const formdata = new FormData();
+        if (profilePic && profilePic?.length) {
+          formdata.append("profilePic", profilePic[0]);
         }
 
-        values.append("full_name", full_name);
-        values.append("email", email);
-        values.append("branch_name", branch_name);
-        values.append("branch_code", branch_code);
-        values.append("department", department);
-        values.append("functional_title", functional_title);
-        if (!formData) values.append("password", password);
-        if (!formData) values.append("re_password", re_password);
+        formdata.append("fullName", fullName);
+        formdata.append("email", email);
+        formdata.append("branchName", branchName);
+        formdata.append("branchCode", branchCode);
+        formdata.append("department", department);
+        formdata.append("functionalTitle", functionalTitle);
 
-        formData ? onEdit(values, otherProps) : onCreate(values, otherProps);
+        if (!formData) formdata.append("password", password);
+        if (!formData) formdata.append("rePassword", rePassword);
+
+        formData ? onEdit(formdata, otherProps) : onCreate(formdata, otherProps);
       }}
       validationSchema={validationSchema}
       renderForm={({ values, errors, handleChange, setFieldValue }) => {
-        console.log("values", values);
         return (
           <Form style={{ boxSizing: "border-box" }}>
             <FormGroup title="Checkist Information">
@@ -203,23 +207,23 @@ const UserForm = ({
                 <Col>
                   <ImageInput
                     label="Profile Picture"
-                    name="profile_pic"
+                    name="profilePic"
                     accept="image/*"
                     errors={errors}
                     errorStyle={{ marginTop: 0 }}
-                    value={typeof values.profile_pic[0] === "string" ? values.profile_pic : []}
-                    onChange={(filelist) => setFieldValue("profile_pic", filelist)}
+                    value={typeof values.profilePic[0] === "string" ? values.profilePic : []}
+                    onChange={(filelist) => setFieldValue("profilePic", filelist)}
                     onRemove={() => {
-                      setFieldValue("profile_pic", []);
+                      setFieldValue("profilePic", []);
                     }}
                   />
                 </Col>
                 <Col>
                   <Input
-                    name="full_name"
+                    name="fullName"
                     label="Name"
                     placeholder="Enter Name"
-                    value={values.full_name}
+                    value={values.fullName}
                     onChange={handleChange}
                     errors={errors}
                   />
@@ -238,20 +242,20 @@ const UserForm = ({
               <Row style={{ marginBottom: 18, gap: 10 }}>
                 <Col>
                   <Input
-                    name="branch_name"
+                    name="branchName"
                     label="Branch Name"
                     placeholder="Enter Branch"
-                    value={values.branch_name}
+                    value={values.branchName}
                     onChange={handleChange}
                     errors={errors}
                   />
                 </Col>
                 <Col>
                   <Input
-                    name="branch_code"
+                    name="branchCode"
                     label="Branch Code"
                     placeholder="Enter Branch Code"
-                    value={values.branch_code}
+                    value={values.branchCode}
                     onChange={handleChange}
                     errors={errors}
                   />
@@ -270,10 +274,10 @@ const UserForm = ({
               <Row style={{ marginBottom: 10, gap: 10 }}>
                 <Col>
                   <Input
-                    name="functional_title"
+                    name="functionalTitle"
                     label="Functional Title"
                     placeholder="Enter Functional Title"
-                    value={values.functional_title}
+                    value={values.functionalTitle}
                     onChange={handleChange}
                     errors={errors}
                   />
@@ -292,10 +296,10 @@ const UserForm = ({
                     </Col>
                     <Col>
                       <Input
-                        name="re_password"
+                        name="rePassword"
                         label="Confirm Password"
                         placeholder="Confirm Password"
-                        value={values.re_password}
+                        value={values.rePassword}
                         onChange={handleChange}
                         errors={errors}
                       />

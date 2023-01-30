@@ -5,8 +5,7 @@ import UserForm from "./Form";
 import { AppState } from "store/reducer";
 
 import app from "constants/app";
-import { createUser, fetchUsers, updateUser, fetchUser } from "store/user/actions";
-import { consoleLogFormData } from "utils/general";
+import { createUser, fetchUsers, updateUser, fetchUser, setUser } from "store/user/actions";
 
 const CreateUpdateAccount: React.FC<PropsFromRedux> = ({
   fetchUsers,
@@ -14,6 +13,7 @@ const CreateUpdateAccount: React.FC<PropsFromRedux> = ({
   isLoading,
   users,
   user,
+  setUser,
   fetchUser,
   createUser,
   updateUser,
@@ -28,6 +28,13 @@ const CreateUpdateAccount: React.FC<PropsFromRedux> = ({
   //   useEffect(() => {
   //     setActive("User Management");
   //   }, []);
+
+  // reset user when component unmounts
+  useEffect(() => {
+    return () => {
+      setUser(null);
+    };
+  }, []);
 
   useEffect(() => {
     if (pageId) fetchUser({ userId: pageId });
@@ -45,7 +52,7 @@ const CreateUpdateAccount: React.FC<PropsFromRedux> = ({
       isLoading={isLoading}
       onCreate={async (values, { resetForm }) => {
         if (await createUser({ values })) {
-          // resetForm();
+          resetForm();
           //   navigate(-1);
           window.location.href = app.desk.user.root();
         }
@@ -78,6 +85,7 @@ const mapDispatchToProps = {
   updateUser,
   fetchUser,
   fetchUsers,
+  setUser,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

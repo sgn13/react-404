@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const users = [
     {
-        id: 1,
+        id: "1",
         fullName: "firoj",
         email: "firoj@gmail.com",
         city: "Kathmandu",
@@ -18,7 +18,7 @@ const users = [
         isAdmin: false,
     },
     {
-        id: 2,
+        id: "2",
         fullName: "saharoj",
         email: "saharoj@gmail.com",
         city: "Nepalganj",
@@ -34,7 +34,7 @@ const users = [
         isAdmin: true,
     },
     {
-        id: 3,
+        id: "3",
         fullName: "sakina",
         email: "sakina@gmail.com",
         city: "Butwal",
@@ -50,7 +50,7 @@ const users = [
         isAdmin: false,
     },
     {
-        id: 4,
+        id: "4",
         fullName: "afroj",
         email: "afroj@gmail.com",
         city: "Parasi",

@@ -8,6 +8,8 @@ import {
   updateUsers,
   deleteUsers as removeUsers,
 } from "../services/user.service";
+import { getShortId } from "../utils";
+import { directories } from "../constants/directories";
 
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -66,7 +68,7 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
 export const getUsersById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const user = await readUsersById(Number(id));
+    const user = await readUsersById(id);
     if (user) {
       res.status(200).json(user);
       return;
@@ -78,9 +80,19 @@ export const getUsersById = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-export const postUsers = async (req: Request, res: Response, next: NextFunction) => {
+export const postUsers = async (
+  req: Request & { uploadedFilename?: string },
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const payload = req.body;
+    const uploadedFileUrl = `${req.protocol}://${req.get("host")}${
+      directories.PROFILE_PICTURE_MOUNTPOINT
+    }/${req.uploadedFilename}`;
+
+    payload.id = getShortId();
+    payload.profilePic = uploadedFileUrl;
     const user = await createUsers(payload);
     res.status(200).json(user);
     return user;
@@ -96,9 +108,10 @@ export const putUsers = (req: Request, res: Response, next: NextFunction) => {
     const type = "put";
     const { id } = req.params;
     const { id: excludingId, ...payload } = req.body;
-    const user = updateUsers(type, Number(id), payload);
+    console.log("payload", payload);
+    const user = updateUsers(type, id, payload);
     res.status(200).json(user);
-    return user;
+    return true;
   } catch (err) {
     next(err);
   }
@@ -111,9 +124,9 @@ export const patchUsers = (req: Request, res: Response, next: NextFunction) => {
     const type = "patch";
     const { id } = req.params;
     const { id: excludingId, ...remainingPayload } = req.body;
-    const user = updateUsers(type, Number(id), remainingPayload);
+    const user = updateUsers(type, id, remainingPayload);
     res.status(200).json(user);
-    return user;
+    return true;
   } catch (err) {
     next(err);
   }

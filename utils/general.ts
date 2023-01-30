@@ -76,3 +76,20 @@ export function setIntervalWithCount(delay = 500, noOfTimes = 5) {
     }
   }, delay);
 }
+
+export const getModifiedValues = (currentValues: object, initialValues: object) => {
+  let modifiedValues = {};
+
+  if (currentValues) {
+    Object.entries(currentValues).forEach((entry) => {
+      let key = entry[0];
+      let value = entry[1];
+
+      if (value !== initialValues[key]) {
+        modifiedValues[key] = value;
+      }
+    });
+  }
+
+  return modifiedValues;
+};

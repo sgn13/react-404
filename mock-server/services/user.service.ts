@@ -12,9 +12,9 @@ export const readAllUsers = async () => {
   }
 };
 
-export const readUsersById = async (id: number) => {
+export const readUsersById = async (id: string) => {
   try {
-    const user = database.users.find((item) => item.id === id);
+    const user = database.users.find((item) => String(item.id) === String(id));
     return user;
   } catch (err) {
     throw err;
@@ -36,17 +36,17 @@ export const createUsers = async (payload: any) => {
   }
 };
 
-export const updateUsers = async (type: "put" | "patch", id: number, payload: any) => {
+export const updateUsers = async (type: "put" | "patch", id: string, payload: any) => {
   try {
     if (!id || !payload || !Object.keys(payload).length) return;
     // eslint-disable-next-line no-param-reassign
     payload.id = id; // overwrite the id with the id passed in so that id is not changed
-    const user: any = database.users.find((item) => item.id === id);
+    const user: any = database.users.find((item) => String(item.id) === String(id));
 
     if (user) {
-      const payloadIndex = database.users.findIndex((item) => item.id === id);
+      const payloadIndex = database.users.findIndex((item) => String(item.id) === String(id));
       if (type === "put") {
-        // replace item at index with another item
+        // replace(put) item at index with another item
         database.users.splice(payloadIndex, 1, payload);
         // eslint-disable-next-line consistent-return
         return database.users[payloadIndex];
@@ -71,9 +71,9 @@ export const updateUsers = async (type: "put" | "patch", id: number, payload: an
   }
 };
 
-export const deleteUsers = async (id: number) => {
+export const deleteUsers = async (id: string) => {
   try {
-    const payloadIndex = database.users.findIndex((item) => item.id === id);
+    const payloadIndex = database.users.findIndex((item) => String(item.id) === String(id));
     if (payloadIndex > -1) {
       // remove at index
       const deletedItem = database.users.splice(payloadIndex, 1);

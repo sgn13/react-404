@@ -2,7 +2,6 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import morgan from "morgan";
-import multer from "multer";
 import routes from "./routes/index";
 import {
   missedRouteCatcher,
@@ -11,6 +10,7 @@ import {
   respond404WithClientSupportedContentType,
   handleUnhandledRejection,
 } from "./controllers/error.controller";
+import { directories } from "./constants/directories";
 
 dotenv.config();
 
@@ -26,15 +26,13 @@ app.use(
     extended: true,
   }),
 );
-// for parsing multpart/formdata text only
-app.use(multer().none());
 
 app.use(morgan("tiny"));
 
 const corsConfig = {
   // Access-Control-Allow-Origin i.e client address
   origin: ["http://localhost:3000"],
-  methods: ["POST", "GET", "PUT", "OPTIONS"],
+  methods: ["POST", "GET", "PUT", "PATCH", "OPTIONS"],
   // Access-Control-Allow-Credentials
   credentials: true,
 };
@@ -50,6 +48,13 @@ app.get("/", (req: Request, res: Response) => {
 // ALL ROUTERS
 //-------------------------------------------------------
 app.use(routes);
+
+// for serving static assets
+// Usage: http://localhost:2000/profilePictures/1675095090806.png
+app.use(
+  directories.PROFILE_PICTURE_MOUNTPOINT,
+  express.static(directories.PROFILE_PICTURE_UPLOAD_DIR),
+);
 
 //-------------------------------------------------------
 // ERROR-HANDLING

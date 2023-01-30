@@ -1,5 +1,5 @@
 export type UserType = {
-  id: number;
+  id: string;
   fullName?: string;
   email: string;
   city: string;
@@ -19,7 +19,7 @@ export type UsersType = UserType[];
 
 const users: UsersType = [
   {
-    id: 1,
+    id: "1",
     fullName: "firoj",
     email: "firoj@gmail.com",
     city: "Kathmandu",
@@ -37,7 +37,7 @@ const users: UsersType = [
   },
 
   {
-    id: 2,
+    id: "2",
     fullName: "saharoj",
     email: "saharoj@gmail.com",
     city: "Nepalganj",
@@ -54,7 +54,7 @@ const users: UsersType = [
     isAdmin: true,
   },
   {
-    id: 3,
+    id: "3",
     fullName: "sakina",
     email: "sakina@gmail.com",
     city: "Butwal",
@@ -70,7 +70,7 @@ const users: UsersType = [
     isAdmin: false,
   },
   {
-    id: 4,
+    id: "4",
     fullName: "afroj",
     email: "afroj@gmail.com",
     city: "Parasi",
