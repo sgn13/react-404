@@ -10,6 +10,7 @@ import {
 } from "../services/user.service";
 import { getShortId } from "../utils";
 import { directories } from "../constants/directories";
+import { deleteFile } from "../utils";
 
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -103,12 +104,32 @@ export const postUsers = async (
 
 // put replaces the entire document with the new one
 // new fields could be added
-export const putUsers = (req: Request, res: Response, next: NextFunction) => {
+export const putUsers = async (
+  req: Request & { uploadedFilename?: string },
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const type = "put";
     const { id } = req.params;
     const { id: excludingId, ...payload } = req.body;
-    console.log("payload", payload);
+
+    // if profilePic field contains file, req.file is truthy
+    if (req.file) {
+      // delete old photo
+      const userOldInfo = await readUsersById(id);
+      const oldProfilePictureNames = userOldInfo?.profilePic?.split("/") ?? [];
+      const oldProfilePictureName = oldProfilePictureNames[oldProfilePictureNames?.length - 1];
+      const oldProfilePicturePath = `${directories.PROFILE_PICTURE_UPLOAD_DIR}${oldProfilePictureName}`;
+      deleteFile(oldProfilePicturePath);
+
+      // set newly uploaded ProfilePic url
+      const updatedFileUrl = `${req.protocol}://${req.get("host")}${
+        directories.PROFILE_PICTURE_MOUNTPOINT
+      }/${req.uploadedFilename}`;
+      payload.profilePic = updatedFileUrl;
+    }
+
     const user = updateUsers(type, id, payload);
     res.status(200).json(user);
     return true;
@@ -135,7 +156,7 @@ export const patchUsers = (req: Request, res: Response, next: NextFunction) => {
 export const deleteUsers = (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const user = removeUsers(Number(id));
+    const user = removeUsers(String(id));
     res.status(204).json(user);
     return;
   } catch (err) {

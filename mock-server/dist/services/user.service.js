@@ -36,7 +36,7 @@ const readUsersById = (id) => __awaiter(void 0, void 0, void 0, function* () {
 exports.readUsersById = readUsersById;
 const createUsers = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const payloadIndex = index_1.default.users.findIndex((item) => item.id === payload.id);
+        const payloadIndex = index_1.default.users.findIndex((item) => String(item.id) === String(payload.id));
         if (payloadIndex === -1) {
             index_1.default.users.push(payload);
             return payload;

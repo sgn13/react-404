@@ -24,6 +24,7 @@ exports.deleteUsers = exports.patchUsers = exports.putUsers = exports.postUsers 
 const user_service_1 = require("../services/user.service");
 const utils_1 = require("../utils");
 const directories_1 = require("../constants/directories");
+const utils_2 = require("../utils");
 const getAllUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // paginating user model
@@ -107,12 +108,24 @@ const postUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function
 exports.postUsers = postUsers;
 // put replaces the entire document with the new one
 // new fields could be added
-const putUsers = (req, res, next) => {
+const putUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     try {
         const type = "put";
         const { id } = req.params;
-        const _a = req.body, { id: excludingId } = _a, payload = __rest(_a, ["id"]);
-        console.log("payload", payload);
+        const _c = req.body, { id: excludingId } = _c, payload = __rest(_c, ["id"]);
+        // if profilePic field contains file, req.file is truthy
+        if (req.file) {
+            // delete old photo
+            const userOldInfo = yield (0, user_service_1.readUsersById)(id);
+            const oldProfilePictureNames = (_b = (_a = userOldInfo === null || userOldInfo === void 0 ? void 0 : userOldInfo.profilePic) === null || _a === void 0 ? void 0 : _a.split("/")) !== null && _b !== void 0 ? _b : [];
+            const oldProfilePictureName = oldProfilePictureNames[(oldProfilePictureNames === null || oldProfilePictureNames === void 0 ? void 0 : oldProfilePictureNames.length) - 1];
+            const oldProfilePicturePath = `${directories_1.directories.PROFILE_PICTURE_UPLOAD_DIR}${oldProfilePictureName}`;
+            (0, utils_2.deleteFile)(oldProfilePicturePath);
+            // set newly uploaded ProfilePic url
+            const updatedFileUrl = `${req.protocol}://${req.get("host")}${directories_1.directories.PROFILE_PICTURE_MOUNTPOINT}/${req.uploadedFilename}`;
+            payload.profilePic = updatedFileUrl;
+        }
         const user = (0, user_service_1.updateUsers)(type, id, payload);
         res.status(200).json(user);
         return true;
@@ -120,7 +133,7 @@ const putUsers = (req, res, next) => {
     catch (err) {
         next(err);
     }
-};
+});
 exports.putUsers = putUsers;
 // patch replaces only the fields that are passed in the request
 // only existing fields are updated
@@ -141,7 +154,7 @@ exports.patchUsers = patchUsers;
 const deleteUsers = (req, res, next) => {
     try {
         const { id } = req.params;
-        const user = (0, user_service_1.deleteUsers)(Number(id));
+        const user = (0, user_service_1.deleteUsers)(String(id));
         res.status(204).json(user);
         return;
     }

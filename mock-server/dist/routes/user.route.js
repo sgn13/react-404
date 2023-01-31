@@ -10,6 +10,7 @@ const router = express_1.default.Router();
 router.get("/users", user_controller_1.getAllUsers);
 router.get("/users/:id", user_controller_1.getUsersById);
 router.post("/users", (0, middlewares_1.uploadFileToLocalStorage)().single("profilePic"), user_controller_1.postUsers);
+// if profilePic field does not contain file, req.file will be undefined.
 router.put("/users/:id", (0, middlewares_1.uploadFileToLocalStorage)().single("profilePic"), user_controller_1.putUsers);
 router.patch("/users/:id", user_controller_1.patchUsers);
 router.delete("/users/:id", user_controller_1.deleteUsers);

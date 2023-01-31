@@ -1,11 +1,11 @@
 import { directories } from "../constants/directories";
 
-export const parseOnlyTextFormdata = () => {
+export const parseFormdata = () => {
   // multipart/formdata or formdata is same. To parse it
   // you need to use multer or similar library which will parse multipart-formdata in req.body.file and other remaining data in req.body
   const multer = require("multer");
   const upload = multer();
-  return upload.none();
+  return upload;
 };
 
 //  setup for file upload in private server
@@ -15,7 +15,7 @@ export const uploadFileToLocalStorage = () => {
 
   const storageConfig = multer.diskStorage({
     destination: function (req: any, file: any, cb: Function) {
-      cb(null, `./${directories.PROFILE_PICTURE_UPLOAD_DIR}`);
+      cb(null, `${directories.PROFILE_PICTURE_UPLOAD_DIR}`);
     },
     filename: function (req: any, file: any, cb: Function) {
       // const filename = `${req.params.userId}${path.extname(file.originalname)}`;

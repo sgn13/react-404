@@ -115,7 +115,7 @@ export const resetPassword = (req: Request, res: Response, next: NextFunction) =
     const type = "put";
     const { id } = req.params;
     const { id: excludingId, ...payload } = req.body;
-    const user = updateUsers(type, Number(id), payload);
+    const user = updateUsers(type, String(id), payload);
     res.status(200).json(user);
     return user;
   } catch (err) {

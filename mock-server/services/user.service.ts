@@ -23,7 +23,7 @@ export const readUsersById = async (id: string) => {
 
 export const createUsers = async (payload: any) => {
   try {
-    const payloadIndex = database.users.findIndex((item) => item.id === payload.id);
+    const payloadIndex = database.users.findIndex((item) => String(item.id) === String(payload.id));
     if (payloadIndex === -1) {
       database.users.push(payload);
       return payload;
