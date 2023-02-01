@@ -24,6 +24,9 @@ import {
   UpdateMeType,
 } from "./types";
 
+import { ToastOptions, ToastPosition, TypeOptions } from "react-toastify";
+import { Notify } from "components/Notification/Notification";
+
 export const setMe = (payload: any): SetMeType => ({
   type: SET_ME,
   payload,
@@ -67,7 +70,20 @@ export const setSidebar = (payload): SetSidebarType => ({
   payload,
 });
 
-export const setErrorMessage = (err): SetNotificationDataType => {
+export const setErrorResponse = ({ message }): SetNotificationDataType => {
+  return {
+    type: SET_NOTIFICATION_DATA,
+    payload: {
+      position: "top-right",
+      message: message || "Error has occurred",
+      type: "error",
+    },
+  };
+};
+
+export const notify = (message: string, options: ToastOptions) => Notify(message, options);
+
+export const notifyError = (err: any) => {
   let message;
   if (err && err.response && err.response.data) {
     const errorKeyArray = Object.keys(err.response.data);
@@ -76,37 +92,25 @@ export const setErrorMessage = (err): SetNotificationDataType => {
       message = `${errorMessageArray[0]} : ${errorKeyArray.length && errorKeyArray[0]}`;
     }
   }
-  return {
-    type: SET_NOTIFICATION_DATA,
-    payload: {
-      name: (err && err.response && err.response.name) || "Error",
-      message: message || "Error has occurred",
-      level: "error",
-    },
-  };
+  Notify(message || "Error has occurred", {
+    type: "error",
+  });
 };
 
-export const setLoginErrorMessage = (err): SetNotificationDataType => {
-  const error = Object.values(err);
-
-  return {
-    type: SET_NOTIFICATION_DATA,
-    payload: {
-      name: (err && err.response && err.response.name) || "Error",
-      message: error.length ? (error[0] as string) : "Error has occurred",
-      level: "error",
-    },
-  };
+export const notifySuccess = (message = "Error has occurred") => {
+  Notify(message, {
+    type: "success",
+  });
 };
 
-export const setErrorResponse = ({ message }): SetNotificationDataType => {
+export const showNotification = (payload: {
+  position: ToastPosition;
+  type: TypeOptions;
+  message: string;
+}): SetNotificationDataType => {
   return {
     type: SET_NOTIFICATION_DATA,
-    payload: {
-      name: "Error",
-      message: message || "Error has occurred",
-      level: "error",
-    },
+    payload,
   };
 };
 
@@ -130,17 +134,20 @@ export const login =
           sessionStorage.setItem("accessToken", data.token.access);
           sessionStorage.setItem("refreshToken", data.token.refresh);
           const redirectUrl = window.sessionStorage.getItem("redirectTo") || "/";
-          window.location.href = redirectUrl;
+          Notify("Login Successful", {
+            type: "success",
+          });
+          setTimeout(() => (window.location.href = redirectUrl), 1000);
           return data;
         }
         return true;
       }
-      dispatch(setLoginErrorMessage(data));
+      // notifyError(data);
       dispatch(setIsSubmitting(false));
       return false;
     } catch (error) {
       dispatch(setIsSubmitting(false));
-      if (error.response) dispatch(setErrorMessage(error));
+      if (error.response) dispatch(notifyError(error));
       return false;
     }
   };

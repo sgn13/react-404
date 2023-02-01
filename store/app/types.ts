@@ -1,19 +1,21 @@
 import {
+  SET_NOTIFICATION_DATA,
   RESET_NOTIFICATION_DATA,
   SET_DOWNLOADING_INFO,
   SET_IS_LOADING,
   SET_IS_SUBMITTING,
   SET_ME,
-  SET_NOTIFICATION_DATA,
   SET_SIDEBAR,
   SET_UPLOADING_INFO,
   UPDATE_ME,
 } from "./constants";
 
+import { ToastPosition, TypeOptions } from "react-toastify";
+
 export type NotificationPayloadType = {
-  name: string;
   message: string;
-  level: string;
+  position: ToastPosition;
+  type: TypeOptions;
 };
 
 export interface ApplicationState {
@@ -54,10 +56,6 @@ export type SetNotificationDataType = {
   payload: NotificationPayloadType;
 };
 
-export type ResetNotificationDataType = {
-  type: typeof RESET_NOTIFICATION_DATA;
-};
-
 export type SetDownloadingInfoType = {
   type: typeof SET_DOWNLOADING_INFO;
   payload: any;
@@ -81,5 +79,4 @@ export type ApplicationActionTypes =
   | SetUploadingInfoType
   | SetDownloadingInfoType
   | SetNotificationDataType
-  | ResetNotificationDataType
   | SetSidebarType;

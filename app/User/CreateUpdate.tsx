@@ -53,8 +53,8 @@ const CreateUpdateAccount: React.FC<PropsFromRedux> = ({
       onCreate={async (values, { resetForm }) => {
         if (await createUser({ values })) {
           resetForm();
-          //   navigate(-1);
-          window.location.href = app.desk.user.root();
+          navigate(-1);
+          // window.location.href = app.desk.user.root(); // this will disturb notification system due to whole app reload
         }
       }}
       onEdit={async (values, { resetForm }) => {
@@ -65,8 +65,7 @@ const CreateUpdateAccount: React.FC<PropsFromRedux> = ({
           })
         ) {
           resetForm();
-          //   navigate(-1);
-          window.location.href = app.desk.user.root();
+          navigate(-1);
         }
       }}
     />

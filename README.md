@@ -23,31 +23,34 @@
     - pre-push
       - npm run build
 
-- Redux Setup
-- Routing Setup
+- Redux Setup (:heavy_check_mark:)
+- Routing Setup (:heavy_check_mark:)
 
-  - Public and Private routes
-  - Layout and Non-Layout routes
+  - Public and Private routes (:heavy_check_mark:)
+  - Layout and Non-Layout routes (:heavy_check_mark:)
 
-- Authentication Setup
+- Authentication Setup (:heavy_check_mark:)
 
-- Custom font setup
-- Themeing Setup
-- Components Setup
-  - Animations folder
-- Hooks Setup
-- Containers setup
-- Pages setup with common messages pages
+- Custom font setup (:heavy_check_mark:)
+- Themeing Setup (:heavy_check_mark:)
+- Components Setup (:heavy_check_mark:)
+  - Animations folder (:heavy_check_mark:)
+- Hooks Setup (:heavy_check_mark:)
+- Containers setup (:heavy_check_mark:)
 
-- Data Grid with server side pagination setup
-- Data Grid with client side pagination setup
+- Notification Setup (:heavy_check_mark:)
+- Working Configuation with Mock server (:heavy_check_mark:)
+- CRUD (:heavy_check_mark:)
+- PAGINATION: (:heavy_check_mark:)
+- Data Grid with client side pagination setup (:heavy_check_mark: in storybook In Pagination component)
 - Download and Upload Setup with progress bar
-- Notification Setup
-- Working Configuation with Mock server
-
+- Permission Setup
+- SORTING, SEARCHING, FILTERING
+- Data Grid with server side pagination setup
+- Table download as csv
+- Pages setup with common messages pages
 - Socket Setup
 - Webrtc Setup
-- CRUD with SORTING, SEARCHING, FILTERING & PAGINATION
 
 ## How to use it ?
 

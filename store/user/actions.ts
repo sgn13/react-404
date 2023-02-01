@@ -3,8 +3,8 @@ import { ThunkAction } from "redux-thunk";
 
 import api from "constants/api";
 
-import { formDataGenerator, generateMeta, generateQuery } from "utils/store";
-import { setErrorMessage } from "store/app/actions";
+import { generateMeta, generateQuery } from "utils/store";
+import { notifyError } from "store/app/actions";
 
 import { network } from "utils/network";
 import { defaultQuery } from "constants/query";
@@ -36,6 +36,7 @@ import {
   SET_USER_DATA,
   UPDATE_USER_DATA,
 } from "./action-types";
+import { Notify } from "components/Notification/Notification";
 
 // import { updateSidebarData } from "../app/actions";
 
@@ -118,7 +119,7 @@ export const fetchUser: AppThunk =
       }
       return false;
     } catch (error) {
-      if (error.response) dispatch(setErrorMessage(error));
+      notifyError(error);
       dispatch(setIsLoading(false));
       return false;
     }
@@ -147,7 +148,7 @@ export const fetchUsers: AppThunk =
       return false;
     } catch (error) {
       dispatch(setIsLoading(false));
-      if (error.response) dispatch(setErrorMessage(error));
+      notifyError(error);
       return false;
     }
   };
@@ -160,14 +161,17 @@ export const createUser: AppThunk =
       const { data, status } = await network({ dispatch }).post(api.user, values);
 
       if (status === 200 || (status > 200 && status < 300)) {
+        Notify("New User Added Successfully", {
+          type: "success",
+          position: "top-right",
+        });
         dispatch(createUserData(data));
         dispatch(setIsSubmitting(false));
-
         return true;
       }
       return false;
     } catch (error) {
-      if (error.response) dispatch(setErrorMessage(error));
+      notifyError(error);
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -191,7 +195,7 @@ export const updateUser: AppThunk =
       }
       return false;
     } catch (error) {
-      if (error.response) dispatch(setErrorMessage(error));
+      notifyError(error);
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -216,7 +220,7 @@ export const updateUserPermission: AppThunk =
       }
       return false;
     } catch (error) {
-      if (error.response) dispatch(setErrorMessage(error));
+      notifyError(error);
       dispatch(setIsSubmitting(false));
       return false;
     }
@@ -236,7 +240,7 @@ export const deleteUser: AppThunk =
       }
       return false;
     } catch (error) {
-      if (error.response) dispatch(setErrorMessage(error));
+      notifyError(error);
       dispatch(setIsSubmitting(false));
       return false;
     }

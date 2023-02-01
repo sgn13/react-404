@@ -87,10 +87,6 @@ function Layout({ sidebar, me, isLoading }) {
           </div>
         </div>
       </AppBody>
-
-      {/* {!!(notification && notification.length) && (
-        <NotificationComponent data={notification[0]} resetNotification={resetNotification} />
-      )} */}
     </>
   );
 }

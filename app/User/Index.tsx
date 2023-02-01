@@ -295,6 +295,8 @@ function LiveClients({
         />
       )}
 
+      {/* <Button onClick={() => toast("New User Added Successfully")}>Notify</Button> */}
+
       {deleteModal}
       <div style={{ position: "relative" }}>
         <Button

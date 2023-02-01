@@ -8,6 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import React from "react";
 import Routes from "./App";
 import { initializeStore } from "./store";
+import Notification from "components/Notification/Notification";
 
 const store = initializeStore();
 const errorHandler = (error: any, errorInfo: any) => {
@@ -22,6 +23,18 @@ function AppIndex() {
     <ErrorBoundary FallbackComponent={ReactError} onError={errorHandler}>
       <ReduxProvider store={store}>
         <StyledThemeProvider>
+          <Notification
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
           <BrowserRouter>
             <Routes />
           </BrowserRouter>

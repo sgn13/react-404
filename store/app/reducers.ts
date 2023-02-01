@@ -1,8 +1,16 @@
 import { Reducer } from "redux";
 
-import { SET_IS_LOADING, SET_IS_SUBMITTING, SET_ME, SET_SIDEBAR, UPDATE_ME } from "./constants";
+import {
+  SET_IS_LOADING,
+  SET_IS_SUBMITTING,
+  SET_ME,
+  SET_SIDEBAR,
+  UPDATE_ME,
+  SET_NOTIFICATION_DATA,
+} from "./constants";
 
 import { ApplicationActionTypes, ApplicationState } from "./types";
+import { Notify } from "components/Notification/Notification";
 
 export const initialState: ApplicationState = {
   token: "",
@@ -25,8 +33,6 @@ const reducer: Reducer<ApplicationState> = (
   state: ApplicationState = initialState,
   action: ApplicationActionTypes,
 ): ApplicationState => {
-  const { notification } = state;
-
   switch (action.type) {
     case SET_IS_LOADING: {
       return {
@@ -50,6 +56,15 @@ const reducer: Reducer<ApplicationState> = (
 
     case SET_SIDEBAR: {
       return { ...state, sidebar: action.payload };
+    }
+
+    case SET_NOTIFICATION_DATA: {
+      const { message = "", position = "bottom-right", type = "success" } = action.payload;
+      Notify(message, {
+        position,
+        type,
+      });
+      return { ...state };
     }
 
     default:
