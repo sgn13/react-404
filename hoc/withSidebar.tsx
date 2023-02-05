@@ -4,7 +4,7 @@ import { setSidebar } from "store/app/actions";
 import { IndexSidebar } from "constants/sidebar";
 import withAuth from "hoc/withAuth";
 
-export const withSidebar = (WrappedComponent) => {
+const withSidebar = (WrappedComponent) => {
   // The sole purpose of this HOC is to set sidebar in redux store everytime any of the Layout components mount.
   // so that the sidebar for the respective component is available in store to render.
 
@@ -30,7 +30,8 @@ export const withSidebar = (WrappedComponent) => {
   const connector = connect(mapStateToProps, mapDispatchToProps);
 
   // Passing HOC via Another withAuthHOC before returning our final component.
-  return connector(withAuth(HOC));
+  // return connector(withAuth(HOC));
+  return connector(HOC);
 };
 
 export default withSidebar;

@@ -18,8 +18,10 @@ import { deleteUser } from "store/user/actions";
 import { SiAuth0 } from "react-icons/si";
 import { FaRegEdit } from "react-icons/fa";
 import { ViewModal } from "components/Modal/Index";
-import View from "app/User/View";
+import View from "app/User/ViewInModal";
 import { primary } from "theme";
+import withSidebar from "hoc/withSidebar";
+import withAuth from "hoc/withAuth";
 
 const ClientItem = styled.li`
   display: flex;
@@ -228,8 +230,7 @@ function LiveClients({
                   size={28}
                   fill={primary}
                   onClick={() => {
-                    setSelectedItem(item);
-                    setShowModal("view");
+                    navigate(app.desk.user.view(item.id));
                   }}
                 />
               </Action>
@@ -363,4 +364,5 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
+// export default connector(withSidebar(withAuth(LiveClients)));
 export default connector(LiveClients);

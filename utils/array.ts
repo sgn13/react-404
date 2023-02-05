@@ -11,9 +11,6 @@ export const sliceIntoChunks = (arr, chunkSize) => {
   return temp;
 };
 
-export const checkArrayIntersection = (arr = [], target = []) =>
-  target.every((v) => arr.includes(v));
-
 export const stringArrayToObject = (arr) =>
   arr.map((item) => ({
     label: item,
@@ -35,6 +32,7 @@ export const shallowEqual = ({ object1, object2 }) => {
   return true;
 };
 
+export const includesSome = (arr = [], target = []) => target.some((v) => arr.includes(v));
 export const includesEvery = ({ arr = [], target = [] }) => target.every((v) => arr.includes(v));
 
 export const getQuery = (filter) => {

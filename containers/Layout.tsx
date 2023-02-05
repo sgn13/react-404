@@ -34,6 +34,8 @@ const AppBody = styled.div`
   overflow-y: auto;
 `;
 
+export const Page = styled.div``;
+
 function Layout({ sidebar, me, isLoading }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -41,11 +43,11 @@ function Layout({ sidebar, me, isLoading }) {
   const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState("");
 
-  useEffect(() => {
-    if (pathname === "/") {
-      navigate(IndexSidebar({})[0]?.path);
-    }
-  }, [pathname]);
+  // useEffect(() => {
+  //   if (pathname === "/") {
+  //     navigate(IndexSidebar({})[0]?.path);
+  //   }
+  // }, [pathname]);
 
   if (isLoading) {
     return <Loader />;

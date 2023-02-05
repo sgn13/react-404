@@ -24,7 +24,7 @@ function AppRouter() {
       <Suspense fallback={<Loader />}>
         <AuthContents />
         <MessageContents />
-        {sessionStorage.getItem("accessToken") && <Layout />}
+        <Layout />
       </Suspense>
     </div>
   );

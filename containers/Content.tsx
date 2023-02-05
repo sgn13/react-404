@@ -33,28 +33,12 @@ export const PageContainer = styled.div`
   width: 100%;
 `;
 
-const LayoutContents = () => useRoutes(routes);
-
 function Content({ setActive }) {
+  const routing = useRoutes(routes);
+
   return (
     <ContentBody>
-      <Suspense fallback={<Loader />}>
-        {/* <Switch>
-          {routes.map((route, idx) => (
-            <Route
-              key={idx}
-              path={route.path}
-              exact={route.exact}
-              render={(props) => (
-                <Body config={route.bodyConfig} title={route.title}>
-                  <route.component {...props} setActive={setActive} />
-                </Body>
-              )}
-            />
-          ))}
-        </Switch> */}
-        <LayoutContents />
-      </Suspense>
+      <Suspense fallback={<Loader />}>{routing}</Suspense>
     </ContentBody>
   );
 }

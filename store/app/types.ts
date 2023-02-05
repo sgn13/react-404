@@ -28,8 +28,22 @@ export interface ApplicationState {
   sidebar: any[];
   appName: any;
   validPermissions: any;
-  upload: { count: number; progress: number; meta: string };
-  download: { count: number; progress: number; meta: string };
+  upload: {
+    count: number;
+    progress: number;
+    loaded: number;
+    total: number;
+    startTime: number;
+    remainingTime?: number;
+  };
+  download: {
+    count: number;
+    progress: number;
+    loaded: number;
+    total: number;
+    startTime: number;
+    remainingTime?: number;
+  };
   collapsed: boolean;
 }
 

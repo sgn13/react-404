@@ -7,6 +7,8 @@ import {
   SET_SIDEBAR,
   UPDATE_ME,
   SET_NOTIFICATION_DATA,
+  SET_UPLOADING_INFO,
+  SET_DOWNLOADING_INFO,
 } from "./constants";
 
 import { ApplicationActionTypes, ApplicationState } from "./types";
@@ -21,8 +23,8 @@ export const initialState: ApplicationState = {
   sidebar: [],
   appName: "default",
   notification: [],
-  upload: { count: 0, progress: 0, meta: "" },
-  download: { count: 0, progress: 0, meta: "" },
+  upload: { count: 0, progress: 0, loaded: 0, total: 0, startTime: 0, remainingTime: undefined },
+  download: { count: 0, progress: 0, loaded: 0, total: 0, startTime: 0, remainingTime: undefined },
   validPermissions: undefined,
 
   collapsed: false,
@@ -56,6 +58,20 @@ const reducer: Reducer<ApplicationState> = (
 
     case SET_SIDEBAR: {
       return { ...state, sidebar: action.payload };
+    }
+
+    case SET_UPLOADING_INFO: {
+      return {
+        ...state,
+        upload: { ...state.upload, ...action.payload },
+      };
+    }
+
+    case SET_DOWNLOADING_INFO: {
+      return {
+        ...state,
+        download: { ...state.download, ...action.payload },
+      };
     }
 
     case SET_NOTIFICATION_DATA: {

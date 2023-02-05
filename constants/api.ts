@@ -3,6 +3,7 @@ const api = {
   logout: "/logout/",
   me: "/profile/",
   user: "/users/",
+  getUserVideoUploadPath: (id: string) => `/users/${id}/upload/video/`,
   uploadFile: "/upload/file",
 };
 

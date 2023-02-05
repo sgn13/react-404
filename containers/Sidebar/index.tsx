@@ -4,7 +4,7 @@ import styled from "theme/styled";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "assets/logo.png";
 import ExpandIcon from "containers/Sidebar/expand-icon.svg";
-import { checkPermission } from "utils/permission";
+import checkPermission from "utils/checkPermission";
 import { primary, secondary } from "theme";
 import { StyledSidebarType } from "./types";
 import BaseSidebarItem from "./SidebarItem";

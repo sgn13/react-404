@@ -10,6 +10,7 @@ import { PageContainer } from "containers/Content";
 import niceIcon from "assets/icons/nice.svg";
 import { primary } from "theme";
 import { AuthForm } from "./AuthForm";
+import { useNavigate } from "react-router-dom";
 
 const LogoHolder = styled.div`
   max-width: 220px;
@@ -59,6 +60,7 @@ const Caption = styled.div`
 
 /* eslint-disable-next-line */
 function Index({ login, isSubmitting }: PropsFromRedux) {
+  const navigate = useNavigate();
   return (
     <PageContainer>
       <Container fullHeight centerHorizontally centerVertically>
@@ -100,6 +102,7 @@ function Index({ login, isSubmitting }: PropsFromRedux) {
                     formData.append("email", values.email);
                     formData.append("password", values.password);
                     if (await login({ values: formData })) {
+                      navigate("/");
                       resetForm();
                     }
                   }}

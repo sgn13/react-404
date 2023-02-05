@@ -9,13 +9,14 @@ export const parseFormdata = () => {
 };
 
 //  setup for file upload in private server
-export const uploadFileToLocalStorage = () => {
+export const uploadFileToLocalStorage = (dest: string) => {
   const multer = require("multer");
   const path = require("path");
 
   const storageConfig = multer.diskStorage({
     destination: function (req: any, file: any, cb: Function) {
-      cb(null, `${directories.PROFILE_PICTURE_UPLOAD_DIR}`);
+      console.log("filename", file?.originalname);
+      cb(null, `${dest}`);
     },
     filename: function (req: any, file: any, cb: Function) {
       // const filename = `${req.params.userId}${path.extname(file.originalname)}`;
@@ -40,8 +41,8 @@ export const uploadFileToLocalStorage = () => {
   };
   const upload = multer({
     storage: storageConfig,
-    limits: limitConfig,
-    fileFilter: fileFilterConfig,
+    // limits: limitConfig,
+    // fileFilter: fileFilterConfig,
   });
   return upload;
   // can receive either single or multiple files depending on the options used

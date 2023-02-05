@@ -102,6 +102,7 @@ export const fetchDriver: AppThunk =
           return true;
         }
       }
+      dispatch(setIsLoading(false));
       return false;
     } catch (error) {
       // error.response && dispatch(setErrorMessage(error));

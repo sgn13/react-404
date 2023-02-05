@@ -289,94 +289,42 @@ export const Gears = styled.div`
   }
 `;
 
-export const ProgressLoader = styled.div`
+export const ProgressLoader = styled.div<{ progress: any }>`
   display: block;
   position: relative;
   height: 32px;
-  width: 200px;
   width: 100%;
   background: #fff;
-  border: 2px solid gray;
-  color: red;
+  border: 1px solid #a0a0a26a;
+  color: white;
   overflow: hidden;
+  border-radius: 1em;
+  font-family: "Poppins300";
 
   ::before {
     content: "";
-    background: rgb(66, 205, 15);
+    background: #cd171f;
     position: absolute;
     left: 0;
     top: 0;
-    width: 0;
+    width: ${({ progress }) => (progress > 0 ? `${progress}%` : 0)};
     height: 100%;
-    animation: loading 10s linear infinite;
+    transition: width 1.5s linear;
   }
+
   :after {
-    content: "";
+    content: ${({ progress }) => (progress > 0 ? `"${progress}%"` : "'0%'")};
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     text-align: center;
-    font-size: 24px;
+    font-size: 1.3em;
     line-height: 32px;
-    color: rgb(0, 255, 255);
-    mix-blend-mode: difference;
-    animation: percentage 10s linear infinite;
+    color: #ebf5ee;
+    text-shadow: 0 -1px rgb(0 0 0 / 100%);
+    /* mix-blend-mode: difference; */
+    background-color: #9895941d;
   }
-
-  @keyframes loading {
-    0% {
-      width: 0;
-    }
-    100% {
-      width: 100%;
-    }
-  }
-
-  ${(() => {
-    const result = Array(101)
-      .fill(0)
-      .map((item, index) => {
-        return `${index}% { content: "${index}%";}`;
-      })
-      .join(" ");
-
-    return `@keyframes percentage { ${result} }`;
-  })()}/* @keyframes percentage {
-    0% {
-      content: "0%";
-    }
-   
-    10% {
-      content: "10%";
-    }
-    20% {
-      content: "20%";
-    }
-    30% {
-      content: "30%";
-    }
-    40% {
-      content: "40%";
-    }
-    50% {
-      content: "50%";
-    }
-    60% {
-      content: "60%";
-    }
-    70% {
-      content: "70%";
-    }
-    80% {
-      content: "80%";
-    }
-    90% {
-      content: "90%";
-    }
-    100% {
-      content: "100%";
-    }
-  } */
 `;

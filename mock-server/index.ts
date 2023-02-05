@@ -56,6 +56,11 @@ app.use(
   express.static(directories.PROFILE_PICTURE_UPLOAD_DIR),
 );
 
+app.use(
+  directories.PROFILE_VIDEOS_MOUNTPOINT,
+  express.static(directories.PROFILE_VIDEOS_UPLOAD_DIR),
+);
+
 //-------------------------------------------------------
 // ERROR-HANDLING
 //-------------------------------------------------------

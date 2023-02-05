@@ -26,6 +26,8 @@ import {
 
 import { ToastOptions, ToastPosition, TypeOptions } from "react-toastify";
 import { Notify } from "components/Notification/Notification";
+import { downloadFromBlob, getFileExtension } from "utils/general";
+import throttle from "utils/throttle";
 
 export const setMe = (payload: any): SetMeType => ({
   type: SET_ME,
@@ -50,7 +52,8 @@ export const setIsSubmitting = (payload: boolean): SetIsSubmittingType => ({
 export const setUploadingInfo = (payload: {
   count?: any;
   progress?: any;
-  meta?: any;
+  loaded?: any;
+  total?: any;
 }): SetUploadingInfoType => ({
   type: SET_UPLOADING_INFO,
   payload,
@@ -59,7 +62,10 @@ export const setUploadingInfo = (payload: {
 export const setDownloadingInfo = (payload: {
   count?: any;
   progress?: any;
-  meta?: any;
+  loaded?: any;
+  total?: any;
+  startTime: number;
+  remainingTime?: number;
 }): SetDownloadingInfoType => ({
   type: SET_DOWNLOADING_INFO,
   payload,
@@ -130,14 +136,14 @@ export const login =
       const { data, status } = await network({ requireToken: false }).post(api.login, values);
       if (status === 200 || status === 201) {
         if (data) {
+          console.log("data", data?.token);
           dispatch(setIsSubmitting(false));
+          dispatch(setMe(data));
           sessionStorage.setItem("accessToken", data.token.access);
           sessionStorage.setItem("refreshToken", data.token.refresh);
-          const redirectUrl = window.sessionStorage.getItem("redirectTo") || "/";
           Notify("Login Successful", {
             type: "success",
           });
-          setTimeout(() => (window.location.href = redirectUrl), 1000);
           return data;
         }
         return true;
@@ -153,44 +159,109 @@ export const login =
   };
 
 export const uploadFile: AppThunk =
-  ({ formData }) =>
+  ({ id, formData }) =>
   async (dispatch: Dispatch) => {
     try {
+      const downloadStartTime = new Date().getTime() / 1000;
+      let intervalId = null;
+      let remainingTime = null;
+
       dispatch(setUploadingInfo({ count: 1 }));
       dispatch(setIsSubmitting(true));
       const { data, status } = await network({
         dispatch,
-        onUploadProgress: (progressEvent) => {
+        onUploadProgress: (progressEvent: any) => {
+          const { loaded, total } = progressEvent;
+          const progressPercentage = total ? Math.round((loaded * 100) / total) : 0;
+
+          intervalId = setInterval(() => {
+            const downloadEndTime = new Date().getTime() / 1000;
+            const timeElapsed = downloadEndTime - downloadStartTime;
+            const downloadRate = loaded / timeElapsed; // bytes/sec
+            remainingTime = total / downloadRate;
+          }, 1000);
+
           dispatch(
             setUploadingInfo({
-              progress: progressEvent.total
-                ? Math.round((progressEvent.loaded * 100) / progressEvent.total)
-                : ".",
+              progress: progressPercentage,
+              remainingTime,
             }),
           );
         },
-      }).post(`${api.uploadFile}`, formData);
+      }).post(`${api.getUserVideoUploadPath(id)}`, formData);
 
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {
-          dispatch(setIsSubmitting(false));
-          setTimeout(() => dispatch(setUploadingInfo({ count: 0 })), 1000);
-          return true;
+          setTimeout(() => {
+            clearInterval(intervalId);
+            dispatch(setIsSubmitting(false));
+            dispatch(setUploadingInfo({ count: 0, progress: 100 }));
+            return true;
+          }, 1000);
         }
       }
       return false;
     } catch (error) {
-      if (error.response) dispatch(setErrorMessage(error));
+      notifyError(error);
+      setTimeout(() => dispatch(setUploadingInfo({ progress: 0, count: 1 })), 1000);
       dispatch(setIsSubmitting(false));
       return false;
     }
   };
 
+export const downloadFile: AppThunk = (url) => async (dispatch: Dispatch) => {
+  try {
+    const downloadStartTime = new Date().getTime() / 1000;
+    dispatch(setDownloadingInfo({ count: 1 }));
+    dispatch(setIsSubmitting(true));
+    const { data, status } = await network({
+      dispatch,
+      responseType: "blob", // important for download
+      onDownloadProgress: throttle((progressEvent: any) => {
+        const { loaded, total } = progressEvent;
+        const progressPercentage = total ? Math.round((loaded * 100) / total) : 0;
+        const downloadEndTime = new Date().getTime() / 1000;
+        const timeElapsed = downloadEndTime - downloadStartTime;
+        const downloadRate = loaded / timeElapsed; // bytes/sec
+        const remainingTime = total / downloadRate;
+        dispatch(
+          setDownloadingInfo({
+            progress: progressPercentage,
+            startTime: downloadStartTime,
+            remainingTime,
+          }),
+        );
+      }, 1000),
+    }).get(`${url}`);
+
+    if (status === 200 || (status > 200 && status < 300)) {
+      if (data) {
+        setTimeout(() => {
+          downloadFromBlob(new Blob([data]), `${new Date().getTime()}`, `${getFileExtension(url)}`);
+          dispatch(setIsSubmitting(false));
+          dispatch(setDownloadingInfo({ count: 0, progress: 100 }));
+          return true;
+        }, 1000);
+      }
+    }
+    return false;
+  } catch (error) {
+    notifyError(error);
+    dispatch(setDownloadingInfo({ progress: 0, count: 1 }));
+    dispatch(setIsSubmitting(false));
+    return false;
+  }
+};
+
+export const resetUploadState = () => async (dispatch) => {
+  dispatch(setUploadingInfo({ progress: 0, count: 0 }));
+};
+
 export const logOut = () => async (dispatch) => {
   try {
     dispatch(setIsLoading(true));
     // logout from server
-    await network({ dispatch, sso: true }).post(api.logout, {
+    await network({ dispatch }).post(api.logout, {
       refresh: sessionStorage.getItem("refreshToken"),
       access: sessionStorage.getItem("accessToken"),
     });
@@ -211,15 +282,16 @@ export const fetchMe =
   () =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
-      dispatch(setIsLoading(true));
+      // dispatch(setIsLoading(true));
 
-      const { data, status } = await network({
-        dispatch,
-        sso: true,
-      }).get(api.me);
+      console.log("fetching");
+      const { data, status } = await network({}).get(api.me);
+
+      console.log("data", data);
+
       if (status === 200) {
         if (data) {
-          dispatch(updateMe({ ...data }));
+          dispatch(updateMe(data));
           dispatch(setIsLoading(false));
         }
         return true;

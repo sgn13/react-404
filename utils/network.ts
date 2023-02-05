@@ -1,7 +1,13 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance } from "axios";
 import env from "constants/env";
 
-export const network = ({ requireToken = true, accessToken = "" }): AxiosInstance => {
+export const network = ({
+  requireToken = true,
+  accessToken = "",
+  onUploadProgress = (event: any) => {},
+  onDownloadProgress = (event: any) => {},
+  responseType = undefined,
+}): AxiosInstance => {
   const axiosConfig = {
     // eslint-disable-next-line no-unsafe-optional-chaining
     baseURL: env?.api?.url + env?.api?.prefix || "http://localhost:8080",
@@ -9,7 +15,15 @@ export const network = ({ requireToken = true, accessToken = "" }): AxiosInstanc
       "Content-Type": "application/json",
       Accept: "application/json",
       "Accept-Language": "en",
+      // "Content-Disposition": "attachment;",
     },
+    responseType,
+    onUploadProgress,
+    onDownloadProgress,
+    // forcing axios to use custom agent customized to ignore SSL Certificate verification
+    // httpsAgent: new https.Agent({
+    //   rejectUnauthorized: false,
+    // }),
   };
 
   if (requireToken) {
@@ -19,6 +33,11 @@ export const network = ({ requireToken = true, accessToken = "" }): AxiosInstanc
   }
 
   const clientRequest = axios.create(axiosConfig);
+
+  clientRequest.interceptors.request.use(
+    (conf) => conf,
+    (error: AxiosError) => Promise.reject(error),
+  );
 
   return clientRequest;
 };

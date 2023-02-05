@@ -5,6 +5,7 @@ export type UserType = {
   city: string;
   password?: string;
   profilePic?: string;
+  profileVideo?: string;
   branchName?: string;
   branchCode?: string;
   department?: string;
@@ -26,6 +27,7 @@ const users: UsersType = [
     password: "firoj1234",
     profilePic:
       "https://api.vkyc.prabhu.mangosoftsolution.dev/media/profile/pics/after_date_lN5LuIg.PNG",
+    profileVideo: undefined,
     branchName: "Babarmahal",
     branchCode: "0200",
     department: "fghj",
@@ -44,6 +46,7 @@ const users: UsersType = [
     password: "saharoj1234",
     profilePic:
       "https://api.vkyc.prabhu.mangosoftsolution.dev/media/profile/pics/971_Firoj_gJgsuQZ.JPG",
+    profileVideo: undefined,
     branchName: "Hanumansthan",
     branchCode: "003",
     department: "IT",
@@ -60,6 +63,7 @@ const users: UsersType = [
     city: "Butwal",
     password: "sakina1234",
     profilePic: "https://api.vkyc.prabhu.mangosoftsolution.dev/media/profile/pics/screenshot_2.png",
+    profileVideo: undefined,
     branchName: "Anamnagar",
     branchCode: "004",
     department: "Central Operations",
@@ -76,6 +80,7 @@ const users: UsersType = [
     city: "Parasi",
     password: "afroj1234",
     profilePic: undefined,
+    profileVideo: undefined,
     branchName: "gthyj",
     branchCode: "yhujk",
     department: "ghj",

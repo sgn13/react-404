@@ -29,15 +29,6 @@ export const shallowEqual = ({ object1, object2 }: any) => {
   return true;
 };
 
-export const getFileExtension = (filename: any) => {
-  const splittedFileIcon = String(filename).split(".");
-
-  if (splittedFileIcon.length) {
-    return splittedFileIcon[splittedFileIcon.length - 1];
-  }
-  return undefined;
-};
-
 export const checkPermission = ({ permission, permissions = [] }: any) => {
   const result =
     !permission ||
@@ -93,3 +84,59 @@ export const getModifiedValues = (currentValues: object, initialValues: object) 
 
   return modifiedValues;
 };
+
+export const getFileExtension = (filename: any) => {
+  const splittedFileIcon = String(filename).split(".");
+
+  if (splittedFileIcon.length) {
+    return splittedFileIcon[splittedFileIcon.length - 1];
+  }
+  return undefined;
+};
+
+export const downloadFromBlob = (blob: Blob, filename: string, extension: string) => {
+  const fullName = `${filename}.${extension}`;
+  const a = document.createElement("a");
+  document.body.appendChild(a);
+  const url = window.URL.createObjectURL(blob);
+  a.href = url;
+  a.download = fullName;
+  a.click();
+  setTimeout(() => {
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }, 1000);
+};
+
+export const downloadFromUrl = (url: string, filename?: string, extension?: string) => {
+  const fullName = `${filename || "file"}.${extension || getFileExtension(url) || "txt"}`;
+  const a = document.createElement("a");
+  document.body.appendChild(a);
+  a.href = url;
+  a.download = fullName;
+  a.click();
+
+  // clean up "a" element & remove ObjectURL
+  setTimeout(() => {
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }, 0);
+};
+
+// export const parseJwt = (token) => {
+//   if (!token) return "";
+//   const base64Url = token.split(".")[1];
+//   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+//   const jsonPayload = decodeURIComponent(
+//     atob(base64)
+//       .split("")
+//       .map(function (c) {
+//         return `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`;
+//       })
+//       .join(""),
+//   );
+
+//   return JSON.parse(jsonPayload);
+// };
+
+// export const getParsedJWT = parseJwt(sessionStorage.getItem(`accessToken`) as any);

@@ -86,7 +86,7 @@ export const readSessionsByAccessToken = async (access: string) => {
   }
 };
 
-export const readSessionsByEmail = async (email: string) => {
+export const readSessionsByEmail = (email: string) => {
   try {
     const session = database.sessions.find((item) => item.email === email);
     return session;

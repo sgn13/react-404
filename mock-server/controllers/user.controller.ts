@@ -94,9 +94,31 @@ export const postUsers = async (
 
     payload.id = getShortId();
     payload.profilePic = uploadedFileUrl;
+    payload.profileVideo = null;
     const user = await createUsers(payload);
     res.status(200).json(user);
     return user;
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const postProfileVideo = async (
+  req: Request & { uploadedFilename?: string },
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    if (!req.uploadedFilename) return res.status(404).json({ message: "No Video file found" });
+
+    const { id } = req.params;
+    const profileVideoUrl = `${req.protocol}://${req.get("host")}${
+      directories.PROFILE_VIDEOS_MOUNTPOINT
+    }/${req.uploadedFilename}`;
+
+    const userWithVideo = updateUsers("patch", id, { profileVideo: profileVideoUrl });
+    res.status(200).json(userWithVideo);
+    return true;
   } catch (err) {
     next(err);
   }

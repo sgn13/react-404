@@ -38,4 +38,4 @@ storiesOf("Animations/CSS/Spinner", module)
       <Gears />
     </div>
   ))
-  .add("ProgressLoader", () => <ProgressLoader />);
+  .add("ProgressLoader", () => <ProgressLoader progress={50} />);
