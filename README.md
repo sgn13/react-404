@@ -24,12 +24,11 @@
       - npm run build
 
 - Redux Setup (:heavy_check_mark:)
+- Authentication Setup (:heavy_check_mark:)
 - Routing Setup (:heavy_check_mark:)
-
   - Public and Private routes (:heavy_check_mark:)
   - Layout and Non-Layout routes (:heavy_check_mark:)
-
-- Authentication Setup (:heavy_check_mark:)
+- Route and Sidebar Permission Setup (:heavy_check_mark:)
 
 - Custom font setup (:heavy_check_mark:)
 - Themeing Setup (:heavy_check_mark:)
@@ -40,17 +39,20 @@
 
 - Notification Setup (:heavy_check_mark:)
 - Working Configuation with Mock server (:heavy_check_mark:)
-- CRUD (:heavy_check_mark:)
-- PAGINATION: (:heavy_check_mark:)
+- Form CRUD (:heavy_check_mark:)
+- List PAGINATION: (:heavy_check_mark:)
+- Download and Upload Setup with progress bar (:heavy_check_mark:)
 - Data Grid with client side pagination setup (:heavy_check_mark: in storybook In Pagination component)
-- Download and Upload Setup with progress bar
-- Permission Setup
+- React Design Patterns Examples for reference (:heavy_check_mark:)
+- Pages setup with common messages pages (WORK IN PROGRESS)
 - SORTING, SEARCHING, FILTERING
 - Data Grid with server side pagination setup
 - Table download as csv
-- Pages setup with common messages pages
 - Socket Setup
 - Webrtc Setup
+- Page Animation on Route Change like my portfolio
+- Give a look to React project Structure saves of pocket
+- Steps for proper production build deployment in custom server with ssl
 
 ## How to use it ?
 
