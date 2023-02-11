@@ -10,50 +10,42 @@ export const sidebar = [
   },
 ];
 
+// permission:undefined means no restriction. accessible to all
 export const IndexSidebar = () => [
   {
     icon: <AiOutlineHome />,
     label: "Welcome",
     location: "top",
-    path: app.desk.welcome,
+    path: app.root,
     role: "user",
-    permission: [],
+    permission: ["kyc.admin"],
   },
 
   {
     icon: <AiOutlineHome />,
     label: "Online Users",
     location: "top",
-    path: app.desk.online,
+    path: app.online,
     role: "user",
-    permission: [],
+    permission: undefined,
   },
 
   {
     icon: <AiOutlineHome />,
     label: "Movie Management",
     location: "top",
-    path: app.desk.movie.root(),
+    path: app.movie.root,
     role: "user",
-    permission: [],
+    permission: undefined,
   },
 
   {
     icon: <AiOutlineHome />,
     label: "User Management",
     location: "bottom",
-    path: app.desk.user.root(),
+    path: app.user.root,
     role: "user",
-    permission: [],
-  },
-
-  {
-    icon: <img src={require("../assets/icons/logout.svg")} alt="logout" width={20} />,
-    label: "Logout",
-    location: "bottom",
-    path: "/logout",
-    role: "user",
-    permission: [],
+    permission: undefined,
   },
 ];
 

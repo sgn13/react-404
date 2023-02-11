@@ -136,7 +136,6 @@ export const login =
       const { data, status } = await network({ requireToken: false }).post(api.login, values);
       if (status === 200 || status === 201) {
         if (data) {
-          console.log("data", data?.token);
           dispatch(setIsSubmitting(false));
           dispatch(setMe(data));
           sessionStorage.setItem("accessToken", data.token.access);
@@ -284,11 +283,7 @@ export const fetchMe =
     try {
       // dispatch(setIsLoading(true));
 
-      console.log("fetching");
       const { data, status } = await network({}).get(api.me);
-
-      console.log("data", data);
-
       if (status === 200) {
         if (data) {
           dispatch(updateMe(data));

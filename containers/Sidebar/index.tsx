@@ -4,7 +4,6 @@ import styled from "theme/styled";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "assets/logo.png";
 import ExpandIcon from "containers/Sidebar/expand-icon.svg";
-import checkPermission from "utils/checkPermission";
 import { primary, secondary } from "theme";
 import { StyledSidebarType } from "./types";
 import BaseSidebarItem from "./SidebarItem";
@@ -69,36 +68,37 @@ const NavBottom = styled.div`
   bottom: 15px;
 `;
 
-export const sidebarFilter = ({ item, permissions, me }) => {
-  let childrenPermission = false;
+// export const sidebarFilter = ({ item, permissions, me }) => {
+//   let childrenPermission = false;
 
-  item.children &&
-    item.children.length &&
-    item.children.forEach((childItem) => {
-      if (checkPermission({ permissions, permission: childItem.permission })) {
-        childrenPermission = true;
-      }
-    });
+//   item.children &&
+//     item.children.length &&
+//     item.children.forEach((childItem) => {
+//       if (checkPermission({ permissions, permission: childItem.permission })) {
+//         childrenPermission = true;
+//       }
+//     });
 
-  const roleTest = item.role
-    ? me?.profile.is_staff || me?.profile.is_superuser
-      ? item.role === "superuser" || item.role === "user"
-      : item.role === "user"
-    : item;
+//   const roleTest = item.role
+//     ? me?.profile.is_staff || me?.profile.is_superuser
+//       ? item.role === "superuser" || item.role === "user"
+//       : item.role === "user"
+//     : item;
 
-  // roleTest = item.role === 'admin' || item.role === 'user';
+//   // roleTest = item.role === 'admin' || item.role === 'user';
 
-  return (
-    (checkPermission({ permissions, permission: item.permission }) && roleTest) ||
-    (childrenPermission && roleTest) ||
-    item.visible
-  );
-};
+//   return (
+//     (checkPermission({ permissions, permission: item.permission }) && roleTest) ||
+//     (childrenPermission && roleTest) ||
+//     item.visible
+//   );
+// };
 
 function BaseSidebar(props: BaseSidebarType) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { mobile, sidebarItems, collapsed, setCollapsed, active, setActive, me } = props;
+  console.log("sidebars", sidebarItems);
 
   // navigation and refresh fix
   useEffect(() => {
@@ -153,9 +153,9 @@ function BaseSidebar(props: BaseSidebarType) {
             </div>
           </div>
           {sidebarItems
-            .filter((sidebarItem) =>
-              sidebarFilter({ item: sidebarItem, permissions: me?.permissions || [], me }),
-            )
+            // .filter((sidebarItem) =>
+            //   sidebarFilter({ item: sidebarItem, permissions: me?.permissions || [], me }),
+            // )
             .filter((sidebarItem) => sidebarItem.location === "top")
             .map((sidebarItem) => {
               return (
@@ -192,9 +192,9 @@ function BaseSidebar(props: BaseSidebarType) {
           <hr style={{ marginTop: "10px", marginBottom: "10px", width: "85%" }} />
         ) : null}
         {sidebarItems
-          .filter((sidebarItemBottom) =>
-            sidebarFilter({ item: sidebarItemBottom, permissions: me?.permissions || [], me }),
-          )
+          // .filter((sidebarItemBottom) =>
+          //   sidebarFilter({ item: sidebarItemBottom, permissions: me?.permissions || [], me }),
+          // )
           .filter((sidebarItemBottom) => sidebarItemBottom.location === "bottom")
           .map((sidebarItemBottom) => (
             <BaseSidebarItem

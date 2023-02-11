@@ -2,30 +2,17 @@ import React, { useEffect, useState } from "react";
 
 import { connect } from "react-redux";
 
-import Content from "containers/Content";
-
 import Sidebar from "containers/Sidebar/index";
 // import NavBar from "containers/Navbar/";
 
 import { AppState } from "store/reducer";
 
 import { Loader } from "components/Spinner/Spinner";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import styled from "theme/styled";
 import { IndexSidebar } from "constants/sidebar";
-
-// function Navbar() {
-//   return (
-//     <nav style={{ display: "flex", justifyContent: "space-around" }}>
-//       <Link to="/">Home</Link>
-//       <Link to="users">Users</Link>
-//       <Link to="users/userId">User Profile</Link>
-//       <Link to="users/me">My Profile</Link>
-//       <Link to="support/chat">Chat</Link>
-//     </nav>
-//   );
-// }
+import Content from "./Content";
 
 const AppBody = styled.div`
   font-size: 1rem;
@@ -36,18 +23,9 @@ const AppBody = styled.div`
 
 export const Page = styled.div``;
 
-function Layout({ sidebar, me, isLoading }) {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-
+function Layout({ children, sidebar, me, isLoading }) {
   const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState("");
-
-  // useEffect(() => {
-  //   if (pathname === "/") {
-  //     navigate(IndexSidebar({})[0]?.path);
-  //   }
-  // }, [pathname]);
 
   if (isLoading) {
     return <Loader />;

@@ -49,7 +49,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         message: "User already logged in",
         profile: user,
         token: session,
-        permission: allPermissions,
+        permissions: allPermissions,
       });
       return;
     }
@@ -64,7 +64,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       message: "Login Successful",
       profile: user,
       token,
-      permission: allPermissions,
+      permissions: allPermissions,
     });
     return;
   } catch (err) {
@@ -107,6 +107,7 @@ export const profile = async (req: Request, res: Response, next: NextFunction) =
       return;
     }
 
+    res.status(404).send({ message: "User not found" });
     return;
   } catch (err) {
     next(err);

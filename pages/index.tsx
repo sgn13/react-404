@@ -5,7 +5,6 @@ import { backgroundColor, textColor } from "theme";
 import { ConnectedProps, connect } from "react-redux";
 import { setTheme, toggleLightDarkTheme } from "store/theme/actions";
 import { AppState } from "store/reducer";
-import withSidebar from "hoc/withSidebar";
 
 const Container = styled.div`
   background-color: ${backgroundColor};
@@ -72,6 +71,7 @@ function Welcome({ themeName, toggleLightDarkTheme, setTheme }: React.FC<PropsFr
   //     setData(response.data);
   //   });
   // }, []);
+
   return (
     <Container>
       <h1>Welcome Webpack Development Server.</h1>
@@ -108,4 +108,4 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connector(withSidebar(Welcome));
+export default connector(Welcome);

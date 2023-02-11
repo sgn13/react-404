@@ -20,7 +20,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { ViewModal } from "components/Modal/Index";
 import View from "app/User/ViewInModal";
 import { primary } from "theme";
-import withSidebar from "hoc/withSidebar";
+import withSidebar from "hoc/withProtectedSidebar";
 import withAuth from "hoc/withAuth";
 
 const ClientItem = styled.li`
@@ -219,7 +219,7 @@ function LiveClients({
                   size={24}
                   fill={primary}
                   onClick={() => {
-                    navigate(`${app.desk.user.update(item.id)}/permission`);
+                    navigate(`${app.user.update(item.id)}/permission`);
                   }}
                 />
               </Action>
@@ -230,7 +230,7 @@ function LiveClients({
                   size={28}
                   fill={primary}
                   onClick={() => {
-                    navigate(app.desk.user.view(item.id));
+                    navigate(`${app.user.view(item.id)}`);
                   }}
                 />
               </Action>
@@ -238,7 +238,7 @@ function LiveClients({
                 <FaRegEdit
                   title="Edit"
                   style={{ cursor: "pointer" }}
-                  onClick={() => navigate(app.desk.user.update(item.id))}
+                  onClick={() => navigate(`${app.user.update(item.id)}`)}
                   size={24}
                   fill={primary}
                 />
@@ -308,7 +308,7 @@ function LiveClients({
             // right: "1em",
             borderRadius: "2em",
           }}
-          onClick={() => navigate(app.desk.user.create())}
+          onClick={() => navigate(app.user.create)}
         >
           Add
         </Button>

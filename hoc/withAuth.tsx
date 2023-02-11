@@ -1,48 +1,36 @@
 import { useEffect, ComponentType } from "react";
-
 import { connect, ConnectedProps } from "react-redux";
-import { useLocation, useNavigate, Navigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { fetchMe } from "store/app/actions";
 
-import { AppState } from "store/reducer";
-import checkPermission from "utils/checkPermission";
-
-type PropsFromWrapper = { allowAccessTo?: "everyone" | string | string[] };
+type PropsForNewComponent = { redirectTo?: string };
 
 function withAuth(WrappedComponent: ComponentType<any>) {
-  function newComponent(props: PropsFromRedux & PropsFromWrapper) {
-    // const navigate = useNavigate();
-    // const { pathname } = useLocation();
-    const {
-      fetchMe,
-      me,
-      isLoading,
-      allowAccessTo,
-      allPermissions = ["admin", "deliveryBoy", "manager"],
-    } = props;
+  function newComponent({
+    fetchMe,
+    redirectTo = "/login",
+    ...rest
+  }: PropsFromRedux & PropsForNewComponent) {
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
 
     useEffect(() => {
-      if (!me) fetchMe();
-    }, [me]);
+      const token = sessionStorage.getItem("accessToken");
+      if (token) {
+        fetchMe();
+      } else {
+        navigate(redirectTo, { replace: false, state: { from: pathname } });
+      }
+    }, []);
 
-    if (!sessionStorage.getItem("accessToken")) return <Navigate to="/login" />;
-
-    if (me && me?.permission) {
-      const authorizationDisabled = allowAccessTo === "everyone";
-      if (!authorizationDisabled && !checkPermission(allowAccessTo, allPermissions))
-        return <Navigate to="/unauthorized" />;
-    }
-
-    // if (isLoading) return <div>Loading...</div>;
-
-    // Initial loading and error
-    return <WrappedComponent {...props} />;
+    return <WrappedComponent {...rest} />;
   }
+  const mapStateToProps = ({ appState: {} }) => ({});
 
-  const mapStateToProps = ({ appState: { me, isLoading } }: AppState) => ({ me, isLoading });
   const mapDispatchToProps = { fetchMe };
   const connector = connect(mapStateToProps, mapDispatchToProps);
   type PropsFromRedux = ConnectedProps<typeof connector>;
+
   return connector(newComponent);
 }
 

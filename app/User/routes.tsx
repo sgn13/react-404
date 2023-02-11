@@ -1,43 +1,44 @@
-import app from "constants/app";
 import User from "app/User/Index";
 import CreateUpdate from "./CreateUpdate";
 import ViewInPage from "./ViewInPage";
-import withSidebar from "hoc/withSidebar";
+import { Outlet } from "react-router-dom";
+import withProtectedSidebar from "hoc/withProtectedSidebar";
+import withProtectedRoute from "hoc/withProtectedRoute";
+
+const ProtectedUser = withProtectedSidebar(withProtectedRoute(User));
 
 export default [
   {
     title: "User Management",
     bodyConfig: { use: true, title: true, goBack: false },
-    exact: true,
-    path: app.desk.user.root(),
-    // element: withSidebar(<User />),
-    element: <User />,
-  },
+    path: "user",
+    element: <Outlet />,
 
-  {
-    title: "Create User",
-    bodyConfig: { use: true, title: true, goBack: false },
-    exact: true,
-    path: app.desk.user.create(),
-    // element: withSidebar({ component: User, permission: [], role: "superuser" }),
-    element: <CreateUpdate />,
-  },
-
-  {
-    title: "Update User",
-    bodyConfig: { use: true, title: true, goBack: false },
-    exact: true,
-    path: app.desk.user.update(":id"),
-    // element: withSidebar({ component: User, permission: [], role: "superuser" }),
-    element: <CreateUpdate />,
-  },
-
-  {
-    title: "View User",
-    bodyConfig: { use: true, title: true, goBack: false },
-    exact: true,
-    path: app.desk.user.view(":id"),
-    // element: withSidebar({ component: User, permission: [], role: "superuser" }),
-    element: <ViewInPage />,
+    children: [
+      {
+        title: "User Management",
+        bodyConfig: { use: true, title: true, goBack: false },
+        index: true,
+        element: <ProtectedUser allowAccessTo={[]} sidebarType="index" />,
+      },
+      {
+        title: "Create User",
+        bodyConfig: { use: true, title: true, goBack: false },
+        path: "create",
+        element: <CreateUpdate />,
+      },
+      {
+        title: "Update User",
+        bodyConfig: { use: true, title: true, goBack: false },
+        path: ":id/update",
+        element: <CreateUpdate />,
+      },
+      {
+        title: "View User",
+        bodyConfig: { use: true, title: true, goBack: false },
+        path: ":id/view",
+        element: <ViewInPage />,
+      },
+    ],
   },
 ];

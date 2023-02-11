@@ -115,7 +115,8 @@
             ["mock", "./mock"],
             ["hoc", "./hoc"],
             ["lib", "./lib"],
-            ["app", "./app"]
+            ["app", "./app"],
+            ["reuse", "./reuse"]
           ],
           "extensions": [".ts", ".tsx", ".js", ".jsx", ".json"]
         }

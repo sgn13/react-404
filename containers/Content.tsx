@@ -4,8 +4,8 @@ import { useRoutes } from "react-router-dom";
 
 import { Loader } from "components/Spinner/Spinner";
 
-import routes from "routes";
 import styled from "theme/styled";
+import { layoutRoutes } from "routes";
 
 // const ContentBody = styled.main`
 //   margin-top: 1em;
@@ -34,11 +34,11 @@ export const PageContainer = styled.div`
 `;
 
 function Content({ setActive }) {
-  const routing = useRoutes(routes);
+  const allRoutings = useRoutes(layoutRoutes);
 
   return (
     <ContentBody>
-      <Suspense fallback={<Loader />}>{routing}</Suspense>
+      <Suspense fallback={<Loader />}>{allRoutings}</Suspense>
     </ContentBody>
   );
 }
