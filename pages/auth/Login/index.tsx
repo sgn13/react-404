@@ -6,7 +6,6 @@ import { ConnectedProps, connect } from "react-redux";
 import { AppState } from "store/reducer";
 import styled from "styled-components";
 import { Box, Col, Container, Row } from "containers/Grid/Grid";
-import { PageContainer } from "containers/Content";
 import niceIcon from "assets/icons/nice.svg";
 import { primary } from "theme";
 import { AuthForm } from "./AuthForm";
@@ -63,58 +62,56 @@ function Index({ login, isSubmitting }: PropsFromRedux) {
   const navigate = useNavigate();
   const { state } = useLocation();
   return (
-    <PageContainer>
-      <Container fullHeight centerHorizontally centerVertically>
-        <Box
-          style={{
-            width: "992px",
-            boxShadow:
-              "0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14),0px 1px 8px 0px rgba(0, 0, 0, 0.12)",
-          }}
-        >
-          <Row>
-            <Col sm={4}>
-              <LeftSection>
-                <LogoHolder>
-                  <img src={logo} alt="Logo" style={{ width: "inherit" }} />
-                </LogoHolder>
-                <ImageHolder>
-                  <img src={loginImage} alt="Login" style={{ width: "inherit" }} />
-                </ImageHolder>
-              </LeftSection>
-            </Col>
-            <Col sm={8}>
-              <Box style={{ maxWidth: 400, marginLeft: "4rem", marginTop: "6rem" }}>
-                <Heading>
-                  Login <img src={niceIcon} alt="nice" width="12px" />{" "}
-                </Heading>
-                <Caption>Welcome to Prabhu KYC System</Caption>
-                <AuthForm
-                  isSubmitting={isSubmitting}
-                  elements={{
-                    email: true,
-                    password: true,
-                    confirmPassword: false,
-                    oldPassword: false,
-                    username: false,
-                  }}
-                  onSubmit={async (values, { resetForm }) => {
-                    const formData = new FormData();
-                    formData.append("email", values.email);
-                    formData.append("password", values.password);
-                    if (await login({ values: formData })) {
-                      const redirectTo = state?.from || "/";
-                      navigate(redirectTo);
-                      resetForm();
-                    }
-                  }}
-                />
-              </Box>
-            </Col>
-          </Row>
-        </Box>
-      </Container>
-    </PageContainer>
+    <Container fullHeight centerHorizontally centerVertically>
+      <Box
+        style={{
+          width: "992px",
+          boxShadow:
+            "0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14),0px 1px 8px 0px rgba(0, 0, 0, 0.12)",
+        }}
+      >
+        <Row>
+          <Col sm={4}>
+            <LeftSection>
+              <LogoHolder>
+                <img src={logo} alt="Logo" style={{ width: "inherit" }} />
+              </LogoHolder>
+              <ImageHolder>
+                <img src={loginImage} alt="Login" style={{ width: "inherit" }} />
+              </ImageHolder>
+            </LeftSection>
+          </Col>
+          <Col sm={8}>
+            <Box style={{ maxWidth: 400, marginLeft: "4rem", marginTop: "6rem" }}>
+              <Heading>
+                Login <img src={niceIcon} alt="nice" width="12px" />{" "}
+              </Heading>
+              <Caption>Welcome to Prabhu KYC System</Caption>
+              <AuthForm
+                isSubmitting={isSubmitting}
+                elements={{
+                  email: true,
+                  password: true,
+                  confirmPassword: false,
+                  oldPassword: false,
+                  username: false,
+                }}
+                onSubmit={async (values, { resetForm }) => {
+                  const formData = new FormData();
+                  formData.append("email", values.email);
+                  formData.append("password", values.password);
+                  if (await login({ values: formData })) {
+                    const redirectTo = state?.from || "/";
+                    navigate(redirectTo);
+                    resetForm();
+                  }
+                }}
+              />
+            </Box>
+          </Col>
+        </Row>
+      </Box>
+    </Container>
   );
 }
 

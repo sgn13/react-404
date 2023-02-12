@@ -11,8 +11,6 @@ import { Loader } from "components/Spinner/Spinner";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import styled from "theme/styled";
-import { IndexSidebar } from "constants/sidebar";
-import Content from "./Content";
 
 const AppBody = styled.div`
   font-size: 1rem;
@@ -20,6 +18,24 @@ const AppBody = styled.div`
   height: 100vh;
   overflow-y: auto;
 `;
+
+const Content = styled.main`
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 8em);
+  overflow: auto;
+  background: rgba(4, 103, 160, 0.01);
+  box-sizing: border-box;
+`;
+
+// const ContentBody = styled.main`
+//   margin-top: 1em;
+//   width: 100%;
+
+//   background: rgba(4, 103, 160, 0.01);
+
+//   ${theme.mixin.scrollbar({ size: '1em', foregroundColor: 'slategray' })};
+// `;
 
 export const Page = styled.div``;
 
@@ -35,25 +51,27 @@ function Layout({ children, sidebar, me, isLoading }) {
     <>
       <AppBody>
         <div style={{ display: "flex", height: "100%", gap: "1em" }}>
-          <div
-            style={{
-              flexBasis: "fit-content",
-              overflowY: "auto",
-              height: "100%",
-              minHeight: 750,
-              boxShadow: "2px 4px 6px rgba(0, 0, 0, 0.25)",
-              borderRadius: "1em",
-              minWidth: "fit-content",
-            }}
-          >
-            <Sidebar
-              sidebarItems={sidebar}
-              collapsed={collapsed}
-              setCollapsed={setCollapsed}
-              active={active}
-              setActive={setActive}
-            />
-          </div>
+          {sessionStorage.getItem("accessToken") ? (
+            <div
+              style={{
+                flexBasis: "fit-content",
+                overflowY: "auto",
+                height: "100%",
+                minHeight: 750,
+                boxShadow: "2px 4px 6px rgba(0, 0, 0, 0.25)",
+                borderRadius: "1em",
+                minWidth: "fit-content",
+              }}
+            >
+              <Sidebar
+                sidebarItems={sidebar}
+                collapsed={collapsed}
+                setCollapsed={setCollapsed}
+                active={active}
+                setActive={setActive}
+              />
+            </div>
+          ) : null}
 
           <div
             style={{
@@ -62,8 +80,8 @@ function Layout({ children, sidebar, me, isLoading }) {
               // marginRight: "1em",
             }}
           >
+            <Content>{children}</Content>
             {/* <NavBar /> */}
-            <Content setActive={setActive} />
           </div>
         </div>
       </AppBody>

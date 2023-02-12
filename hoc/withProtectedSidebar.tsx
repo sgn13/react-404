@@ -6,7 +6,7 @@ import checkPermission from "utils/checkPermission";
 
 type PropsForNewComponent = {
   allowAccessTo?: "everyone" | string | string[];
-  sidebarType: "index" | "admin";
+  sidebarType: "index" | "admin" | "active";
 };
 
 function withProtectedSidebar(WrappedComponent: ComponentType<any>) {
@@ -18,23 +18,28 @@ function withProtectedSidebar(WrappedComponent: ComponentType<any>) {
     me,
     ...rest
   }: PropsFromRedux & PropsForNewComponent) {
-    // why sidebar item having permission inside array gets lost on refresh ? requires fix tommorrow
     useEffect(() => {
-      if (!me || !sidebarType) return;
+      if (!me || !me?.permissions || !sidebarType) return;
 
-      switch (sidebarType) {
+      const switchingTo =
+        sidebarType === "active"
+          ? String(window.sessionStorage.getItem("sidebarType"))
+          : sidebarType;
+
+      switch (switchingTo) {
         case "index":
+          window.sessionStorage.setItem("sidebarType", "index");
           const sidebars = IndexSidebar();
-
           const permittedSidebars = sidebars.filter((item) =>
             item?.permission ? checkPermission(item.permission, me.permissions) : item,
           );
-
           setSidebar(permittedSidebars);
           break;
 
         case "admin":
+          window.sessionStorage.setItem("sidebarType", "admin");
           console.log("setting admin sidebar");
+
         default:
           setSidebar([]);
       }

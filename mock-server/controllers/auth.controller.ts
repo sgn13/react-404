@@ -102,7 +102,7 @@ export const profile = async (req: Request, res: Response, next: NextFunction) =
         message: "User already logged in",
         profile: user,
         token: session,
-        permission: allPermissions,
+        permissions: allPermissions,
       });
       return;
     }

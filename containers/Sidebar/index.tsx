@@ -98,7 +98,6 @@ function BaseSidebar(props: BaseSidebarType) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { mobile, sidebarItems, collapsed, setCollapsed, active, setActive, me } = props;
-  console.log("sidebars", sidebarItems);
 
   // navigation and refresh fix
   useEffect(() => {

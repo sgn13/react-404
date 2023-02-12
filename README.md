@@ -44,10 +44,9 @@
 - Download and Upload Setup with progress bar (:heavy_check_mark:)
 - Data Grid with client side pagination setup (:heavy_check_mark: in storybook In Pagination component)
 - React Design Patterns Examples for reference (:heavy_check_mark:)
-- Pages setup with common messages pages (WORK IN PROGRESS)
-- SORTING, SEARCHING, FILTERING
-- Data Grid with server side pagination setup
+- Pages setup with common messages pages (:heavy_check_mark:)
 - Table download as csv
+- Data Grid with server side pagination, SORTING, SEARCHING and FILTERING
 - Socket Setup
 - Webrtc Setup
 - Page Animation on Route Change like my portfolio

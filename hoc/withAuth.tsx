@@ -1,6 +1,6 @@
 import { useEffect, ComponentType } from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useMatch } from "react-router-dom";
 import { fetchMe } from "store/app/actions";
 
 type PropsForNewComponent = { redirectTo?: string };
@@ -13,10 +13,11 @@ function withAuth(WrappedComponent: ComponentType<any>) {
   }: PropsFromRedux & PropsForNewComponent) {
     const navigate = useNavigate();
     const { pathname } = useLocation();
+    // const isLoginPage = useMatch("/login");
 
     useEffect(() => {
-      const token = sessionStorage.getItem("accessToken");
-      if (token) {
+      const loggedIn = sessionStorage.getItem("accessToken");
+      if (loggedIn) {
         fetchMe();
       } else {
         navigate(redirectTo, { replace: false, state: { from: pathname } });
