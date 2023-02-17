@@ -4,33 +4,36 @@ import styled from "theme/styled";
 import { primary, textColor } from "theme";
 
 export const PaginationButton = styled(Button)`
-  font-family: "Poppins500";
-  border-radius: 4px;
-  border-radius: 2em;
-  background-color: transparent;
-  color: ${({ disabled }) => (disabled ? "gray" : "darkblue")};
-
+  font-family: "Poppins";
+  font-weight: 300;
+  border-radius: 2px;
+  background-color: ${({ disabled }) => (disabled ? "#3f3e3e6c" : "white")};
   text-shadow: none;
+  outline: 1px solid gray;
+  padding: 2px 10px;
 `;
 
 export const DOTS = "...";
 
-export const PaginationContainer = styled.div`
+export const PaginationContainer = styled.div<{ textColor?: string }>`
   display: flex;
   align-items: center;
   gap: 10px;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
 
   .page-number {
-    font-weight: normal;
+    border-radius: 2px;
     cursor: pointer;
+    background-color: white;
+    padding: 5px 10px;
+    outline: 1px solid gray;
   }
 
   .page-number-selected {
-    font-weight: bold;
     background-color: ${primary};
-    padding: 5px 20px;
-    border-radius: 1rem;
-    color: ${textColor};
+    color: white;
+    outline-color: ${primary};
   }
 `;
 
@@ -128,13 +131,14 @@ const Pagination = (props: PaginationProps) => {
   let lastPage = paginationRange[paginationRange.length - 1];
 
   return (
-    <PaginationContainer>
+    <PaginationContainer textColor="white">
       <PaginationButton
         size="sm"
-        color="blue"
         noTextShadow
         onClick={onPrevious}
         disabled={currentPage === 1}
+        backgroundColor="white"
+        color={currentPage === 1 ? "white" : "black"}
       >
         Previous
       </PaginationButton>
@@ -156,10 +160,11 @@ const Pagination = (props: PaginationProps) => {
 
       <PaginationButton
         size="sm"
-        color="blue"
         noTextShadow
         onClick={onNext}
         disabled={currentPage === lastPage}
+        backgroundColor="white"
+        color={currentPage === lastPage ? "white" : "black"}
       >
         Next
       </PaginationButton>

@@ -19,7 +19,7 @@ export default [
         title: "User Management",
         bodyConfig: { use: true, title: true, goBack: false },
         index: true,
-        element: <ProtectedUser allowAccessTo={["firoj"]} sidebarType="index" />,
+        element: <ProtectedUser allowAccessTo={[]} sidebarType="index" />,
       },
       {
         title: "Create User",

@@ -91,7 +91,7 @@ export const generateQuery = ({
     order,
     order_by,
     search,
-    page: page || 0,
+    page: page || 1,
     ...otherQueries,
   };
 

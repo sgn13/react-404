@@ -3,6 +3,7 @@ const api = {
   logout: "/logout/",
   me: "/me/",
   user: "/users/",
+  liveclient: "/users",
   getUserVideoUploadPath: (id: string) => `/users/${id}/upload/video/`,
   uploadFile: "/upload/file",
 };

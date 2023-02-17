@@ -1,0 +1,32 @@
+[
+  {
+    "link": "#",
+    "label": "Orders history",
+    "icon": "📃"
+  },
+  {
+    "link": "#",
+    "label": "Personal Details",
+    "icon": "👤"
+  },
+  {
+    "link": "#",
+    "label": "Favourite",
+    "icon": "❤️"
+  },
+  {
+    "link": "#",
+    "label": "Settings",
+    "icon": "⚙️"
+  },
+  {
+    "link": "#",
+    "label": "Help",
+    "icon": "ℹ️"
+  },
+  {
+    "link": "#",
+    "label": "Sign out",
+    "icon": "⬅️"
+  }
+]

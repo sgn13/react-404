@@ -22,7 +22,7 @@ function withProtectedRoute(WrappedComponent: ComponentType<any>) {
       // if allowAccessTo is empty array, it means no authorization check.
       const authorizationDisabled =
         !allowAccessTo || (Array.isArray(allowAccessTo) && allowAccessTo.length === 0);
-      if (!authorizationDisabled && !checkPermission(allowAccessTo, me?.permission))
+      if (!authorizationDisabled && !checkPermission(allowAccessTo, me?.permissions))
         // save the user's previous location before redirecting to /unauthorized for future use
         return <Navigate to="/forbidden" state={{ from: location }} />;
     }

@@ -80,8 +80,8 @@ function Layout({ children, sidebar, me, isLoading }) {
               // marginRight: "1em",
             }}
           >
-            <Content>{children}</Content>
             {/* <NavBar /> */}
+            <Content>{children}</Content>
           </div>
         </div>
       </AppBody>

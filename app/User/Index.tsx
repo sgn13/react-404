@@ -149,7 +149,7 @@ function openInNewTab(url) {
   window.open(url, "_blank").focus();
 }
 
-function LiveClients({
+function Users({
   me,
   fetchUsers,
   isLoading,
@@ -364,5 +364,4 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-// export default connector(withSidebar(withAuth(LiveClients)));
-export default connector(LiveClients);
+export default connector(Users);

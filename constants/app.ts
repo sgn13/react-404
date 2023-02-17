@@ -22,7 +22,7 @@ const app = {
     update: (id = "") => `/movie/${id}/update`,
     view: (id = "") => `/movie/${id}/view`,
   },
-  online: `/online-users`,
+  liveClients: `/live-clients`,
 };
 
 export default app;

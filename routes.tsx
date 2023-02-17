@@ -3,6 +3,7 @@ import E404 from "pages/Errors/E404";
 import Index from "pages/index";
 import Login from "pages/Auth/Login";
 import userRoute from "app/User/routes";
+import onlineUserRoute from "app/LiveClients/routes";
 import { Outlet } from "react-router-dom";
 
 import withAuth from "hoc/withAuth";
@@ -62,7 +63,7 @@ const routes = [
       </Layout>
     ),
     errorElement: () => <div>Encountered route error</div>,
-    children: [...indexRoute, ...userRoute, ...errorRoutes],
+    children: [...indexRoute, ...userRoute, ...onlineUserRoute, ...errorRoutes],
   },
 ];
 

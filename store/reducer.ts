@@ -5,6 +5,7 @@ import permissionState from "./permission/reducers";
 import roleState from "./role/reducers";
 import driverState from "./driver/reducers";
 import userState from "./user/reducers";
+import liveClientState from "./liveClient/reducers";
 import socketState from "./socket/reducers";
 
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   driverState,
   roleState,
   userState,
+  liveClientState,
   socketState,
 });
 

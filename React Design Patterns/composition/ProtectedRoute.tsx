@@ -6,6 +6,12 @@ import { Navigate, useLocation } from "react-router-dom";
 //     <Outlet />
 //   </ProtectedRoute>
 // ),
+
+// Even this composition pattern
+
+{
+  /* <Layout navbar={<div>navbar</div>} sidebar={<div>sidebar</div>} content={<div>navbar</div>}/> */
+}
 function ProtectedRoute({
   children,
   redirectTo = "/login",

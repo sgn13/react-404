@@ -23,9 +23,9 @@ export const IndexSidebar = () => [
 
   {
     icon: <AiOutlineHome />,
-    label: "Online Users",
+    label: "Live Clients",
     location: "top",
-    path: app.online,
+    path: app.liveClients,
     role: "user",
     permission: undefined,
   },

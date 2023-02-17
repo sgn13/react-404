@@ -1,3 +1,4 @@
+// logic + presentational code should be seperate.
 function Todos({ todos, onAddTodo }) {
   return (
     <>
