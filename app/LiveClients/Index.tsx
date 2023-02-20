@@ -20,8 +20,10 @@ import { BiColumns } from "react-icons/bi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { CgSortAz, CgSortZa } from "react-icons/cg";
 import DropdownMenu from "components/DropdownMenu/DropDown";
+
+import SearchColumns from "components/SearchColumns/SearchColumns";
+import Filters, { getFiltersKeys } from "components/Filters/Filters";
 import Input from "components/Input/Input";
-import { Box, Col, Container } from "containers/Grid/Grid";
 
 const DataGridContainer = styled.div`
   margin: 10px;
@@ -91,61 +93,37 @@ const columnList = [
   { position: 5, title: "Department", queryKey: "department", checked: false },
 ];
 
-const CustomizeSearchColumns = ({
-  items,
-  onCheckboxStateChange,
-  searchColumnsKeysRef,
-}: {
-  items: { position: number; title: string; queryKey: string; checked: boolean }[];
-  onCheckboxStateChange: Function;
-  searchColumnsKeysRef: any;
-}) => {
-  const [columns, setColumns] = useState(items);
+const criteriaOptions = [
+  { title: "Name", queryKey: "fullName", type: "string" },
+  { title: "Age", queryKey: "age", type: "number" },
+  { title: "Functional Title", queryKey: "functionalTitle", type: "string" },
+  { title: "Email", queryKey: "email", type: "string" },
+  { title: "City", queryKey: "city", type: "string" },
+  { title: "Department", queryKey: "department", type: "string" },
+  { title: "Is Admin", queryKey: "isAdmin", type: "boolean" },
+  { title: "Is User", queryKey: "isUser", type: "boolean" },
+  { title: "Experience", queryKey: "experience", type: "number" },
+  { title: "Joined", queryKey: "joined", type: "date" },
+];
 
-  const getSearchColumns = (newColumns) =>
-    newColumns.filter((item) => item.checked)?.map((item) => item?.queryKey);
+const conditionOptions = [
+  { title: "Greater than", queryKey: ">", type: "number" },
+  { title: "Less than", queryKey: "<", type: "number" },
+  { title: "Equals to", queryKey: "=", type: "number" },
+  { title: null, queryKey: "=", type: "string" },
+  { title: null, queryKey: "=", type: "date" },
+  { title: null, queryKey: "=", type: "boolean" },
+];
 
-  const handleCheckboxChange = (item) => {
-    const newColumns = columns.map((i) =>
-      i.queryKey === item.queryKey ? { ...i, checked: !i.checked } : i,
-    );
-    const checkedBoxes = getSearchColumns(newColumns);
-    onCheckboxStateChange(checkedBoxes);
-    setColumns(newColumns);
-  };
-
-  useEffect(() => {
-    searchColumnsKeysRef.current = getSearchColumns(items);
-  }, []);
-
-  const list = columns.map((item) => {
-    return (
-      <li
-        key={item?.queryKey}
-        style={{ display: "flex", alignItems: "center", flexGrow: 1, flexBasis: "50%" }}
-      >
-        <Input
-          type="checkbox"
-          checked={item.checked}
-          value={item?.checked}
-          style={{ width: 20, marginRight: "1ch", outline: "none", accentColor: "#cd171f" }}
-          onChange={() => handleCheckboxChange(item)}
-        />
-        <label>{item.title}</label>
-      </li>
-    );
-  });
-  return (
-    <div style={{ width: 280, fontFamily: "Poppins", paddingBottom: "5px" }}>
-      <div style={{ padding: "10px 0px" }}>
-        <p style={{ fontStyle: "bold", fontSize: "1.2rem" }}>Customize Search Column </p>
-      </div>
-      <hr />
-      <br />
-      <ul style={{ display: "flex", flexWrap: "wrap" }}>{list}</ul>
-    </div>
-  );
-};
+const valueOptions = [
+  {
+    type: "boolean",
+    options: [
+      { title: "Yes", queryKey: true },
+      { title: "No", queryKey: false },
+    ],
+  },
+];
 
 function Index({
   liveclients = [],
@@ -316,7 +294,7 @@ function Index({
   const columnDropdown = (
     <DropdownMenu
       list={
-        <CustomizeSearchColumns
+        <SearchColumns
           items={columnList}
           onCheckboxStateChange={(keys) => {
             console.log({ keys });
@@ -344,9 +322,19 @@ function Index({
   const filterDropdown = (
     <DropdownMenu
       list={
-        <>
-          <li>Filter list 1</li>
-        </>
+        <Filters
+          criterias={criteriaOptions}
+          conditions={conditionOptions}
+          values={valueOptions}
+          // onFilterChange={(val) => console.log("val", val)}
+          onApply={async (filters) => {
+            await fetchLiveClients({
+              query: filters,
+              page: defaultQuery.page,
+              perPage: defaultQuery.perPage,
+            });
+          }}
+        />
       }
       offsetTop={50}
       closeOnOutsideClick
@@ -369,7 +357,6 @@ function Index({
   return (
     <DataGridContainer>
       {deleteModal}
-
       <Toolbar>
         <Center style={{ width: "100%", justifyContent: "flex-start" }}>
           <Center style={{ gap: 10 }}>
@@ -407,6 +394,8 @@ function Index({
           justifyContent: "space-between",
           width: "100%",
           backgroundColor: "#f7f7f7",
+          paddingTop: 5,
+          paddingBottom: 5,
         }}
       >
         <Center>
@@ -414,6 +403,7 @@ function Index({
             Rows per page
           </label>
           <select
+            style={{ height: 25 }}
             value={perPage}
             onChange={(e) => {
               const currentPage = e.target.value;
@@ -445,13 +435,19 @@ function Index({
             let pageNumber = Number(page);
             setPage(pageNumber);
             // setPageno(page);
-            const query = {
+            let query = {
               page,
               perPage,
             };
             if (searchKey) {
               query.search = searchKey;
               searchColumns = searchColumnsKeysRef.current || [];
+            }
+            const filterQueries = window.sessionStorage.getItem("filters");
+            if (filterQueries) {
+              const filterQueriesJson = JSON.parse(filterQueries);
+              const queries = getFiltersKeys(filterQueriesJson);
+              query = { ...query, ...queries };
             }
 
             fetchLiveClients({

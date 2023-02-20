@@ -204,7 +204,7 @@ const StyledInput = styled.input<StyledInputProps>`
   height: ${({ inputSize }) => (inputSize ? inputSizes[inputSize] : inputSizes.md)};
   font-size: ${({ inputSize }) => (inputSize ? fontSizes[inputSize] : inputSizes.md)};
   margin: 0.5rem 0px 1rem 0px;
-  /* padding: 0.3rem 0.6rem; */
+  padding: 0.3rem 0.6rem;
   border: 1px solid rgba(180, 31, 31, 1);
   border-radius: 8px;
   font-family: "Poppins";

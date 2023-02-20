@@ -1,13 +1,15 @@
 import useEventListener from "hooks/useEventListener/useEventListener";
-import React, { useRef } from "react";
+import { useRef } from "react";
 
-function ClickOutside({ children, onClickOutside, closeOnOutsideClick }) {
+function ClickOutside({ children, open, onClickOutside, closeOnOutsideClick }) {
   const containerRef = useRef();
+
   const handleOutsideClick = (event) => {
-    if (containerRef.current && !containerRef.current.contains(event.target)) {
+    if (open && containerRef.current && !containerRef.current.contains(event.target)) {
       onClickOutside();
     }
   };
+
   if (closeOnOutsideClick) useEventListener("click", handleOutsideClick);
 
   return children({ containerRef });

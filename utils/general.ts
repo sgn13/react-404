@@ -1,3 +1,12 @@
+import { customAlphabet } from "nanoid/non-secure";
+
+const nanoid = customAlphabet(
+  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSSTUVWXYZ1234567890",
+  15,
+);
+
+export const getNanoID = () => nanoid().replace(/[0-9]+/gi, "");
+
 export const getArrayOfCountingNumbers = (length = 10) =>
   Array(length)
     .fill(0)

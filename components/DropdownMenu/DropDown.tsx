@@ -4,18 +4,13 @@ import List from "./List";
 import ClickOutside from "./ClickOutside";
 import EscKeyPress from "./EscKeyPress";
 
-function DropdownMenu({
-  children,
-  list,
-  open = false,
-  offsetTop = 20,
-  closeOnOutsideClick,
-}) {
+function DropdownMenu({ children, list, open = false, offsetTop = 20, closeOnOutsideClick }) {
   return (
     <Toggleable defaultOpen={open}>
       {({ open, toggle }) => {
         return (
           <ClickOutside
+            open={open}
             closeOnOutsideClick={closeOnOutsideClick}
             onClickOutside={() => toggle(false)}
           >
@@ -23,12 +18,7 @@ function DropdownMenu({
               <EscKeyPress onEscKeyPress={() => toggle(false)}>
                 {() => {
                   return (
-                    <List
-                      list={list}
-                      containerRef={containerRef}
-                      open={open}
-                      offsetTop={offsetTop}
-                    >
+                    <List list={list} containerRef={containerRef} open={open} offsetTop={offsetTop}>
                       {children({ toggle })}
                     </List>
                   );
