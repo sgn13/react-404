@@ -1,22 +1,24 @@
+import React from "react";
 import { ComponentProps, PropsWithChildren, RefObject } from "react";
 // using facade for styled-components.
 import styled from "../../theme/styled";
 
-export type TextSizeType = "xs" | "sm" | "md" | "lg" | "xl";
+export type textSizeType = "xs" | "sm" | "md" | "lg" | "xl";
 
 export type TextProps = ComponentProps<"span"> & {
-  size?: TextSizeType;
+  size?: textSizeType;
   textType?: "title" | "label" | "error" | "help";
   color?: string;
   icon?: JSX.Element;
   className?: string;
   required?: boolean;
   dropdown?: boolean;
+  iconRight?: boolean;
 } & { ref?: RefObject<HTMLSpanElement> };
 
 const labelStyles = {
-  title: "font-weight: 400;",
-  label: "font-weight: 400; color: #404b7c;",
+  title: "title",
+  label: "font-weight: bold;",
   help: "font-style: italic;color:gray;",
   error: "font-style: italic;color:red;",
 };
@@ -30,7 +32,7 @@ const textSizes = {
 };
 
 const StyledText = styled.span<TextProps>`
-  font-size: ${({ size }) => (size ? textSizes[size] : textSizes.md)};
+  font-size: ${({ size }) => (size ? textSizes[size] : textSizes["md"])};
 
   color: ${({ color = "black" }) => color};
 
@@ -41,15 +43,11 @@ const StyledText = styled.span<TextProps>`
     align-items: center;
     text-align:left;
     svg {
-      margin-right: 0.3rem;
+      //  margin-right: .3rem;
     }
   `}
   ${({ textType = "title" }) => (textType ? `${labelStyles[textType]}` : null)};
   ${({ dropdown }) => (dropdown ? "display:flex; align-items:center;" : null)}
-
-  width:fit-content;
-  font-family: "Poppins";
-  font-weight: 400;
 `;
 
 const Asterisk = styled.span`
@@ -74,13 +72,23 @@ function Text({
   icon,
   color,
   dropdown,
+  iconRight,
   ...rest
 }: PropsWithChildren<TextProps>): JSX.Element {
   return (
     <StyledText {...rest} icon={icon} color={color} dropdown={dropdown} className={className}>
       {required && <Asterisk>*</Asterisk>}
-      {icon}
-      {children}
+      {iconRight ? (
+        <>
+          {children}
+          {icon}
+        </>
+      ) : (
+        <>
+          {icon} {children}
+        </>
+      )}
+
       {dropdown && <Dropdown />}
     </StyledText>
   );

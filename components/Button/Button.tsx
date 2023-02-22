@@ -1,10 +1,10 @@
-import React, { ComponentPropsWithRef, PropsWithChildren } from "react";
+import React, { PropsWithChildren, ComponentPropsWithRef } from "react";
 import styled from "styled-components";
-import shadows from "constants/css/shadows";
-import Text from "../Text/Text";
+import Text, { TextProps } from "../Text/Text";
+import shadows from "../../constants/css/shadows";
 import { InputContainerProps } from "../Input/Input";
 
-type SizeType = "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
+type SizeType = "xs" | "sm" | "md" | "lg" | "xl";
 
 type StyledButtonProps = ComponentPropsWithRef<"button"> & {
   icon?: React.ReactNode;
@@ -14,16 +14,16 @@ type StyledButtonProps = ComponentPropsWithRef<"button"> & {
   backgroundColor?: string;
 };
 
-type ButtonComponentProps = ComponentPropsWithRef<"button"> & {
-  text?: any;
-  dropdown?: any;
-  textStyle?: any;
-  noRipple?: boolean;
-  noTextShadow?: boolean;
-  elevation?: number;
-  icon?: JSX.Element;
-  size?: SizeType;
-} & StyledButtonProps &
+export type ButtonComponentProps = ComponentPropsWithRef<"button"> &
+  TextProps & {
+    dropdown?: any;
+    textStyle?: any;
+    noRipple?: boolean;
+    noTextShadow?: boolean;
+    elevation?: number;
+    icon?: JSX.Element;
+    size?: SizeType;
+  } & StyledButtonProps &
   InputContainerProps;
 
 const StyledButton = styled.button<StyledButtonProps>`
@@ -159,10 +159,11 @@ const handleClick = ({
   if (!noRipple) createRipple(event);
 
   // executing user onClick handler
-  if (!disabled) onClick();
+  !disabled && onClick();
 };
 
 const StyledText = styled(Text)<{ noTextShadow: boolean }>`
+  font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -185,6 +186,7 @@ function Button(props: PropsWithChildren<ButtonComponentProps>) {
     elevation = 0,
     noTextShadow = false,
     type = "button",
+    iconRight,
     ...rest
   } = props;
 
@@ -202,6 +204,7 @@ function Button(props: PropsWithChildren<ButtonComponentProps>) {
         size={size}
         color={color}
         icon={icon}
+        iconRight={iconRight}
         style={textStyle}
         noTextShadow={noTextShadow}
         dropdown={dropdown}

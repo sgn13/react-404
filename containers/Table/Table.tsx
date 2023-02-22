@@ -26,10 +26,12 @@ const TableStyles = styled.div<{ backgroundColor; textColor }>`
     /* border: 0.5px solid #bebcbc74; */
     border-top: none;
     border-bottom: none;
-    padding: 8px;
     vertical-align: middle;
     font-family: "Poppins";
     font-weight: 300;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 
   /* thead th {
@@ -37,6 +39,11 @@ const TableStyles = styled.div<{ backgroundColor; textColor }>`
     border-right: 1px solid #c6c1c174;
   } */
 
+  td:first-child,
+  th:first-child {
+    width: 60px;
+    padding-left: 16px;
+  }
   // Use a small value (different from 0) to have the fit-content behavior
   td:last-child,
   th:last-child {
@@ -48,12 +55,17 @@ const TableStyles = styled.div<{ backgroundColor; textColor }>`
   }
 
   th {
-    padding-top: 16px;
-    padding-bottom: 16px;
+    /* padding-top: 16px;
+    padding-bottom: 16px; */
+
     text-align: left;
     background-color: ${({ backgroundColor }) => backgroundColor ?? primary};
     color: ${({ textColor }) => textColor ?? "white"};
     font-weight: 400;
+  }
+
+  td {
+    padding-left: 5px;
   }
 
   table tr:hover {
@@ -112,23 +124,25 @@ function Table({ isLoading, loader = <div>loading...</div>, dataSource = [], col
             </tr>
           ))}
         </thead>
-
-        {isLoading ? (
-          <TableLoader>
-            <Center>{loader}</Center>
-          </TableLoader>
-        ) : (
-          <tbody>
-            {getRowModel().rows.map((row) => (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        )}
-
+        <tbody>
+          {isLoading ? (
+            <TableLoader>
+              <Center>{loader}</Center>
+            </TableLoader>
+          ) : (
+            <>
+              {getRowModel().rows.map((row) => (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </>
+          )}
+        </tbody>
         <tfoot>
           {getFooterGroups().map((footerGroup) => (
             <tr key={footerGroup.id}>

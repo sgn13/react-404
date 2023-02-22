@@ -11,6 +11,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { GrFormDown } from "react-icons/gr";
 import debounce from "utils/debounce";
 import throttle from "utils/throttle";
+import { useSessionStorage } from "hooks/useStorage/useStorage";
 
 const ReactIcon = styled.div<{ color?: string; hoverColor?: string }>`
   display: flex;
@@ -52,7 +53,7 @@ type FilterItem = {
   value?: string;
   from?: string;
   to?: string;
-} & CriteriaItem;
+} & CriteriaItem & { valueTitle?: Object };
 
 function getFilterItem(): FilterItem {
   return {
@@ -71,6 +72,7 @@ const id = `${getNanoID()}`;
 const initialCriteriaItem: FilterItem = {
   id,
   title: "",
+  valueTitle: {},
   queryKey: "",
   type: "",
   condition: "",
@@ -104,20 +106,20 @@ function Filters({
   onFilterChange: Function;
   onApply: Function;
 }) {
-  const [filters, setFilters] = useState<FilterItem[]>(() => {
-    const savedFilters = window.sessionStorage.getItem("filters");
-    if (savedFilters) {
-      return JSON.parse(savedFilters);
-    } else {
-      return [initialCriteriaItem];
-    }
-  });
+  const [filters, setFilters, removeFilters] = useSessionStorage<FilterItem[]>("filters", [
+    initialCriteriaItem,
+  ]);
+
   const [remainingCriterias, setRemainingCriterias] = useState<CriteriaItem[]>([]);
-  console.log("filters", filters);
+
+  // initialize with empty filters when menu is mounted no saved filters available
+  useEffect(() => {
+    if (filters?.length === 0) setFilters([initialCriteriaItem]);
+  }, []);
 
   // only show criterias which have not been previously selected
   useEffect(() => {
-    if (!filters.length || !criterias.length) return;
+    if (!filters || !filters.length || !criterias.length) return;
 
     const filtersTitles = filters.reduce((acc, curr) => {
       if (curr.title) acc.push(curr.title);
@@ -128,12 +130,9 @@ function Filters({
   }, [filters, criterias]);
 
   useEffect(() => {
-    window.sessionStorage.setItem("filters", JSON.stringify(filters));
-  }, [filters]);
-
-  useEffect(() => {
     if (!onFilterChange) return;
-    onFilterChange(getFiltersKeys(filters));
+    const initialFiltersState = getFiltersKeys(filters);
+    onFilterChange([initialFiltersState]);
   }, [filters]);
 
   const addNewFilter = () => {
@@ -169,7 +168,9 @@ function Filters({
   const handleValueSelect = (value: any, filter: FilterItem) => {
     const current = value[0];
     setFilters((prev) =>
-      prev.map((p) => (p.id === filter.id ? { ...p, value: current.queryKey } : p)),
+      prev.map((p) =>
+        p.id === filter.id ? { ...p, value: current.queryKey, valueTitle: current?.valueTitle } : p,
+      ),
     );
   };
 
@@ -250,7 +251,7 @@ function Filters({
         <Select
           singleSelect
           options={values.filter((item) => item.type === "boolean")[0].options}
-          displayValue="title"
+          displayValue="valueTitle"
           placeholder="Select Value"
           style={{
             searchBox: { minWidth: 170 },
@@ -264,6 +265,7 @@ function Filters({
             </ReactIcon>
           }
           onSelect={(values: []) => handleValueSelect(values, item)}
+          selectedValues={[{ valueTitle: item?.valueTitle, queryKey: item?.queryKey }]}
         />
       ),
       string: (
@@ -411,7 +413,7 @@ function Filters({
           color="#cd171f"
           noTextShadow
           noRipple
-          icon={<IoMdAddCircleOutline size={20} fill="#cd171f" />}
+          icon={<IoMdAddCircleOutline style={{ marginRight: "0.3rem" }} size={20} fill="#cd171f" />}
           style={{ paddingLeft: "0px" }}
           onClick={addNewFilter}
         >

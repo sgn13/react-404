@@ -148,6 +148,7 @@ export const fetchLiveClients: AppThunk =
           dispatch(setIsLoading(false));
           return true;
         }
+        return false;
       }
       return false;
     } catch (error) {

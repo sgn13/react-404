@@ -42,7 +42,7 @@ function useStorage<T>(key: string, initialValue: T, storageObject: Storage) {
   }, []);
 
   // doing this so that we always return something which is renderable
-  let returnValue = value && typeof value !== "function" ? JSON.parse(value) : undefined;
+  let returnValue = value && typeof value !== "function" ? value : undefined;
 
   return [returnValue, setValue, remove] as const;
 }
