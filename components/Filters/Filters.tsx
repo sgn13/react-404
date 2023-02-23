@@ -86,8 +86,10 @@ export const getFiltersKeys = (filters) =>
     .filter((item) => item.title)
     ?.reduce((acc, curr) => {
       if (curr.condition === "=") {
+        // for numbers and strings
         acc[curr.queryKey] = curr.value;
       } else {
+        // only for numbers
         acc[curr.queryKey] = `${curr.condition}${curr.value}`;
       }
       return acc;
@@ -132,7 +134,7 @@ function Filters({
   useEffect(() => {
     if (!onFilterChange) return;
     const initialFiltersState = getFiltersKeys(filters);
-    onFilterChange([initialFiltersState]);
+    onFilterChange(initialFiltersState);
   }, [filters]);
 
   const addNewFilter = () => {

@@ -34,12 +34,21 @@ const HeaderContent = styled.div<{ selected?: boolean }>`
   }
 `;
 
-const TableHeader = ({ children, headerId, sort, setSort, fetchLiveClients }: TableHeaderProps) => {
+const TableHeader = ({
+  children,
+  headerId,
+  sort,
+  setSort,
+  fetchLiveClients,
+  metadata,
+}: TableHeaderProps) => {
   const handleHeaderClick = async (e: any) => {
     e.preventDefault();
     const query = {
       sortBy: headerId,
       order: sort?.order === "asc" ? "desc" : "asc",
+      perPage: metadata?.perPage,
+      page: metadata?.page,
     };
     if (
       await fetchLiveClients({

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Input from "../Input/Input";
 import { TfiSearch } from "react-icons/tfi";
@@ -16,7 +16,7 @@ const SearchContainer = styled.div<{
   height: ${({ height }) => height || "3.75rem"};
   background-color: ${({ color }) => color || "#f08742"};
 
-  border-radius: 50px;
+  border-radius: 10px;
   transition: 0.5s;
   box-sizing: border-box;
   overflow: hidden;
@@ -84,16 +84,23 @@ function Search({
   onEnter = (searchValue = "null") => {},
   onSearchClose = () => {},
   searchContainerStyle = {},
+  initialValue = "",
+  openSearchOnMount = false,
   ...rest
 }) {
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(openSearchOnMount);
   const [focused, setFocused] = useState(false);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(initialValue);
 
   const handleChange = (e) => {
     const value = e.target.value;
     setValue(value);
   };
+
+  useEffect(() => {
+    if (initialValue && !active) setActive(true);
+    if (!initialValue && active) setActive(false);
+  }, [initialValue]);
 
   const handleClear = () => {
     setValue("");

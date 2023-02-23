@@ -23,11 +23,14 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import DropdownMenu from "components/DropdownMenu/DropDown";
 import { IoIosRefresh } from "react-icons/io";
 
-import SearchColumns from "components/SearchColumns/SearchColumns";
+import SearchColumns, { getSearchColumns } from "components/SearchColumns/SearchColumns";
 import Filters, { getFiltersKeys } from "components/Filters/Filters";
 import { AiOutlineExport } from "react-icons/ai";
 import Chip from "components/Chip/Chip";
 import { useSessionStorage } from "hooks/useStorage/useStorage";
+import { SlReload } from "react-icons/sl";
+import { TfiReload } from "react-icons/tfi";
+import { RxReset } from "react-icons/rx";
 
 const DataGridContainer = styled.div`
   margin: 10px;
@@ -80,7 +83,6 @@ const TableName = styled.div`
 //   border-right: 1px solid #cbd1cf;
 // `;
 
-let searchKey = "";
 const loader = (
   <Buffering color="red">
     {new Array(12).fill(0).map((item) => (
@@ -134,51 +136,71 @@ function Index({
   metadata,
   isLoading,
   isSubmitting,
-  fetchLiveClients,
+  fetchLiveClients: fetchFunction,
 }: PropsFromRedux) {
   const navigate = useNavigate();
-  const [page, setPage] = useState(metadata?.page || defaultQuery.page);
-  const [perPage, setPerPage] = useState<any>(metadata?.perPage || defaultQuery.perPage);
+  const [page, setPage] = useState(defaultQuery.page);
+  const [perPage, setPerPage] = useState<any>(defaultQuery.perPage);
   const [showModal, setShowModal] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const searchColumnsKeysRef = useRef(null);
   const [sort, setSort, removeSort] = useSessionStorage("sort", "");
-  const [filtersData, setFiltersData] = useState(null);
+  const [filters, setFilters] = useState(null);
   const [isFiltered, setIsFiltered] = useState(false);
-
-  console.log("filtersData", filtersData);
-
-  // const handleStorageChange = (e) => {
-  //   const savedSort = window.sessionStorage.getItem("sort");
-  //   console.log("storage change detected");
-  //   if (savedSort) {
-  //     console.log("savedSort", savedSort);
-  //     const json = JSON.parse(savedSort);
-  //     if (json.sortBy) {
-  //       setTableStatus({ dataType: "sort", data: json, status: "Sorted" });
-  //       return;
-  //     }
-  //   }
-  //   const savedFitlers = window.sessionStorage.getItem("filters");
-  //   if (savedFitlers) {
-  //     console.log("savedFilters", savedFitlers);
-  //     const json = JSON.parse(savedFitlers);
-  //     const queries = getFiltersKeys(json);
-  //     if (queries.length) {
-  //       setTableStatus({ dataType: "filters", data: queries, status: "Filtered" });
-  //       return;
-  //     }
-  //   }
-  //   // key removed
-  //   setTableStatus(undefined);
-  // };
+  const [searchKey, setSearchKey, removeSearchKey] = useSessionStorage("searchkey", "");
 
   const handleModalClose = () => setShowModal(null);
 
+  // initialize searchColumns
   useEffect(() => {
-    fetchLiveClients({});
+    searchColumnsKeysRef.current = getSearchColumns(columnList);
   }, []);
 
+  useEffect(() => {
+    fetchFunction({});
+  }, []);
+
+  const reset = () => {
+    fetchFunction({
+      query: {
+        page: defaultQuery.page,
+        perPage: defaultQuery.perPage,
+      },
+    });
+    setPage(defaultQuery.page);
+    setPerPage(defaultQuery.perPage);
+  };
+
+  const reload = () => {
+    let reloadQuery = {
+      page,
+      perPage,
+    };
+    // with extra queries
+    // based on search, sort and filtering states
+    if (sort) {
+      const sortJson = JSON.parse(sort);
+      reloadQuery = { ...reloadQuery, ...sortJson };
+    }
+
+    if (searchKey) {
+      reloadQuery = {
+        ...reloadQuery,
+        search: searchKey,
+        searchColumns: searchColumnsKeysRef.current || [],
+      };
+    }
+
+    if (isFiltered) {
+      reloadQuery = { ...reloadQuery, ...filters };
+    }
+    console.log({ reloadQuery });
+    fetchFunction({
+      query: reloadQuery,
+    });
+  };
+
+  // keeping for reference
   // useEventListener("storage", handleStorageChange);
   // const handleChipDelete = () => {
   //   if (tableStatus?.dataType) {
@@ -316,14 +338,13 @@ function Index({
   const handleSearch = ({
     searchQuery,
     searchColumns,
-    filterQueries,
   }: {
     searchQuery?: string;
     filterQueries?: any;
   }) => {
     if (searchQuery) {
       const firstTimeSearch = !searchKey;
-      fetchLiveClients({
+      fetchFunction({
         query: {
           search: searchQuery,
           searchColumns,
@@ -331,7 +352,7 @@ function Index({
           perPage: firstTimeSearch ? 2 : perPage,
         },
       });
-      searchKey = searchQuery;
+      setSearchKey(searchQuery);
     }
   };
 
@@ -350,19 +371,17 @@ function Index({
           })
         ) {
           handleModalClose();
-          fetchLiveClients({ query: { page, perPage } });
+          fetchFunction({ query: { page, perPage } });
         }
       }}
     />
   );
-
   const columnDropdown = (
     <DropdownMenu
       list={
         <SearchColumns
           items={columnList}
           onCheckboxStateChange={(keys) => {
-            console.log({ keys });
             searchColumnsKeysRef.current = keys;
           }}
           searchColumnsKeysRef={searchColumnsKeysRef}
@@ -392,17 +411,12 @@ function Index({
           conditions={conditionOptions}
           values={valueOptions}
           onFilterChange={(queries) => {
-            setFiltersData(queries);
+            setFilters(queries);
             setIsFiltered(false);
-
-            // if (queries && queries.length && !Object.keys(queries[0]).length) {
-            //   console.log("off");
-            //   setIsFiltered(false);
-            // }
           }}
           onApply={async (filters) => {
             if (
-              await fetchLiveClients({
+              await fetchFunction({
                 query: filters,
                 page: defaultQuery.page,
                 perPage: defaultQuery.perPage,
@@ -439,6 +453,8 @@ function Index({
           <Center style={{ gap: 10 }}>
             {columnDropdown}
             <Search
+              initialValue={searchKey}
+              openSearchOnMount={!!searchKey}
               onEnter={(searchValue = "null") => {
                 handleSearch({
                   searchQuery: searchValue,
@@ -446,8 +462,8 @@ function Index({
                 });
               }}
               onSearchClose={() => {
-                searchKey = "";
-                fetchLiveClients({});
+                removeSearchKey();
+                fetchFunction({});
               }}
               searchContainerStyle={{ margin: 10, marginLeft: 0, marginRight: 0 }}
               color={"#cd171f"}
@@ -457,37 +473,52 @@ function Index({
           </Center>
 
           <div style={{ display: "flex", gap: 5 }}>
-            {sort ? (
-              <Chip
-                label={sort ? `Sorted` : ""}
-                onDelete={removeSort}
-                backgroundColor="white"
-                iconSize={16}
-                color="black"
-                size="sm"
-                style={{ border: "none", marginBottom: 5, marginRight: 5 }}
-                textStyle={{ fontSize: "0.8rem" }}
-                iconWrapperStyle={{ backgroundColor: "gray", border: "none" }}
-              />
-            ) : null}
+            <Chip
+              label={sort ? `Sorted` : ""}
+              onDelete={() => {
+                removeSort();
+                reset();
+              }}
+              backgroundColor="white"
+              iconSize={16}
+              color="black"
+              size="sm"
+              style={{ border: "none", marginBottom: 5, marginRight: 5 }}
+              textStyle={{ fontSize: "0.8rem" }}
+              iconWrapperStyle={{ backgroundColor: "gray", border: "none" }}
+            />
 
-            {isFiltered ? (
-              <Chip
-                label={isFiltered ? `Filtered` : ""}
-                onDelete={() => {
-                  setFiltersData(undefined);
-                  setIsFiltered(false);
-                  window.sessionStorage.removeItem("filters");
-                }}
-                backgroundColor="white"
-                iconSize={16}
-                color="black"
-                size="sm"
-                style={{ border: "none", marginBottom: 5, marginRight: 5 }}
-                textStyle={{ fontSize: "0.8rem" }}
-                iconWrapperStyle={{ backgroundColor: "gray", border: "none" }}
-              />
-            ) : null}
+            <Chip
+              label={searchKey ? `Searched` : ""}
+              onDelete={() => {
+                removeSearchKey();
+                reset();
+              }}
+              backgroundColor="white"
+              iconSize={16}
+              color="black"
+              size="sm"
+              style={{ border: "none", marginBottom: 5, marginRight: 5 }}
+              textStyle={{ fontSize: "0.8rem" }}
+              iconWrapperStyle={{ backgroundColor: "gray", border: "none" }}
+            />
+
+            <Chip
+              label={isFiltered ? `Filtered` : ""}
+              onDelete={() => {
+                setFilters(null);
+                setIsFiltered(false);
+                window.sessionStorage.removeItem("filters");
+                reset();
+              }}
+              backgroundColor="white"
+              iconSize={16}
+              color="black"
+              size="sm"
+              style={{ border: "none", marginBottom: 5, marginRight: 5 }}
+              textStyle={{ fontSize: "0.8rem" }}
+              iconWrapperStyle={{ backgroundColor: "gray", border: "none" }}
+            />
           </div>
         </Center>
 
@@ -503,10 +534,17 @@ function Index({
             </GridButton>
             <GridButton
               size="sm"
-              icon={<IoIosRefresh style={{ marginRight: "0.3rem" }} size={20} fill="white" />}
-              onClick={() => fetchLiveClients({})}
+              icon={<RxReset style={{ marginRight: "0.3rem" }} size={20} fill="white" />}
+              onClick={reset}
             >
-              Refresh
+              Reset
+            </GridButton>
+            <GridButton
+              size="sm"
+              icon={<SlReload style={{ marginRight: "0.3rem" }} size={20} fill="white" />}
+              onClick={reload}
+            >
+              Reload
             </GridButton>
             <GridButton
               size="sm"
@@ -540,12 +578,33 @@ function Index({
             onChange={(e) => {
               const currentPage = e.target.value;
               setPerPage(currentPage);
-              setPage(1);
-              fetchLiveClients({
-                query: {
-                  perPage: Number(e.target.value),
-                  page: 1,
-                },
+              setPage(defaultQuery.page);
+
+              let selectQueries = {
+                page: defaultQuery.page,
+                perPage: currentPage,
+              };
+              // with extra queries
+              // based on search, sort and filtering states
+              if (sort) {
+                const sortJson = JSON.parse(sort);
+                selectQueries = { ...selectQueries, ...sortJson };
+              }
+
+              if (searchKey) {
+                selectQueries = {
+                  ...selectQueries,
+                  search: searchKey,
+                  searchColumns: searchColumnsKeysRef.current || [],
+                };
+              }
+
+              if (isFiltered) {
+                selectQueries = { ...selectQueries, ...filters };
+              }
+
+              fetchFunction({
+                query: selectQueries,
               });
             }}
           >
@@ -574,25 +633,30 @@ function Index({
 
             if (searchKey) {
               query.search = searchKey;
-              searchColumns = searchColumnsKeysRef.current || [];
+              query.searchColumns = searchColumnsKeysRef.current || [];
             }
 
-            const savedFilterQueries = window.sessionStorage.getItem("filters");
+            // const savedFilterQueries = window.sessionStorage.getItem("filters");
 
-            if (isFiltered && savedFilterQueries) {
-              const json = JSON.parse(savedFilterQueries);
-              const queries = getFiltersKeys(json);
-              query = { ...query, ...queries };
+            // if (isFiltered && savedFilterQueries) {
+            //   const json = JSON.parse(savedFilterQueries);
+            //   const queries = getFiltersKeys(json);
+            //   query = { ...query, ...queries };
+            // }
+
+            if (isFiltered) {
+              // console.log("filtersData", filtersData);
+              // const filterQueries = getFiltersKeys(filtersData);
+              // console.log("filterQueries", filterQueries);
+              query = { ...query, ...filters };
             }
 
-            const savedSortQueries = window.sessionStorage.getItem("sort");
-            if (savedSortQueries) {
-              const json = JSON.parse(savedSortQueries);
-              const queries = json;
-              query = { ...query, ...queries };
+            if (sort) {
+              const sortQueries = JSON.parse(sort);
+              query = { ...query, ...sortQueries };
             }
 
-            fetchLiveClients({
+            fetchFunction({
               query,
             });
           }}

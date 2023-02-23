@@ -96,7 +96,7 @@ export const generateQuery = ({
   };
 
   if (length) {
-    finalQuery = { ...finalQuery, perPage: perPage || 10 };
+    finalQuery = { ...finalQuery, perPage: perPage || defaultQuery.perPage };
   }
 
   // if (columns.length) {

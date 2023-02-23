@@ -1,6 +1,9 @@
 import Input from "components/Input/Input";
 import React, { useEffect, useState } from "react";
 
+export const getSearchColumns = (newColumns) =>
+  newColumns.filter((item) => item.checked)?.map((item) => item?.queryKey);
+
 const SearchColumns = ({
   items,
   onCheckboxStateChange,
@@ -11,9 +14,6 @@ const SearchColumns = ({
   searchColumnsKeysRef: any;
 }) => {
   const [columns, setColumns] = useState(items);
-
-  const getSearchColumns = (newColumns) =>
-    newColumns.filter((item) => item.checked)?.map((item) => item?.queryKey);
 
   const handleCheckboxChange = (item) => {
     const newColumns = columns.map((i) =>
