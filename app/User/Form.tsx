@@ -203,7 +203,7 @@ const UserForm = ({
         return (
           <Form style={{ boxSizing: "border-box" }}>
             <FormGroup title="Checkist Information">
-              <Row style={{ marginBottom: 18, gap: 10 }}>
+              <Row gap="10px" style={{ marginBottom: 18 }}>
                 <Col>
                   <ImageInput
                     label="Profile Picture"
@@ -309,28 +309,13 @@ const UserForm = ({
               </Row>
             </FormGroup>
             <Row>
-              <Col lg={12}>
-                <div
-                  className="clear mt-3"
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Button
-                    type="button"
-                    size="sm"
-                    className="btn btn-primary float-right ml-2"
-                    onClick={() => navigate(-1)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    size="sm"
-                    className="btn btn-primary float-right"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? "Submitting..." : formData ? "Update" : "Submit"}
-                  </Button>
-                </div>
+              <Col lg={12} justifyContent="space-between">
+                <Button type="button" size="sm" onClick={() => navigate(-1)}>
+                  Cancel
+                </Button>
+                <Button type="submit" size="sm" disabled={isSubmitting}>
+                  {isSubmitting ? "Submitting..." : formData ? "Update" : "Submit"}
+                </Button>
               </Col>
             </Row>
           </Form>

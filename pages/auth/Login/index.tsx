@@ -5,7 +5,7 @@ import { login } from "store/app/actions";
 import { ConnectedProps, connect } from "react-redux";
 import { AppState } from "store/reducer";
 import styled from "styled-components";
-import { Box, Col, Container, Row } from "containers/Grid/Grid";
+import { Box, Col, Flexbox, Row } from "containers/Grid/Grid";
 import niceIcon from "assets/icons/nice.svg";
 import { primary } from "theme";
 import { AuthForm } from "./AuthForm";
@@ -62,7 +62,7 @@ function Index({ login, isSubmitting }: PropsFromRedux) {
   const navigate = useNavigate();
   const { state } = useLocation();
   return (
-    <Container fullHeight centerHorizontally centerVertically>
+    <Flexbox center fullHeight>
       <Box
         style={{
           width: "992px",
@@ -111,7 +111,7 @@ function Index({ login, isSubmitting }: PropsFromRedux) {
           </Col>
         </Row>
       </Box>
-    </Container>
+    </Flexbox>
   );
 }
 

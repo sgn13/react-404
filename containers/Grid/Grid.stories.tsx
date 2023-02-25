@@ -1,11 +1,11 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
-import { Col, Container, Row } from "./Grid";
+import { Container, Row, Col } from "./Grid";
 
-storiesOf("Containers/Layout", module)
+storiesOf("Containers/Grid", module)
   .add("All Equal Width", () => {
     return (
-      <Container style={{ textAlign: "center" }}>
+      <Container>
         <Row debug>
           <Col debug>1 of 2</Col>
           <Col debug>2 of 2</Col>
@@ -21,7 +21,7 @@ storiesOf("Containers/Layout", module)
   })
   .add("Specific Width", () => {
     return (
-      <Container style={{ textAlign: "center" }}>
+      <Container>
         <Row debug>
           <Col debug md={4}>
             md=4
@@ -41,7 +41,7 @@ storiesOf("Containers/Layout", module)
   })
   .add("Stacked to horizontal", () => {
     return (
-      <Container style={{ textAlign: "center" }}>
+      <Container>
         <Row debug>
           <Col debug md={1}>
             md=1
@@ -162,7 +162,7 @@ storiesOf("Containers/Layout", module)
   .add("Horizontal alignment", () => {
     return (
       <Container>
-        <Row debug style={{ justifyContent: "flex-start" }}>
+        <Row debug justifyContent="flex-start">
           <Col debug xs={3}>
             1 of 3
           </Col>
@@ -174,7 +174,7 @@ storiesOf("Containers/Layout", module)
           </Col>
         </Row>
         <br />
-        <Row debug style={{ justifyContent: "center" }}>
+        <Row debug justifyContent="center">
           <Col debug xs={3}>
             1 of 3
           </Col>
@@ -186,7 +186,7 @@ storiesOf("Containers/Layout", module)
           </Col>
         </Row>
         <br />
-        <Row debug style={{ justifyContent: "flex-end" }}>
+        <Row debug justifyContent="flex-end">
           <Col debug xs={3}>
             1 of 3
           </Col>
@@ -198,7 +198,7 @@ storiesOf("Containers/Layout", module)
           </Col>
         </Row>
         <br />
-        <Row debug style={{ justifyContent: "space-between" }}>
+        <Row debug justifyContent="space-between">
           <Col debug xs={3}>
             1 of 3
           </Col>
@@ -210,7 +210,7 @@ storiesOf("Containers/Layout", module)
           </Col>
         </Row>
         <br />
-        <Row debug style={{ justifyContent: "space-around" }}>
+        <Row debug justifyContent="space-around">
           <Col debug xs={3}>
             1 of 3
           </Col>
@@ -222,7 +222,7 @@ storiesOf("Containers/Layout", module)
           </Col>
         </Row>
         <br />
-        <Row debug style={{ justifyContent: "initial" }}>
+        <Row debug justifyContent="initial">
           <Col debug xs={3}>
             1 of 3
           </Col>
@@ -234,7 +234,7 @@ storiesOf("Containers/Layout", module)
           </Col>
         </Row>
         <br />
-        <Row debug style={{ justifyContent: "inherit" }}>
+        <Row debug justifyContent="inherit">
           <Col debug xs={3}>
             1 of 3
           </Col>
@@ -251,25 +251,25 @@ storiesOf("Containers/Layout", module)
   .add("Vertical alignment", () => {
     return (
       <Container>
-        <Row debug style={{ height: "75px", alignItems: "flex-start" }}>
+        <Row debug alignItems="flex-start" style={{ height: "75px" }}>
           <Col debug>1 of 3</Col>
           <Col debug>2 of 3</Col>
           <Col debug>3 of 3</Col>
         </Row>
         <br />
-        <Row debug style={{ height: "75px", alignItems: "center" }}>
+        <Row debug alignItems="center" style={{ height: "75px" }}>
           <Col debug>1 of 3</Col>
           <Col debug>2 of 3</Col>
           <Col debug>3 of 3</Col>
         </Row>
         <br />
-        <Row debug style={{ height: "75px", alignItems: "flex-end" }}>
+        <Row debug alignItems="flex-end" style={{ height: "75px" }}>
           <Col debug>1 of 3</Col>
           <Col debug>2 of 3</Col>
           <Col debug>3 of 3</Col>
         </Row>
         <br />
-        <Row debug style={{ height: "75px", alignItems: "stretch" }}>
+        <Row debug alignItems="stretch" style={{ height: "75px" }}>
           <Col debug>1 of 3</Col>
           <Col debug>2 of 3</Col>
           <Col debug>3 of 3</Col>

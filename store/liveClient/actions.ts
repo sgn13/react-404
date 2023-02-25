@@ -133,7 +133,6 @@ export const fetchLiveClients: AppThunk =
   ({ query = defaultQuery }) =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
-      // console.log("query", query);
       const link = generateQuery({ url: api.liveclient, query });
 
       dispatch(setIsLoading(true));

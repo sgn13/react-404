@@ -1,4 +1,4 @@
-import { Col, Container, Row } from "containers/Grid/Grid";
+import { Col, Flexbox, Row } from "containers/Grid/Grid";
 import { Page } from "containers/Layout";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
@@ -137,7 +137,7 @@ const ViewInPage = ({
     <Page>
       <Row>
         <Col>
-          <Container style={{ display: "flex", flexDirection: "column" }}>
+          <Flexbox column>
             {user?.profilePic ? (
               <img width={200} height={200} src={user?.profilePic} alt="Profile Picture" />
             ) : null}
@@ -168,9 +168,8 @@ const ViewInPage = ({
                 </VideoContainerWrapper>
               </VideoPage>
             ) : (
-              <Container
-                centerHorizontally
-                centerVertically
+              <Flexbox
+                center
                 style={{
                   textAlign: "center",
                   flex: 1,
@@ -205,7 +204,7 @@ const ViewInPage = ({
                     </Button>
                   </>
                 )}
-              </Container>
+              </Flexbox>
             )}
             {download.progress > 0 ? <ProgressLoader progress={download?.progress || 0} /> : null}
             {download?.remainingTime === undefined ? null : (
@@ -225,12 +224,12 @@ const ViewInPage = ({
                 Download Video
               </Button>
             )}
-          </Container>
+          </Flexbox>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Container>
+          <Flexbox column rowGap="10px">
             <div>Name: {user?.fullName}</div>
             <div>Designation: {user?.functionalTitle}</div>
             <div>Email: {user?.email}</div>
@@ -239,7 +238,7 @@ const ViewInPage = ({
             <div>Department: {user?.department}</div>
             <div>SuperUser: {user?.isSuperuser ? "Yes" : "No"}</div>
             <div>Admin: {user?.isAdmin ? "Yes" : "No"}</div>
-          </Container>
+          </Flexbox>
         </Col>
       </Row>
     </Page>

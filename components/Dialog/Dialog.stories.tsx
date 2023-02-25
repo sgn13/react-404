@@ -1,7 +1,7 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import Button from "../Button22/Button";
-import ButtonGroup from "../ButtonGroup/ButtonGroup";
+import ButtonGroup from "../../.husky/ButtonGroup/ButtonGroup";
 import Dialog from "./Dialog";
 
 storiesOf("Components/Dialog", module).add("Demo", () => {

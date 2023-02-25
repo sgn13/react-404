@@ -44,18 +44,20 @@ const TableHeader = ({
 }: TableHeaderProps) => {
   const handleHeaderClick = async (e: any) => {
     e.preventDefault();
-    const query = {
+    const sortQueries = {
       sortBy: headerId,
       order: sort?.order === "asc" ? "desc" : "asc",
-      perPage: metadata?.perPage,
-      page: metadata?.page,
     };
     if (
       await fetchLiveClients({
-        query,
+        query: {
+          ...sortQueries,
+          perPage: metadata?.perPage,
+          page: metadata?.page,
+        },
       })
     ) {
-      setSort(JSON.stringify(query));
+      setSort(JSON.stringify(sortQueries));
       // window.sessionStorage.setItem("sort", JSON.stringify({ ...query }));
       // A manual storage event is dispatched.
       // This will effectively trigger the storage event listener twice on other tabs/windows (of the same app)

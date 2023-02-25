@@ -156,13 +156,13 @@ const valueOptions = [
   },
 ];
 
-function Index({
+function DataGrid({
+  tableName = "Users Table",
   liveclients = [],
   metadata,
   isLoading,
   isSubmitting,
   fetchLiveClients: fetchFunction,
-  tableName = "Users Table",
 }: PropsFromRedux) {
   const navigate = useNavigate();
   const [page, setPage] = useState(defaultQuery.page);
@@ -679,4 +679,4 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connector(Index);
+export default connector(DataGrid);
