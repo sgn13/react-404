@@ -45,12 +45,12 @@
 - Data Grid with client side pagination setup (:heavy_check_mark: in storybook In Pagination component)
 - React Design Patterns Examples for reference (:heavy_check_mark:)
 - Pages setup with common messages pages (:heavy_check_mark:)
-- Table download as csv
-- Data Grid with server side pagination, SORTING, SEARCHING and FILTERING
+- Table export as csv (:heavy_check_mark:)
+- Data Grid with server side pagination, SORTING, SEARCHING and FILTERING (:heavy_check_mark:)
 - Socket Setup
 - Webrtc Setup
 - Page Animation on Route Change like my portfolio
-- Give a look to React project Structure saves of pocket
+- Give a look to React project Structure saves of pocket (:heavy_check_mark:)
 - Steps for proper production build deployment in custom server with ssl
 
 ## How to use it ?

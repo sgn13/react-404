@@ -157,10 +157,13 @@ function DataGrid({
   const [showModal, setShowModal] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const searchColumnsKeysRef = useRef(null);
-  const [sort, setSort, removeSort] = useSessionStorage("sort", "");
+  const [sort, setSort, removeSort] = useSessionStorage(`${tableName}-sort`, "");
   const [filters, setFilters] = useState(null);
   const [isFiltered, setIsFiltered] = useState(false);
-  const [searchKey, setSearchKey, removeSearchKey] = useSessionStorage("searchkey", "");
+  const [searchKey, setSearchKey, removeSearchKey] = useSessionStorage(
+    `${tableName}-searchkey`,
+    "",
+  );
 
   const handleModalClose = () => setShowModal(null);
 
@@ -451,6 +454,7 @@ function DataGrid({
     <DropdownMenu
       list={
         <Filters
+          filterName={tableName}
           criterias={criteriaOptions}
           conditions={conditionOptions}
           values={valueOptions}

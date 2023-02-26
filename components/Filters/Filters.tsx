@@ -96,6 +96,7 @@ export const getFiltersKeys = (filters) =>
     }, {});
 
 function Filters({
+  filterName,
   criterias,
   conditions,
   values,
@@ -108,9 +109,10 @@ function Filters({
   onFilterChange: Function;
   onApply: Function;
 }) {
-  const [filters, setFilters, removeFilters] = useSessionStorage<FilterItem[]>("filters", [
-    initialCriteriaItem,
-  ]);
+  const [filters, setFilters, removeFilters] = useSessionStorage<FilterItem[]>(
+    `${filterName}-filters`,
+    [initialCriteriaItem],
+  );
 
   const [remainingCriterias, setRemainingCriterias] = useState<CriteriaItem[]>([]);
 
