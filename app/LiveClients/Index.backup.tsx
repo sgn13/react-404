@@ -1,7 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Table from "containers/Table/Table";
 import Header from "containers/Table/Header";
+import Cell from "containers/Table/Cell";
 import styled from "theme/styled";
+import { connect, ConnectedProps } from "react-redux";
+import { setMe } from "store/app/actions";
+import { deleteLiveClient, fetchLiveClients } from "store/liveClient/actions";
+import { AppState } from "store/reducer";
 import { useNavigate } from "react-router-dom";
 import app from "constants/app";
 import { Buffering } from "components/Spinner/Spinner";
@@ -11,37 +16,29 @@ import Pagination from "components/PageNumbers/Pagination";
 import Search from "components/Search/Search";
 import { primary } from "theme";
 import Button from "components/Button/Button";
-import { CiEdit, CiFilter } from "react-icons/ci";
-import { BiColumns, BiEditAlt, BiShow, BiShowAlt } from "react-icons/bi";
-import { FiEdit2 } from "react-icons/fi";
+import { CiFilter } from "react-icons/ci";
+import { BiColumns } from "react-icons/bi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import DropdownMenu from "components/DropdownMenu/DropDown";
 
 import SearchColumns, { getSearchColumns } from "components/SearchColumns/SearchColumns";
 import Filters from "components/Filters/Filters";
-import { AiOutlineDelete, AiOutlineExport } from "react-icons/ai";
+import { AiOutlineExport } from "react-icons/ai";
 import Chip from "components/Chip/Chip";
 import { useSessionStorage } from "hooks/useStorage/useStorage";
 import { SlReload } from "react-icons/sl";
 import { RxReset } from "react-icons/rx";
 import { Flexbox } from "containers/Grid/Grid";
-import { connect, ConnectedProps } from "react-redux";
-import { setMe } from "store/app/actions";
-import { AppState } from "store/reducer";
-import Cell from "containers/Table/Cell";
-import ReactIcon from "components/ReactIcon/ReactIcon";
-import { GrEdit, GrFormEdit, GrView } from "react-icons/gr";
-import { MdOutlineDelete, MdOutlineDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
 
-const actionIconsColor = "#cd171f";
 const DataGridContainer = styled.div`
   margin: 10px;
 `;
 const ActionContainer = styled.div`
   max-width: fit-content;
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 5px;
+  white-space: nowrap;
+  button {
+    margin: 0.15rem;
+  }
 `;
 
 const PageNumbers = styled(Pagination)`
@@ -119,38 +116,54 @@ const loader = (
   </Buffering>
 );
 
-export type columnItem = {
-  accessorKey: string;
-  header: string;
-  // cell: string;
-  // footer?: string;
-};
+const columnList = [
+  { position: 1, title: "Name", queryKey: "fullName", checked: true },
+  { position: 2, title: "Functional Title", queryKey: "functionalTitle", checked: true },
+  { position: 3, title: "Email", queryKey: "email", checked: false },
+  { position: 4, title: "City", queryKey: "city", checked: true },
+  { position: 5, title: "Department", queryKey: "department", checked: false },
+];
 
-function DataGrid({
-  tableName = "Table",
-  data = [],
-  dataColumns = [],
+const criteriaOptions = [
+  { title: "Name", queryKey: "fullName", type: "string" },
+  { title: "Age", queryKey: "age", type: "number" },
+  { title: "Functional Title", queryKey: "functionalTitle", type: "string" },
+  { title: "Email", queryKey: "email", type: "string" },
+  { title: "City", queryKey: "city", type: "string" },
+  { title: "Department", queryKey: "department", type: "string" },
+  { title: "Is Admin", queryKey: "isAdmin", type: "boolean" },
+  { title: "Is User", queryKey: "isUser", type: "boolean" },
+  { title: "Experience", queryKey: "experience", type: "number" },
+  { title: "Joined", queryKey: "joined", type: "date" },
+];
+
+const conditionOptions = [
+  { title: "Greater than", queryKey: ">", type: "number" },
+  { title: "Less than", queryKey: "<", type: "number" },
+  { title: "Equals to", queryKey: "=", type: "number" },
+  { title: null, queryKey: "=", type: "string" },
+  { title: null, queryKey: "=", type: "date" },
+  { title: null, queryKey: "=", type: "boolean" },
+];
+
+const valueOptions = [
+  {
+    type: "boolean",
+    options: [
+      { valueTitle: "Yes", queryKey: true },
+      { valueTitle: "No", queryKey: false },
+    ],
+  },
+];
+
+function Index({
+  liveclients = [],
+  metadata,
   isLoading,
   isSubmitting,
-  metadata,
-  fetcher = () => {},
-  searchColumns,
-  criteriaOptions,
-  conditionOptions,
-  valueOptions,
-}: {
-  tableName?: string;
-  dataColumns?: Array<any>;
-  data?: Array<any>;
-  fetcher?: Function;
-  isSubmitting?: boolean;
-  isLoading?: boolean;
-  metadata?: any;
-  searchColumns?: any[];
-  criteriaOptions?: any[];
-  conditionOptions?: any[];
-  valueOptions?: any[];
-}) {
+  fetchLiveClients: fetchFunction,
+  tableName = "Users Table",
+}: PropsFromRedux) {
   const navigate = useNavigate();
   const [page, setPage] = useState(defaultQuery.page);
   const [perPage, setPerPage] = useState<any>(defaultQuery.perPage);
@@ -166,11 +179,11 @@ function DataGrid({
 
   // initialize searchColumns
   useEffect(() => {
-    searchColumnsKeysRef.current = getSearchColumns(searchColumns);
+    searchColumnsKeysRef.current = getSearchColumns(columnList);
   }, []);
 
   useEffect(() => {
-    fetcher({});
+    fetchFunction({});
   }, []);
 
   const getFeaturesQueries = () => {
@@ -208,7 +221,7 @@ function DataGrid({
 
     const features = getFeaturesQueries();
 
-    fetcher({
+    fetchFunction({
       query: { ...selectQueries, ...features },
     });
   };
@@ -223,7 +236,7 @@ function DataGrid({
 
     const features = getFeaturesQueries();
 
-    fetcher({
+    fetchFunction({
       query: { ...paginationQuery, ...features },
     });
   };
@@ -234,13 +247,13 @@ function DataGrid({
       perPage,
     };
     const features = getFeaturesQueries();
-    fetcher({
+    fetchFunction({
       query: { ...reloadQuery, ...features },
     });
   };
 
   const reset = () => {
-    fetcher({
+    fetchFunction({
       query: {
         page: defaultQuery.page,
         perPage: defaultQuery.perPage,
@@ -259,104 +272,131 @@ function DataGrid({
   //   }
   // };
 
-  const columns = useMemo(() => {
-    const firstColumn = {
-      // accessorFn:()=>{}
-      accessorKey: "serial",
-      header: "#",
-      cell: (info: any) => info.getValue(),
-    };
-
-    const middleColumns = dataColumns.map((item) => ({
-      accessorKey: item?.accessorKey,
-      header: (info: any) => (
-        <Header
-          headerId={info.header.id}
-          sort={sort ? JSON.parse(sort) : undefined}
-          setSort={setSort}
-        >
-          {item?.header}
-        </Header>
-      ),
-      cell: (info: any) => <Cell>{info.getValue()}</Cell>,
-      footer: null,
-    }));
-
-    const lastColumn = {
-      accessorKey: null,
-      // header: <HeaderCell>Actions</HeaderCell>,
-      header: "Actions",
-      cell: (info: any) => {
-        return (
-          <ActionContainer>
-            <Button
-              onClick={() => {
-                navigate(`${app.user.view(info.row.original.id)}`);
-              }}
-              style={{ padding: 0 }}
-              backgroundColor="transparent"
-              borderColorOnHover={actionIconsColor}
-            >
-              <ReactIcon
-                color="gray"
-                hoverColor={actionIconsColor}
-                style={{ backgroundColor: "transparent" }}
-              >
-                <BiShowAlt size={22} />
-              </ReactIcon>
-            </Button>
-            <Button
-              onClick={() => navigate(`${app.user.update(info.row.original.id)}`)}
-              style={{ padding: 0 }}
-              backgroundColor="transparent"
-            >
-              <ReactIcon
-                color="gray"
-                hoverColor={actionIconsColor}
-                style={{ backgroundColor: "transparent" }}
-              >
-                <svg
-                  stroke="currentColor"
-                  fill="currentColor"
-                  stroke-width="0"
-                  viewBox="0 0 24 24"
-                  height="1.6rem"
-                  width="1.6rem"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    d="M11.9955241,8.33576576 L15.4932862,11.8335278 L11.9955241,8.33576576 Z M17.5365751,7.79609426 C17.9262629,8.18578207 17.9321949,8.81165877 17.5321697,9.21168397 L10.0807224,16.6631313 L6,17.829052 L7.16592069,13.7483296 L14.617368,6.29688224 C15.0094888,5.90476144 15.6393004,5.89881957 16.0329577,6.29247691 L17.5365751,7.79609426 Z"
-                  ></path>
-                </svg>
-              </ReactIcon>
-            </Button>
-
-            <Button
-              onClick={() => {
-                setSelectedItem(info.row.original);
-                setShowModal("delete");
-              }}
-              style={{ padding: 0 }}
-              backgroundColor="transparent"
-            >
-              <ReactIcon
-                color="gray"
-                hoverColor={actionIconsColor}
-                style={{ backgroundColor: "transparent" }}
-              >
-                <MdOutlineDelete size={22} />
-              </ReactIcon>
-            </Button>
-          </ActionContainer>
-        );
+  const columns = useMemo(
+    () => [
+      {
+        // accessorFn:()=>{}
+        accessorKey: "serial",
+        header: "#",
+        cell: (info: any) => info.getValue(),
       },
-    };
 
-    return [firstColumn, ...middleColumns, lastColumn];
-  }, [dataColumns, sort]);
+      {
+        accessorKey: "fullName",
+        header: (info: any) => (
+          <Header
+            headerId={info.header.id}
+            sort={sort ? JSON.parse(sort) : undefined}
+            setSort={setSort}
+          >
+            Name
+          </Header>
+        ),
+        cell: (info: any) => <Cell>{info.getValue()}</Cell>,
+        // footer: (
+        //   <div style={{ textAlign: "right", width: "100%" }}>
+        //     <span>Total</span>
+        //   </div>
+        // ),
+      },
+      {
+        accessorKey: "functionalTitle",
+        header: (info: any) => (
+          <Header
+            headerId={info.header.id}
+            sort={sort ? JSON.parse(sort) : undefined}
+            setSort={setSort}
+          >
+            Functional Title
+          </Header>
+        ),
+        cell: (info: any) => <Cell>{info.getValue()}</Cell>,
+        // footer: creditTotal,
+      },
+
+      {
+        accessorKey: "email",
+        header: (info: any) => (
+          <Header
+            headerId={info.header.id}
+            sort={sort ? JSON.parse(sort) : undefined}
+            setSort={setSort}
+          >
+            Email
+          </Header>
+        ),
+        cell: (info: any) => <Cell>{info.getValue()}</Cell>,
+
+        // it is recommended to do heavy calculations outside the columns
+        // footer: (info) =>
+        //   info.table.getFilteredRowModel().rows.reduce((acc, curr) => {
+        //     acc += curr.getValue("dr_amount") ? Number(curr.getValue("dr_amount")) : 0;
+        //     return acc;
+        //   }, 0),
+      },
+
+      {
+        accessorKey: "city",
+        header: (info: any) => (
+          <Header
+            headerId={info.header.id}
+            sort={sort ? JSON.parse(sort) : undefined}
+            setSort={setSort}
+          >
+            City
+          </Header>
+        ),
+        cell: (info: any) => <Cell>{info.getValue()}</Cell>,
+
+        // footer: creditTotal,
+      },
+      {
+        accessorKey: "department",
+        header: (info: any) => (
+          <Header
+            headerId={info.header.id}
+            sort={sort ? JSON.parse(sort) : undefined}
+            setSort={setSort}
+          >
+            Department
+          </Header>
+        ),
+        cell: (info: any) => <Cell>{info.getValue()}</Cell>,
+        // footer: creditTotal,
+      },
+
+      {
+        accessorKey: null,
+        // header: <HeaderCell>Actions</HeaderCell>,
+        header: "Actions",
+        cell: (info: any) => {
+          return (
+            <ActionContainer>
+              <button
+                onClick={() => {
+                  navigate(`${app.user.view(info.row.original.id)}`);
+                }}
+              >
+                view
+              </button>
+              <button onClick={() => navigate(`${app.user.update(info.row.original.id)}`)}>
+                edit
+              </button>
+              <button
+                onClick={() => {
+                  setSelectedItem(info.row.original);
+                  setShowModal("delete");
+                }}
+              >
+                delete
+              </button>
+            </ActionContainer>
+          );
+        },
+      },
+    ],
+    [sort],
+  );
 
   const handleSearch = ({
     searchQuery,
@@ -367,12 +407,12 @@ function DataGrid({
   }) => {
     if (searchQuery) {
       const firstTimeSearch = !searchKey;
-      fetcher({
+      fetchFunction({
         query: {
           search: searchQuery,
           searchColumns,
-          page: firstTimeSearch ? defaultQuery.page : page,
-          perPage: firstTimeSearch ? defaultQuery.perPage : perPage,
+          page: firstTimeSearch ? 1 : page,
+          perPage: firstTimeSearch ? 2 : perPage,
         },
       });
       setSearchKey(searchQuery);
@@ -388,23 +428,22 @@ function DataGrid({
       onClick={async () => {
         if (!selectedItem) return;
 
-        // if (
-        //   await deleteLiveClient({
-        //     userId: selectedItem?.id,
-        //   })
-        // ) {
-        //   handleModalClose();
-        //   fetcher({ query: { page, perPage } });
-        // }
+        if (
+          await deleteLiveClient({
+            userId: selectedItem?.id,
+          })
+        ) {
+          handleModalClose();
+          fetchFunction({ query: { page, perPage } });
+        }
       }}
     />
   );
-
   const columnDropdown = (
     <DropdownMenu
       list={
         <SearchColumns
-          items={searchColumns}
+          items={columnList}
           onCheckboxStateChange={(keys) => {
             searchColumnsKeysRef.current = keys;
           }}
@@ -439,7 +478,7 @@ function DataGrid({
       }}
       onSearchClose={() => {
         removeSearchKey();
-        fetcher({});
+        fetchFunction({});
       }}
       searchContainerStyle={{ margin: 10, marginLeft: 0, marginRight: 0 }}
       color={"#cd171f"}
@@ -460,7 +499,7 @@ function DataGrid({
           }}
           onApply={async (filters) => {
             if (
-              await fetcher({
+              await fetchFunction({
                 query: filters,
                 page: defaultQuery.page,
                 perPage: defaultQuery.perPage,
@@ -607,37 +646,37 @@ function DataGrid({
           </Flexbox>
           {chips}
         </Flexbox>
+
         <Flexbox justifyContent="space-between" alignItems="center" style={{ textAlign: "center" }}>
           <TableName>{tableName} </TableName>
           {tableActions}
         </Flexbox>
       </Toolbar>
-      <Table loader={loader} isLoading={isLoading} dataSource={data} columns={columns} />
+      <Table loader={loader} isLoading={isLoading} dataSource={liveclients} columns={columns} />
       {pagination}
     </DataGridContainer>
   );
 }
 
-// const mapStateToProps = ({
-//   appState: { me },
-//   liveClientState: { liveclients, metadata, isLoading, isSubmitting },
-// }: AppState) => ({
-//   me,
-//   liveclients,
-//   metadata,
-//   isLoading,
-//   isSubmitting,
-// });
+const mapStateToProps = ({
+  appState: { me },
+  liveClientState: { liveclients, metadata, isLoading, isSubmitting },
+}: AppState) => ({
+  me,
+  liveclients,
+  metadata,
+  isLoading,
+  isSubmitting,
+});
 
-// const mapDispatchToProps = {
-//   setMe,
-//   fetchLiveClients,
-//   deleteLiveClient,
-// };
+const mapDispatchToProps = {
+  setMe,
+  fetchLiveClients,
+  deleteLiveClient,
+};
 
-// const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
-// type PropsFromRedux = ConnectedProps<typeof connector>;
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
-// export default connector(DataGrid);
-export default DataGrid;
+export default connector(Index);

@@ -12,6 +12,7 @@ type StyledButtonProps = ComponentPropsWithRef<"button"> & {
   shadow?: string;
   linesOnHover?: boolean;
   backgroundColor?: string;
+  borderColorOnHover?: string;
 };
 
 export type ButtonComponentProps = ComponentPropsWithRef<"button"> &
@@ -54,7 +55,9 @@ const StyledButton = styled.button<StyledButtonProps>`
   transition-property: background-color, filter, box-shadow;
 
   :hover {
-    box-shadow: ${({ shadow }) => (shadow ? "none" : " 0 0 0.5rem rgba(0, 0, 0, 0.3)")};
+    box-shadow: ${({ shadow }) => (shadow ? "none" : " 0 0 0.5rem rgba(0, 0, 0, 0.3);")};
+    border-color: ${({ borderColorOnHover }) =>
+      borderColorOnHover ? `${borderColorOnHover};` : "rgba(0, 0, 0, 0.3);"};
 
     ${({ backgroundColorOnHover }) =>
       backgroundColorOnHover
