@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Row, Col } from "containers/Grid/Grid";
+import { Row, Col, Flexbox } from "containers/Grid/Grid";
 
 import * as Yup from "yup";
 import FormikBase from "containers/FormikBase/FormikBase";
@@ -18,6 +18,9 @@ import ImageInput from "components/ImageInput/ImageInput";
 
 import styled from "theme/styled";
 import { getModifiedValues } from "utils/general";
+import { Multiselect } from "components/Multselect/Multiselect";
+import { defaultRoles } from "app/Role/Index";
+import { Label } from "components/Text/Text";
 
 const InputWrapper = styled.div`
   position: relative;
@@ -81,6 +84,7 @@ const UserForm = ({
         functionalTitle: formData?.functionalTitle,
         password: formData?.password,
         rePassword: formData?.rePassword,
+        roles: formData?.roles,
       }
     : {
         profilePic: [],
@@ -92,6 +96,7 @@ const UserForm = ({
         functionalTitle: "",
         password: "",
         rePassword: "",
+        roles: [],
       };
 
   const validationSchema = Yup.object().shape({
@@ -152,6 +157,7 @@ const UserForm = ({
     rePassword: formData
       ? Yup.string().optional().label("Confirm Password")
       : Yup.string().required().label("Confirm Password"),
+    // roles: Yup.array().min(1).required().label("Role"),
   });
 
   if (isLoading)
@@ -306,6 +312,22 @@ const UserForm = ({
                     </Col>
                   </>
                 )}
+              </Row>
+              <Row>
+                <Col>
+                  <Flexbox column>
+                    <Label style={{ marginBottom: 5 }}>Role</Label>
+                    <Multiselect
+                      avoidHighlightFirstOption
+                      options={defaultRoles}
+                      displayValue="role"
+                      placeholder="Select Role"
+                      selectedValues={values.roles}
+                      onSelect={(selectedList) => setFieldValue("roles", selectedList)}
+                      onRemove={(selectedList) => setFieldValue("roles", selectedList)}
+                    />
+                  </Flexbox>
+                </Col>
               </Row>
             </FormGroup>
             <Row>

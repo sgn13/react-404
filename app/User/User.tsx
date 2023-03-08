@@ -304,9 +304,6 @@ function Users({
           size="md"
           style={{
             textShadow: "none",
-            // position: "absolute",
-            // right: "1em",
-            borderRadius: "2em",
           }}
           onClick={() => navigate(app.user.create)}
         >

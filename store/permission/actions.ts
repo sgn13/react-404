@@ -176,6 +176,34 @@ export const updatePermission: AppThunk =
     }
   };
 
+export const fetchUserPermissions: AppThunk =
+  ({ userId }) =>
+  async (dispatch: Dispatch): Promise<boolean> => {
+    try {
+      dispatch(setIsLoading(true));
+      const { data, status } = await network({
+        dispatch,
+      }).get(`${api.user}${userId}/permissions`);
+
+      if (status === 200) {
+        if (data) {
+          // dispatch(setValidPermissions(data));
+          dispatch(setIsSubmitting(false));
+          dispatch(setIsLoading(false));
+          return true;
+        }
+      } else {
+        // dispatch(setErrorResponse(data));
+        dispatch(setIsLoading(false));
+        return false;
+      }
+    } catch (error) {
+      // dispatch(setErrorMessage(error));
+      dispatch(setIsLoading(false));
+      return false;
+    }
+  };
+
 export const deletePermission: AppThunk =
   ({ permissionId }) =>
   async (dispatch: Dispatch): Promise<boolean> => {

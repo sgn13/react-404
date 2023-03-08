@@ -1,4 +1,4 @@
-import User from "app/User/Index";
+import User from "app/User/User";
 import CreateUpdate from "./CreateUpdate";
 import ViewInPage from "./ViewInPage";
 import { Outlet } from "react-router-dom";

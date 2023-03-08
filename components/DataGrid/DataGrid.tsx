@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Table from "containers/Table/Table";
 import Header from "containers/Table/Header";
 import styled from "theme/styled";
@@ -12,8 +12,7 @@ import Search from "components/Search/Search";
 import { primary } from "theme";
 import Button from "components/Button/Button";
 import { CiEdit, CiFilter } from "react-icons/ci";
-import { BiColumns, BiEditAlt, BiShow, BiShowAlt } from "react-icons/bi";
-import { FiEdit2 } from "react-icons/fi";
+import { BiColumns } from "react-icons/bi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import DropdownMenu from "components/DropdownMenu/DropDown";
 
@@ -25,13 +24,11 @@ import { useSessionStorage } from "hooks/useStorage/useStorage";
 import { SlReload } from "react-icons/sl";
 import { RxReset } from "react-icons/rx";
 import { Flexbox } from "containers/Grid/Grid";
-import { connect, ConnectedProps } from "react-redux";
-import { setMe } from "store/app/actions";
-import { AppState } from "store/reducer";
+
 import Cell from "containers/Table/Cell";
 import ReactIcon from "components/ReactIcon/ReactIcon";
-import { GrEdit, GrFormEdit, GrView } from "react-icons/gr";
-import { MdOutlineDelete, MdOutlineDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
+import { MdOutlineDelete, MdOutlineModeEdit } from "react-icons/md";
+import { ChipsDisplay } from "components/Chip/Chip";
 
 const actionIconsColor = "#cd171f";
 const DataGridContainer = styled.div`
@@ -57,6 +54,7 @@ const GridButton = styled(Button).attrs({
 })`
   border-radius: 8px;
   color: white;
+  padding: 0.5rem 1rem;
 `;
 
 const Toolbar = styled.div`
@@ -126,6 +124,14 @@ export type columnItem = {
   // footer?: string;
 };
 
+const VisibilityController = ({
+  children,
+  visible = true,
+}: {
+  children: React.ReactNode;
+  visible?: boolean;
+}) => (visible ? children : null);
+
 function DataGrid({
   tableName = "Table",
   data = [],
@@ -138,6 +144,11 @@ function DataGrid({
   criteriaOptions,
   conditionOptions,
   valueOptions,
+  onDelete,
+  onView,
+  onUpdate,
+  onAdd,
+  entityName = "entityName",
 }: {
   tableName?: string;
   dataColumns?: Array<any>;
@@ -150,6 +161,11 @@ function DataGrid({
   criteriaOptions?: any[];
   conditionOptions?: any[];
   valueOptions?: any[];
+  onDelete?: Function;
+  onView?: Function;
+  onUpdate?: Function;
+  onAdd?: Function;
+  entityName?: string;
 }) {
   const navigate = useNavigate();
   const [page, setPage] = useState(defaultQuery.page);
@@ -262,6 +278,90 @@ function DataGrid({
   //   }
   // };
 
+  const getViewButton = (info) => (
+    <Button
+      onClick={() => {
+        if (onView) onView(info?.row);
+      }}
+      style={{ padding: 0, display: onView ? "block" : "none" }}
+      backgroundColor="transparent"
+      borderColorOnHover={actionIconsColor}
+    >
+      <ReactIcon
+        color="gray"
+        hoverColor={actionIconsColor}
+        style={{ backgroundColor: "transparent" }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          role="img"
+          font-size="1.5rem"
+          width="0.9em"
+          height="0.9em"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0Z"
+          ></path>
+        </svg>
+      </ReactIcon>
+    </Button>
+  );
+
+  const getUpdateButton = (info) => (
+    <Button
+      onClick={() => {
+        if (onUpdate) onUpdate(info?.row);
+      }}
+      style={{ padding: 0, display: onUpdate ? "block" : "none" }}
+      backgroundColor="transparent"
+    >
+      <ReactIcon
+        color="gray"
+        hoverColor={actionIconsColor}
+        style={{ backgroundColor: "transparent" }}
+      >
+        <svg
+          stroke="currentColor"
+          fill="currentColor"
+          stroke-width="0"
+          viewBox="0 0 24 24"
+          height="1.6rem"
+          width="1.6rem"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            d="M11.9955241,8.33576576 L15.4932862,11.8335278 L11.9955241,8.33576576 Z M17.5365751,7.79609426 C17.9262629,8.18578207 17.9321949,8.81165877 17.5321697,9.21168397 L10.0807224,16.6631313 L6,17.829052 L7.16592069,13.7483296 L14.617368,6.29688224 C15.0094888,5.90476144 15.6393004,5.89881957 16.0329577,6.29247691 L17.5365751,7.79609426 Z"
+          ></path>
+        </svg>
+      </ReactIcon>
+    </Button>
+  );
+
+  const getDeleteButton = (info) => (
+    <Button
+      onClick={() => {
+        setSelectedItem(info.row.original);
+        setShowModal("delete");
+      }}
+      style={{ padding: 0, display: onDelete ? "block" : "none" }}
+      backgroundColor="transparent"
+    >
+      <ReactIcon
+        color="gray"
+        hoverColor={actionIconsColor}
+        style={{ backgroundColor: "transparent" }}
+      >
+        <MdOutlineDelete size={22} />
+      </ReactIcon>
+    </Button>
+  );
+
   const columns = useMemo(() => {
     const firstColumn = {
       // accessorFn:()=>{}
@@ -281,7 +381,9 @@ function DataGrid({
           {item?.header}
         </Header>
       ),
-      cell: (info: any) => <Cell>{info.getValue()}</Cell>,
+      cell: ["Permission Set", "Assigned To"].includes(item?.header)
+        ? (info: any) => <ChipsDisplay chips={info.getValue() || []} show={3} />
+        : (info: any) => <Cell>{info.getValue()}</Cell>,
       footer: null,
     }));
 
@@ -292,67 +394,9 @@ function DataGrid({
       cell: (info: any) => {
         return (
           <ActionContainer>
-            <Button
-              onClick={() => {
-                navigate(`${app.user.view(info.row.original.id)}`);
-              }}
-              style={{ padding: 0 }}
-              backgroundColor="transparent"
-              borderColorOnHover={actionIconsColor}
-            >
-              <ReactIcon
-                color="gray"
-                hoverColor={actionIconsColor}
-                style={{ backgroundColor: "transparent" }}
-              >
-                <BiShowAlt size={22} />
-              </ReactIcon>
-            </Button>
-            <Button
-              onClick={() => navigate(`${app.user.update(info.row.original.id)}`)}
-              style={{ padding: 0 }}
-              backgroundColor="transparent"
-            >
-              <ReactIcon
-                color="gray"
-                hoverColor={actionIconsColor}
-                style={{ backgroundColor: "transparent" }}
-              >
-                <svg
-                  stroke="currentColor"
-                  fill="currentColor"
-                  stroke-width="0"
-                  viewBox="0 0 24 24"
-                  height="1.6rem"
-                  width="1.6rem"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    d="M11.9955241,8.33576576 L15.4932862,11.8335278 L11.9955241,8.33576576 Z M17.5365751,7.79609426 C17.9262629,8.18578207 17.9321949,8.81165877 17.5321697,9.21168397 L10.0807224,16.6631313 L6,17.829052 L7.16592069,13.7483296 L14.617368,6.29688224 C15.0094888,5.90476144 15.6393004,5.89881957 16.0329577,6.29247691 L17.5365751,7.79609426 Z"
-                  ></path>
-                </svg>
-              </ReactIcon>
-            </Button>
-
-            <Button
-              onClick={() => {
-                setSelectedItem(info.row.original);
-                setShowModal("delete");
-              }}
-              style={{ padding: 0 }}
-              backgroundColor="transparent"
-            >
-              <ReactIcon
-                color="gray"
-                hoverColor={actionIconsColor}
-                style={{ backgroundColor: "transparent" }}
-              >
-                <MdOutlineDelete size={22} />
-              </ReactIcon>
-            </Button>
+            {getViewButton(info)}
+            {getUpdateButton(info)}
+            {getDeleteButton(info)}
           </ActionContainer>
         );
       },
@@ -414,7 +458,7 @@ function DataGrid({
           searchColumnsKeysRef={searchColumnsKeysRef}
         />
       }
-      offsetTop={50}
+      offsetTop={46.5}
       closeOnOutsideClick
     >
       {({ toggle }) => {
@@ -444,7 +488,10 @@ function DataGrid({
         removeSearchKey();
         fetcher({});
       }}
-      searchContainerStyle={{ margin: 10, marginLeft: 0, marginRight: 0 }}
+      searchContainerStyle={{
+        marginLeft: 0,
+        marginRight: 0,
+      }}
       color={"#cd171f"}
       style={{ fontSize: "1.2em", width: "100%" }}
     />
@@ -475,7 +522,7 @@ function DataGrid({
           }}
         />
       }
-      offsetTop={50}
+      offsetTop={46.5}
       closeOnOutsideClick
     >
       {({ toggle }) => {
@@ -501,13 +548,14 @@ function DataGrid({
           removeSort();
           reset();
         }}
-        backgroundColor="white"
         iconSize={16}
-        color="black"
+        backgroundColor="#f4182319"
+        color="#cd1720"
+        shadowOnHover="0 0 0.1rem #e04a52dd"
         size="sm"
-        style={{ border: "none", marginBottom: 5, marginRight: 5 }}
-        textStyle={{ fontSize: "0.8rem" }}
-        iconWrapperStyle={{ backgroundColor: "gray", border: "none" }}
+        style={{ border: "0.1px solid #cccccc80", marginBottom: 5, marginRight: 5 }}
+        textStyle={{ fontSize: "0.9rem" }}
+        iconWrapperStyle={{}}
       />
 
       <Chip
@@ -516,13 +564,14 @@ function DataGrid({
           removeSearchKey();
           reset();
         }}
-        backgroundColor="white"
         iconSize={16}
-        color="black"
+        backgroundColor="#f4182319"
+        color="#cd1720"
+        shadowOnHover="0 0 0.1rem #e04a52dd"
         size="sm"
         style={{ border: "none", marginBottom: 5, marginRight: 5 }}
-        textStyle={{ fontSize: "0.8rem" }}
-        iconWrapperStyle={{ backgroundColor: "gray", border: "none" }}
+        textStyle={{ fontSize: "0.9rem" }}
+        iconWrapperStyle={{}}
       />
 
       <Chip
@@ -533,13 +582,14 @@ function DataGrid({
           window.sessionStorage.removeItem("filters");
           reset();
         }}
-        backgroundColor="white"
         iconSize={16}
-        color="black"
+        backgroundColor="#f4182319"
+        color="#cd1720"
+        shadowOnHover="0 0 0.1rem #e04a52dd"
         size="sm"
         style={{ border: "none", marginBottom: 5, marginRight: 5 }}
-        textStyle={{ fontSize: "0.8rem" }}
-        iconWrapperStyle={{ backgroundColor: "gray", border: "none" }}
+        textStyle={{ fontSize: "0.9rem" }}
+        iconWrapperStyle={{}}
       />
     </Chips>
   );
@@ -569,8 +619,9 @@ function DataGrid({
       <GridButton
         size="sm"
         icon={<IoMdAddCircleOutline style={{ marginRight: "0.3rem" }} size={20} fill="white" />}
+        onClick={onAdd}
       >
-        User
+        {entityName}
       </GridButton>
     </TableActions>
   );
@@ -604,7 +655,7 @@ function DataGrid({
       {deleteModal}
       <Toolbar>
         <Flexbox fluidWidth justifyContent="space-between" alignItems="center">
-          <Flexbox alignItems="center" gap="10px">
+          <Flexbox alignItems="center" gap="10px" style={{ marginBottom: "0.4em" }}>
             {columnDropdown}
             {search}
             {filterDropdown}

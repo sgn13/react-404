@@ -2,8 +2,10 @@ import E404 from "pages/Errors/E404";
 
 import Index from "pages/index";
 import Login from "pages/Auth/Login";
-import userRoute from "app/User/routes";
-import onlineUserRoute from "app/LiveClients/routes";
+import userRoutes from "app/User/routes";
+import permissionRoutes from "app/Permission/routes";
+import roleRoutes from "app/Role/routes";
+import onlineUserRoutes from "app/LiveClients/routes";
 import { Outlet } from "react-router-dom";
 
 import withAuth from "hoc/withAuth";
@@ -31,7 +33,7 @@ const authRoutes = [
 
 // Layout routes: Pages which are rendered inside Layout components
 
-const indexRoute = [
+const indexRoutes = [
   {
     path: "/",
     element: <IndexWithAuthAndSidebar sidebarType="index" />,
@@ -63,7 +65,14 @@ const routes = [
       </Layout>
     ),
     errorElement: () => <div>Encountered route error</div>,
-    children: [...indexRoute, ...userRoute, ...onlineUserRoute, ...errorRoutes],
+    children: [
+      ...indexRoutes,
+      ...userRoutes,
+      ...onlineUserRoutes,
+      ...permissionRoutes,
+      ...roleRoutes,
+      ...errorRoutes,
+    ],
   },
 ];
 

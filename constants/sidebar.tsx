@@ -47,6 +47,24 @@ export const IndexSidebar = () => [
     role: "user",
     permission: undefined,
   },
+
+  {
+    icon: <AiOutlineHome />,
+    label: "Role Management",
+    location: "bottom",
+    path: app.role.root,
+    role: "user",
+    permission: ["kyc.admin"],
+  },
+
+  {
+    icon: <AiOutlineHome />,
+    label: "Permission Management",
+    location: "bottom",
+    path: app.permission.root,
+    role: "user",
+    permission: ["kyc.admin"],
+  },
 ];
 
 export const AdminSidebar = () => [];

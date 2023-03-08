@@ -136,6 +136,7 @@ export const login =
       const { data, status } = await network({ requireToken: false }).post(api.login, values);
       if (status === 200 || status === 201) {
         if (data) {
+          console.log("login info", data);
           dispatch(setIsSubmitting(false));
           dispatch(setMe(data));
           sessionStorage.setItem("accessToken", data.token.access);

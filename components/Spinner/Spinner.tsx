@@ -114,7 +114,7 @@ export const LazySpinner = styled.div`
   }
 `;
 
-export const Buffering = styled.div<{ color: string }>`
+const BufferingContainer = styled.div<{ color: string }>`
   color: "#fff";
 
   /* inside div */
@@ -217,6 +217,14 @@ export const Buffering = styled.div<{ color: string }>`
     }
   }
 `;
+
+export const Buffering = ({ color = "red" }: { color?: string }) => (
+  <BufferingContainer color={color}>
+    {new Array(12).fill(0).map((item) => (
+      <div />
+    ))}
+  </BufferingContainer>
+);
 
 export const Gears = styled.div`
   width: 60px;

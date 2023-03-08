@@ -108,13 +108,7 @@ const TableActions = styled.div`
   gap: 5px;
 `;
 
-const loader = (
-  <Buffering color="red">
-    {new Array(12).fill(0).map((item) => (
-      <div />
-    ))}
-  </Buffering>
-);
+const loader = <Buffering color="red" />;
 
 const columnList = [
   { position: 1, title: "Name", queryKey: "fullName", checked: true },

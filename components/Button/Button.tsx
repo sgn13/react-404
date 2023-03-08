@@ -10,13 +10,16 @@ type StyledButtonProps = ComponentPropsWithRef<"button"> & {
   icon?: React.ReactNode;
   backgroundColorOnHover?: string;
   shadow?: string;
+  shadowOnHover?: string;
   linesOnHover?: boolean;
   backgroundColor?: string;
-  borderColorOnHover?: string;
+  elevation?: number;
+  elevationOnHover?: number;
 };
 
 export type ButtonComponentProps = ComponentPropsWithRef<"button"> &
   TextProps & {
+    text?: any;
     dropdown?: any;
     textStyle?: any;
     noRipple?: boolean;
@@ -39,7 +42,7 @@ const StyledButton = styled.button<StyledButtonProps>`
 
   background-clip: padding-box;
 
-  padding: 0.5rem 1rem;
+  padding: 0.25rem 0.5rem;
 
   outline: 0;
   border: 0;
@@ -48,6 +51,8 @@ const StyledButton = styled.button<StyledButtonProps>`
 
   user-select: none;
   white-space: nowrap;
+
+  box-shadow: ${({ elevation }) => (elevation ? shadows[elevation] : undefined)};
   box-shadow: ${({ shadow }) => shadow};
 
   cursor: pointer;
@@ -55,15 +60,16 @@ const StyledButton = styled.button<StyledButtonProps>`
   transition-property: background-color, filter, box-shadow;
 
   :hover {
-    box-shadow: ${({ shadow }) => (shadow ? "none" : " 0 0 0.5rem rgba(0, 0, 0, 0.3);")};
-    border-color: ${({ borderColorOnHover }) =>
-      borderColorOnHover ? `${borderColorOnHover};` : "rgba(0, 0, 0, 0.3);"};
+    box-shadow: ${({ shadowOnHover }) => shadowOnHover ?? "auto"};
+    box-shadow: ${({ elevationOnHover }) =>
+      elevationOnHover ? shadows[elevationOnHover] : undefined};
 
     ${({ backgroundColorOnHover }) =>
       backgroundColorOnHover
         ? `background-color:${backgroundColorOnHover};`
         : ` filter: saturate(1.4);`}
   }
+
   /* :focus {
     outline: 1px solid;
     outline-color: lightblue;
@@ -71,6 +77,7 @@ const StyledButton = styled.button<StyledButtonProps>`
 
   :active {
     filter: saturate(2);
+    box-shadow: ${({ elevation }) => (elevation ? "none" : "auto")};
   }
 
   ${(disabled) =>
@@ -94,12 +101,12 @@ const StyledButton = styled.button<StyledButtonProps>`
     width: 24px;
   }
   :before {
-    border-top: 2px solid ${backgroundColor || "#CD171F"};
+    border-top: 2px solid ${backgroundColor ? backgroundColor : "#0c6628"};
     left: 0px;
     top: -5px;
   }
   :after {
-    border-bottom: 2px solid ${backgroundColor || "#CD171F"};
+    border-bottom: 2px solid ${backgroundColor ? backgroundColor : "#0c6628"};
     bottom: -5px;
     right: 0px;
   }
@@ -134,8 +141,7 @@ const createRipple = (event: React.MouseEvent<HTMLButtonElement>) => {
   const diameter = Math.max(button.clientWidth, button.clientHeight);
   const radius = diameter / 2;
 
-  circle.style.width = `${diameter}px`;
-  circle.style.height = `${diameter}px`;
+  circle.style.width = circle.style.height = `${diameter}px`;
   circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
   circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
   circle.classList.add("ripple");
@@ -166,7 +172,7 @@ const handleClick = ({
 };
 
 const StyledText = styled(Text)<{ noTextShadow: boolean }>`
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -178,6 +184,7 @@ const StyledText = styled(Text)<{ noTextShadow: boolean }>`
 function Button(props: PropsWithChildren<ButtonComponentProps>) {
   const {
     children,
+    text,
     size,
     onClick = () => {},
     disabled = false,
@@ -186,7 +193,6 @@ function Button(props: PropsWithChildren<ButtonComponentProps>) {
     dropdown,
     textStyle = {},
     noRipple = false,
-    elevation = 0,
     noTextShadow = false,
     type = "button",
     iconRight,
@@ -197,10 +203,10 @@ function Button(props: PropsWithChildren<ButtonComponentProps>) {
     <StyledButton
       type={type}
       onClick={(event: any) => {
+        event.stopPropagation();
         handleClick({ event, onClick, disabled, noRipple });
       }}
       disabled={disabled}
-      shadow={shadows[elevation]}
       {...rest}
     >
       <StyledText

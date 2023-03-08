@@ -69,7 +69,32 @@ const TableHeader = ({
     <HeaderContent selected={sort?.sortBy === headerId} onClick={handleHeaderClick}>
       <div>{children}</div>
       <div style={{ paddingRight: 5 }}>
-        {sort?.sortBy === headerId && sort?.order === "asc" ? <CgSortZa /> : <CgSortAz />}
+        {/* {sort?.sortBy === headerId && sort?.order === "asc" ? <CgSortZa /> : <CgSortAz />} */}
+        {sort?.sortBy === headerId && sort?.order === "asc" ? (
+          <svg
+            focusable="false"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            data-testid="ArrowUpwardIcon"
+            height="1.1rem"
+            width="1.1rem"
+            fill="white"
+          >
+            <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"></path>
+          </svg>
+        ) : (
+          <svg
+            focusable="false"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            data-testid="ArrowDownwardIcon"
+            height="1.1rem"
+            width="1.1rem"
+            fill="white"
+          >
+            <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"></path>
+          </svg>
+        )}
       </div>{" "}
     </HeaderContent>
   );

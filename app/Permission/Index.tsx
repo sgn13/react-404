@@ -53,51 +53,110 @@ const searchOptions = {
   columns: searchColumns,
 };
 
-const columns: columnItem[] = [
+// permisions and resources are harded by backend and cannot be made dynamic to create them using frontend
+const myPermissions = [
   {
-    header: "Name",
-    accessorKey: "fullName",
+    id: 1,
+    permission: "kyc.admin",
+    displayName: "KYC Admin",
+    resource: "kyc",
+    database: "database1",
+    description: "",
+    assignedToRoles: ["roleId1", "roleId2"],
   },
   {
-    header: "Functional Title",
-    accessorKey: "functionalTitle",
-  },
-  { header: "Email", accessorKey: "email" },
-  {
-    header: "City",
-    accessorKey: "city",
-  },
-  {
-    header: "Department",
-    accessorKey: "department",
+    id: 2,
+    permission: "kyc.view",
+    displayName: "View KYC",
+    resource: "kyc",
+    database: "database1",
+    description: "",
+    assignedToRoles: ["roleId1", "roleId2"],
   },
 ];
 
+// roles can be dynamically created and deleted from frontend
+// Role is composed of a group of permissions.
+const myRoles = [
+  {
+    id: "1",
+    role: "User",
+    description: "",
+    permissions: ["permissionId1", "permissionId2"],
+  },
+  {
+    id: "2",
+    role: "Manager",
+    description: "",
+    permissions: ["permissionId1", "permissionId2"],
+  },
+  {
+    id: "3",
+    role: "Admin",
+    description: "",
+    permissions: ["permissionId1", "permissionId2"],
+  },
+  {
+    id: "4",
+    role: "Support",
+    description: "",
+    permissions: ["permissionId1", "permissionId2"],
+  },
+];
+
+const columns: columnItem[] = [
+  {
+    header: "Permission",
+    accessorKey: "name",
+  },
+  {
+    header: "Assigned To",
+    accessorKey: "assignedTo",
+  },
+  { header: "Created At", accessorKey: "createdAt" },
+];
+
 function Index({
-  liveclients = [],
+  permissions = [
+    {
+      id: 1,
+      name: "KYC View",
+      assignedTo: [
+        { id: 1, displayName: "Manager" },
+        { id: 2, displayName: "User Admin" },
+        { id: 3, displayName: "Project Manager" },
+        { id: 4, displayName: "Superuser" },
+      ],
+      createdAt: `${new Date().getTime()}`,
+    },
+    {
+      id: 2,
+      name: "KYC Update",
+      assignedTo: [{ id: 32, displayName: "KYC Admin" }],
+      createdAt: `${new Date().getTime()}`,
+    },
+  ],
   metadata,
   isLoading,
   isSubmitting,
   fetchLiveClients,
 }: PropsFromRedux) {
   return (
-    <></>
-    // <DataGrid
-    //   tableName="Users Data"
-    //   data={liveclients}
-    //   dataColumns={columns}
-    //   searchColumns={searchOptions.columns}
-    //   fetcher={fetchLiveClients}
-    //   isSubmitting={isSubmitting}
-    //   isLoading={isLoading}
-    //   metadata={metadata}
-    //   criteriaOptions={filterOptions.criterias}
-    //   conditionOptions={filterOptions.conditions}
-    //   valueOptions={filterOptions.values}
-    //   onDelete={() => {}}
-    //   onUpdate={() => {}}
-    //   onView={() => {}}
-    // />
+    <DataGrid
+      tableName="Permissions List"
+      data={permissions}
+      dataColumns={columns}
+      searchColumns={searchOptions.columns}
+      // fetcher={fetchLiveClients}
+      isSubmitting={isSubmitting}
+      isLoading={isLoading}
+      metadata={metadata}
+      criteriaOptions={filterOptions.criterias}
+      conditionOptions={filterOptions.conditions}
+      valueOptions={filterOptions.values}
+      onView={() => {}}
+      onUpdate={() => {}}
+    />
   );
 }
 

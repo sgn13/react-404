@@ -10,11 +10,16 @@ const ReactIcon = styled.div<{ color?: string; hoverColor?: string }>`
   padding: 1px;
 
   svg {
+    transition: 250ms ease-out;
+    transition-property: background-color, color, box-shadow;
     color: ${({ color }) => color ?? "black"};
   }
   svg:hover {
     color: ${({ hoverColor }) => hoverColor ?? "red"};
   }
+
+  transition: 300ms ease-out;
+  transition-property: background-color, color, box-shadow;
 `;
 
 export default ReactIcon;
