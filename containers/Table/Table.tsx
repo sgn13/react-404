@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useMemo, useReducer, useState } from "react";
 import styled from "styled-components";
 import { useReactTable, flexRender, getCoreRowModel } from "@tanstack/react-table";
-import { primary } from "theme";
 import Center from "containers/Center/Center";
 
 const TableStyles = styled.div<{ backgroundColor; textColor }>`
@@ -59,7 +58,7 @@ const TableStyles = styled.div<{ backgroundColor; textColor }>`
     padding-bottom: 16px; */
 
     text-align: left;
-    background-color: ${({ backgroundColor }) => backgroundColor ?? primary};
+    background-color: ${({ backgroundColor }) => backgroundColor ?? "#cd171f"};
     color: ${({ textColor }) => textColor ?? "white"};
     font-weight: 400;
   }

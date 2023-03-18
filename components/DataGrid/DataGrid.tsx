@@ -9,7 +9,6 @@ import { DeleteModal } from "components/Modal/Index";
 import { defaultQuery } from "constants/query";
 import Pagination from "components/PageNumbers/Pagination";
 import Search from "components/Search/Search";
-import { primary } from "theme";
 import Button from "components/Button/Button";
 import { CiEdit, CiFilter } from "react-icons/ci";
 import { BiColumns } from "react-icons/bi";
@@ -42,10 +41,8 @@ const ActionContainer = styled.div`
 `;
 
 const PageNumbers = styled(Pagination)`
-  /* .page-number {
-    color: ${primary};
-    font-weight: normal;
-  } */
+  .page-number {
+  }
 `;
 
 const GridButton = styled(Button).attrs({
@@ -71,7 +68,7 @@ const TableName = styled.div`
   color: white;
   padding: 0.5em;
 
-  background-color: ${primary};
+  background-color: #cd171f;
   margin-right: auto;
   width: fit-content;
   border-top-left-radius: 4px;

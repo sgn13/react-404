@@ -7,7 +7,6 @@ import { AppState } from "store/reducer";
 import styled from "styled-components";
 import { Box, Col, Flexbox, Row } from "containers/Grid/Grid";
 import niceIcon from "assets/icons/nice.svg";
-import { primary } from "theme";
 import { AuthForm } from "./AuthForm";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -29,7 +28,7 @@ const LeftSection = styled.section`
   position: relative;
   height: 100vh;
   max-height: 600px;
-  background-color: ${primary};
+  background-color: #cd171f;
   display: flex;
   justify-content: center;
 `;

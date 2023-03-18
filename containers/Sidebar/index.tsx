@@ -4,7 +4,6 @@ import styled from "theme/styled";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "assets/logo.png";
 import ExpandIcon from "containers/Sidebar/expand-icon.svg";
-import { primary, secondary } from "theme";
 import { StyledSidebarType } from "./types";
 import BaseSidebarItem from "./SidebarItem";
 
@@ -46,13 +45,13 @@ const NavTop = styled.div`
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: ${primary};
+    background: #cd171f;
     border-radius: 7px;
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: ${secondary};
+    background: #e63d22;
   }
 `;
 

@@ -14,7 +14,7 @@ import { DeleteModal } from "components/Modal/Index";
 import { defaultQuery } from "constants/query";
 import Pagination from "components/PageNumbers/Pagination";
 import Search from "components/Search/Search";
-import { primary } from "theme";
+
 import Button from "components/Button/Button";
 import { CiFilter } from "react-icons/ci";
 import { BiColumns } from "react-icons/bi";
@@ -70,7 +70,7 @@ const TableName = styled.div`
   color: white;
   padding: 0.5em;
 
-  background-color: ${primary};
+  background-color: #cd171f;
   margin-right: auto;
   width: fit-content;
   border-top-left-radius: 4px;

@@ -1,7 +1,6 @@
 import Button from "components/Button/Button";
 import { useMemo } from "react";
 import styled from "theme/styled";
-import { primary, textColor } from "theme";
 
 export const PaginationButton = styled(Button)`
   font-family: "Poppins";
@@ -31,9 +30,9 @@ export const PaginationContainer = styled.div<{ textColor?: string }>`
   }
 
   .page-number-selected {
-    background-color: ${primary};
+    background-color: #cd171f;
     color: white;
-    outline-color: ${primary};
+    outline-color: #cd171f;
   }
 `;
 

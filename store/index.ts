@@ -20,7 +20,6 @@ const initialStoreState = {
 export function initializeStore(defaultState = initialStoreState): Store {
   const middleware = [
     thunkMiddleware,
-    // socketMiddleware(),
     // createLogger()
   ];
 

@@ -1,21 +1,20 @@
 import webpackLogo from "assets/images/webpack-logo.png";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { backgroundColor, textColor } from "theme";
 import { ConnectedProps, connect } from "react-redux";
 import { setTheme, toggleLightDarkTheme } from "store/theme/actions";
 import { AppState } from "store/reducer";
 
 const Container = styled.div`
-  background-color: ${backgroundColor};
-  color: ${textColor};
+  background-color: #fff;
+  color: #000;
   transition: all 0.5s ease;
   transition-property: color background-color;
 `;
 
 const StyledButton = styled.button`
-  background-color: ${backgroundColor};
-  color: ${textColor};
+  background-color: #fff;
+  color: #000;
   transition: all 0.5s ease;
   transition-property: color background-color transform;
 

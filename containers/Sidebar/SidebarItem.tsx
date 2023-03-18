@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { FaChevronDown, FaChevronLeft } from "react-icons/fa";
 import styled from "theme/styled";
 import { useNavigate } from "react-router-dom";
-import { primary } from "theme";
 import { StyledSidebarItemType } from "./types";
 
 type BaseSidebarItemType = React.ComponentProps<"a"> & StyledSidebarItemType & { ref?: any };
@@ -39,7 +38,7 @@ const NavigationMenuItem = styled.div<{ isOpen; active; collapsed; item }>`
   text-decoration: none;
   font-family: "Poppins";
   font-weight: 400;
-  color: ${({ active, item }) => (active === item.label ? primary : "inherit")};
+  color: ${({ active, item }) => (active === item.label ? "#cd171f" : "inherit")};
 
   ${({ active, item }) =>
     active === item.label
@@ -52,7 +51,7 @@ const NavigationMenuItem = styled.div<{ isOpen; active; collapsed; item }>`
 
   &:hover {
     background-color: #80808011;
-    color: ${primary};
+    color: #cd171f;
     filter: saturate(1.2);
 
     ${({ collapsed, item }) =>

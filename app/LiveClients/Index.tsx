@@ -81,23 +81,22 @@ function Index({
   fetchLiveClients,
 }: PropsFromRedux) {
   return (
-    <></>
-    // <DataGrid
-    //   tableName="Users Data"
-    //   data={liveclients}
-    //   dataColumns={columns}
-    //   searchColumns={searchOptions.columns}
-    //   fetcher={fetchLiveClients}
-    //   isSubmitting={isSubmitting}
-    //   isLoading={isLoading}
-    //   metadata={metadata}
-    //   criteriaOptions={filterOptions.criterias}
-    //   conditionOptions={filterOptions.conditions}
-    //   valueOptions={filterOptions.values}
-    //   onDelete={() => {}}
-    //   onUpdate={() => {}}
-    //   onView={() => {}}
-    // />
+    <DataGrid
+      tableName="Users Data"
+      data={liveclients}
+      dataColumns={columns}
+      searchColumns={searchOptions.columns}
+      fetcher={fetchLiveClients}
+      isSubmitting={isSubmitting}
+      isLoading={isLoading}
+      metadata={metadata}
+      criteriaOptions={filterOptions.criterias}
+      conditionOptions={filterOptions.conditions}
+      valueOptions={filterOptions.values}
+      onDelete={() => {}}
+      onUpdate={() => {}}
+      onView={() => {}}
+    />
   );
 }
 

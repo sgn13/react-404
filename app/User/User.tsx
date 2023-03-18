@@ -19,7 +19,6 @@ import { SiAuth0 } from "react-icons/si";
 import { FaRegEdit } from "react-icons/fa";
 import { ViewModal } from "components/Modal/Index";
 import View from "app/User/ViewInModal";
-import { primary } from "theme";
 import withSidebar from "hoc/withProtectedSidebar";
 import withAuth from "hoc/withAuth";
 
@@ -217,7 +216,7 @@ function Users({
                   title="Permission"
                   style={{ cursor: "pointer" }}
                   size={24}
-                  fill={primary}
+                  fill={"#e63d22"}
                   onClick={() => {
                     navigate(`${app.user.update(item.id)}/permission`);
                   }}
@@ -228,7 +227,7 @@ function Users({
                   style={{ cursor: "pointer" }}
                   title="View"
                   size={28}
-                  fill={primary}
+                  fill={"#e63d22"}
                   onClick={() => {
                     navigate(`${app.user.view(item.id)}`);
                   }}
@@ -240,7 +239,7 @@ function Users({
                   style={{ cursor: "pointer" }}
                   onClick={() => navigate(`${app.user.update(item.id)}`)}
                   size={24}
-                  fill={primary}
+                  fill={"#e63d22"}
                 />
               </Action>
 
