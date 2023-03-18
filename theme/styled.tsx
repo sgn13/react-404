@@ -1,11 +1,13 @@
+import { PropsWithChildren } from "react";
 import styled, { ThemeProvider } from "styled-components";
-import { useSelector } from "react-redux";
 import GlobalStyle from "./Global";
+import { useSelector } from "react-redux";
 
-export function StyledThemeProvider({ children }: { children: React.ReactNode }) {
-  const themeName = useSelector((state) => state?.themeState?.themeName);
+export function StyledThemeProvider({ children }: PropsWithChildren<{}>) {
+  const selectedTheme = useSelector((state) => state.themeState.theme);
+
   return (
-    <ThemeProvider theme={{ theme: themeName }}>
+    <ThemeProvider theme={selectedTheme}>
       <GlobalStyle />
       {children}
     </ThemeProvider>

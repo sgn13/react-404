@@ -85,7 +85,14 @@ function TableLoader({ children }) {
   );
 }
 
-function Table({ isLoading, loader = <div>loading...</div>, dataSource = [], columns }) {
+function Table({
+  isLoading,
+  loader = <div>loading...</div>,
+  dataSource = [],
+  columns,
+  backgroundColor,
+  textColor,
+}) {
   const [data, setData] = useState([]);
 
   const rerender = useReducer(() => ({}), {})[1];
@@ -108,7 +115,7 @@ function Table({ isLoading, loader = <div>loading...</div>, dataSource = [], col
   }, [dataSource]);
 
   return (
-    <TableStyles>
+    <TableStyles backgroundColor={backgroundColor} textColor={textColor}>
       <table>
         <thead>
           {getHeaderGroups().map((headerGroup) => (

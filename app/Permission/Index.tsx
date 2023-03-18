@@ -140,6 +140,7 @@ function Index({
   isLoading,
   isSubmitting,
   fetchLiveClients,
+  theme,
 }: PropsFromRedux) {
   return (
     <DataGrid
@@ -156,6 +157,7 @@ function Index({
       valueOptions={filterOptions.values}
       onView={() => {}}
       onUpdate={() => {}}
+      theme={theme}
     />
   );
 }
@@ -163,12 +165,14 @@ function Index({
 const mapStateToProps = ({
   appState: { me },
   liveClientState: { liveclients, metadata, isLoading, isSubmitting },
+  themeState: { theme },
 }: AppState) => ({
   me,
   liveclients,
   metadata,
   isLoading,
   isSubmitting,
+  theme,
 });
 
 const mapDispatchToProps = {

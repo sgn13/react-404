@@ -1,12 +1,13 @@
+import { ThemeType } from "theme";
 import { SET_THEME_DATA } from "./actions-types";
 
 export interface ThemeState {
-  themeName: string;
+  theme: ThemeType;
 }
 
 export type ChangeThemeType = {
   type: typeof SET_THEME_DATA;
-  payload?: string;
+  payload?: ThemeType;
 };
 
 export type ThemeActionType = ChangeThemeType;

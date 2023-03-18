@@ -168,6 +168,7 @@ function Index({
   isLoading,
   isSubmitting,
   fetchLiveClients,
+  theme,
 }: PropsFromRedux) {
   const navigate = useNavigate();
 
@@ -204,6 +205,7 @@ function Index({
       onUpdate={handleUpdate}
       onView={handleView}
       onAdd={() => navigate(app.role.create)}
+      theme={theme}
     />
   );
 }
@@ -211,12 +213,14 @@ function Index({
 const mapStateToProps = ({
   appState: { me },
   liveClientState: { liveclients, metadata, isLoading, isSubmitting },
+  themeState: { theme },
 }: AppState) => ({
   me,
   liveclients,
   metadata,
   isLoading,
   isSubmitting,
+  theme,
 });
 
 const mapDispatchToProps = {

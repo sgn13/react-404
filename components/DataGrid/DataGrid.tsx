@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import Table from "containers/Table/Table";
 import Header from "containers/Table/Header";
 import styled from "theme/styled";
@@ -28,6 +28,8 @@ import Cell from "containers/Table/Cell";
 import ReactIcon from "components/ReactIcon/ReactIcon";
 import { MdOutlineDelete, MdOutlineModeEdit } from "react-icons/md";
 import { ChipsDisplay } from "components/Chip/Chip";
+import { ThemeContext } from "containers/ReactThemeProvider/ReactThemeProvider";
+import { ThemeType } from "theme";
 
 const actionIconsColor = "#cd171f";
 const DataGridContainer = styled.div`
@@ -146,6 +148,7 @@ function DataGrid({
   onUpdate,
   onAdd,
   entityName = "entityName",
+  theme,
 }: {
   tableName?: string;
   dataColumns?: Array<any>;
@@ -163,6 +166,7 @@ function DataGrid({
   onUpdate?: Function;
   onAdd?: Function;
   entityName?: string;
+  theme: ThemeType;
 }) {
   const navigate = useNavigate();
   const [page, setPage] = useState(defaultQuery.page);
@@ -664,32 +668,16 @@ function DataGrid({
           {tableActions}
         </Flexbox>
       </Toolbar>
-      <Table loader={loader} isLoading={isLoading} dataSource={data} columns={columns} />
+      <Table
+        backgroundColor={theme.color.secondary.default}
+        loader={loader}
+        isLoading={isLoading}
+        dataSource={data}
+        columns={columns}
+      />
       {pagination}
     </DataGridContainer>
   );
 }
 
-// const mapStateToProps = ({
-//   appState: { me },
-//   liveClientState: { liveclients, metadata, isLoading, isSubmitting },
-// }: AppState) => ({
-//   me,
-//   liveclients,
-//   metadata,
-//   isLoading,
-//   isSubmitting,
-// });
-
-// const mapDispatchToProps = {
-//   setMe,
-//   fetchLiveClients,
-//   deleteLiveClient,
-// };
-
-// const connector = connect(mapStateToProps, mapDispatchToProps);
-
-// type PropsFromRedux = ConnectedProps<typeof connector>;
-
-// export default connector(DataGrid);
 export default DataGrid;

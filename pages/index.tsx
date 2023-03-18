@@ -1,12 +1,14 @@
 import webpackLogo from "assets/images/webpack-logo.png";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { ConnectedProps, connect } from "react-redux";
 import { setTheme, toggleLightDarkTheme } from "store/theme/actions";
 import { AppState } from "store/reducer";
+import { ThemeContext } from "containers/ReactThemeProvider/ReactThemeProvider";
+import { getTheme } from "theme";
 
 const Container = styled.div`
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.color.primary.default};
   color: #000;
   transition: all 0.5s ease;
   transition-property: color background-color;
@@ -61,8 +63,8 @@ const Child = styled.div`
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
-function Welcome({ themeName, toggleLightDarkTheme, setTheme }: React.FC<PropsFromRedux>) {
-  const [data, setData] = useState([]);
+function Welcome({ theme, toggleLightDarkTheme, setTheme }: React.FC<PropsFromRedux>) {
+  // const [data, setData] = useState([]);
 
   // useEffect(() => {
   //   axios.get("/posts").then((response) => {
@@ -70,6 +72,8 @@ function Welcome({ themeName, toggleLightDarkTheme, setTheme }: React.FC<PropsFr
   //     setData(response.data);
   //   });
   // }, []);
+
+  // console.log({ theme });
 
   return (
     <Container>
@@ -81,12 +85,16 @@ function Welcome({ themeName, toggleLightDarkTheme, setTheme }: React.FC<PropsFr
         style={{ width: 300, height: "auto" }}
       />
       <p>
-        <input type="checkbox" checked={themeName === "dark"} onChange={toggleLightDarkTheme} />
+        <input
+          type="checkbox"
+          checked={theme?.themeName === "dark"}
+          onChange={toggleLightDarkTheme}
+        />
         <span>Use Dark Theme</span>
       </p>
-      <StyledButton type="button" onClick={() => setTheme("brand")}>
+      {/* <StyledButton type="button" onClick={() => {})}>
         change to brand theme
-      </StyledButton>
+      </StyledButton> */}
       {/* <Parent>
         <Child className="child" />
       </Parent> */}
@@ -94,8 +102,8 @@ function Welcome({ themeName, toggleLightDarkTheme, setTheme }: React.FC<PropsFr
   );
 }
 
-const mapStateToProps = ({ themeState: { themeName } }: AppState) => ({
-  themeName,
+const mapStateToProps = ({ themeState: { theme } }: AppState) => ({
+  theme,
 });
 
 const mapDispatchToProps = {

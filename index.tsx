@@ -9,6 +9,7 @@ import React from "react";
 import Routes from "./App";
 import { initializeStore } from "./store";
 import Notification from "components/Notification/Notification";
+import ReactThemeProvider from "containers/ReactThemeProvider/ReactThemeProvider";
 
 const store = initializeStore();
 const errorHandler = (error: any, errorInfo: any) => {
@@ -22,6 +23,7 @@ function AppIndex() {
   return (
     <ErrorBoundary FallbackComponent={ReactError} onError={errorHandler}>
       <ReduxProvider store={store}>
+        {/* <ReactThemeProvider> */}
         <StyledThemeProvider>
           <Notification
             position="bottom-right"
@@ -39,6 +41,7 @@ function AppIndex() {
             <Routes />
           </BrowserRouter>
         </StyledThemeProvider>
+        {/* </ReactThemeProvider> */}
       </ReduxProvider>
     </ErrorBoundary>
   );
