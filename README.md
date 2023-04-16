@@ -49,7 +49,7 @@
 - Data Grid with server side pagination, SORTING, SEARCHING and FILTERING (:heavy_check_mark:)
 - Socket Setup
 - Webrtc Setup
-- Page Animation on Route Change like my portfolio
+- Page Animation on Route Change like my portfolio (:heavy_check_mark:)
 - Give a look to React project Structure saves of pocket (:heavy_check_mark:)
 - Steps for proper production build deployment in custom server with ssl
 

@@ -9,7 +9,7 @@ import React from "react";
 import Routes from "./App";
 import { initializeStore } from "./store";
 import Notification from "components/Notification/Notification";
-import ReactThemeProvider from "containers/ReactThemeProvider/ReactThemeProvider";
+// import ReactThemeProvider from "containers/ReactThemeProvider/ReactThemeProvider";
 
 const store = initializeStore();
 const errorHandler = (error: any, errorInfo: any) => {

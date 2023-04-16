@@ -8,9 +8,9 @@ import Sidebar from "containers/Sidebar/index";
 import { AppState } from "store/reducer";
 
 import { Loader } from "components/Spinner/Spinner";
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import styled from "theme/styled";
+import AnimatedManager from "./AnimationManager";
 
 const AppBody = styled.div`
   font-size: 1rem;
@@ -26,6 +26,11 @@ const Content = styled.main`
   overflow: auto;
   background: rgba(4, 103, 160, 0.01);
   box-sizing: border-box;
+`;
+
+const ContentWrapper = styled.div`
+  flex-grow: 1;
+  height: 100%;
 `;
 
 // const ContentBody = styled.main`
@@ -73,16 +78,13 @@ function Layout({ children, sidebar, me, isLoading }) {
             </div>
           ) : null}
 
-          <div
-            style={{
-              flexGrow: 1,
-              height: "100%",
-              // marginRight: "1em",
-            }}
-          >
+          <ContentWrapper>
             {/* <NavBar /> */}
-            <Content>{children}</Content>
-          </div>
+
+            <AnimatedManager animationName="slideRight">
+              <Content>{children}</Content>
+            </AnimatedManager>
+          </ContentWrapper>
         </div>
       </AppBody>
     </>

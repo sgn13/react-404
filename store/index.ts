@@ -23,7 +23,7 @@ export function initializeStore(defaultState = initialStoreState): Store {
   // our callback is fired everytime when the store is updated
   // subscribe is used to listen for changes to the store and react to them.
   store.subscribe(() => {
-    console.log("Redux store got updated");
+    // console.log("Redux store got updated");
   });
 
   return store;
