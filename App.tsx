@@ -1,19 +1,16 @@
 import { Loader } from "components/Spinner/Spinner";
-import Layout from "containers/Layout";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { fetchMe } from "store/app/actions";
 import { AppState } from "store/reducer";
-import { useRoutes } from "react-router-dom";
-
+import { useLocation, useRoutes } from "react-router-dom";
 import routes from "./routes";
 
 function App(props: PropsFromRedux) {
-  const allRoutings = useRoutes(routes);
-
+  const appRouters = useRoutes(routes);
   return (
     <Suspense fallback={<Loader />}>
-      {allRoutings}
+      {appRouters}
       {/* <Layout
         navbar={<div>nav</div>}
         sidebar={<div>sidebar</div>}
