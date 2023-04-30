@@ -82,7 +82,6 @@ function Chip({
 export default Chip;
 
 export const ChipsDisplay = ({ chips, show }: { info: any; show: number }) => {
-  console.log("chips", chips);
   if (!chips || !chips?.length) return null;
   const more = chips.length - show;
 

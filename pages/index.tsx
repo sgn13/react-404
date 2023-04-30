@@ -12,6 +12,7 @@ const Container = styled.div`
   color: #000;
   transition: all 0.5s ease;
   transition-property: color background-color;
+  width: 100%;
 `;
 
 const StyledButton = styled.button`
@@ -72,8 +73,6 @@ function Welcome({ theme, toggleLightDarkTheme, setTheme }: React.FC<PropsFromRe
   //     setData(response.data);
   //   });
   // }, []);
-
-  // console.log({ theme });
 
   return (
     <Container>

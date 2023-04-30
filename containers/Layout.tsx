@@ -1,105 +1,157 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useRef, useState } from "react";
+import styled from "styled-components";
+import { Col, Row, Flexbox, Box } from "containers/Grid/Grid";
 
-import { connect } from "react-redux";
-
-import Sidebar from "containers/Sidebar/index";
-// import NavBar from "containers/Navbar/";
-
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
+import { ConnectedProps, connect } from "react-redux";
 import { AppState } from "store/reducer";
-
+import DropdownSidebar from "./DropdownSidebar";
+import AnimationManager from "./AnimationManager";
 import { Loader } from "components/Spinner/Spinner";
 
-import styled from "theme/styled";
-import AnimatedManager from "./AnimationManager";
+const StyledRow = styled(Row)``;
+const StyledCol = styled(Col)``;
 
-const AppBody = styled.div`
-  font-size: 1rem;
-  padding: 0.5em;
-  height: 100vh;
-  overflow-y: auto;
-`;
-
-const Content = styled.main`
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 8em);
-  overflow: auto;
-  background: rgba(4, 103, 160, 0.01);
+const Container = styled.div`
+  width: 100vw;
   box-sizing: border-box;
+  .react-tooltip {
+    background-color: lightblue;
+    color: black;
+    z-index: 5;
+    opacity: 1;
+  }
 `;
 
-const ContentWrapper = styled.div`
-  flex-grow: 1;
-  height: 100%;
+const Header = styled.header<{ fullSidebar; width }>`
+  display: block;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: ${({ theme }) => theme.constant.header.zIndex};
+  height: ${({ theme }) => theme.constant.header.height}px;
+  width: 100%;
+  ${({ theme, fullSidebar, width }) =>
+    fullSidebar
+      ? ` width: calc(100% - ${
+          width ? `${width}px` : `${theme.constant.sidebar.width}px`
+        }); margin-left:  ${width ? `${width}px` : `${theme.constant.sidebar.width}px`};`
+      : null}
+
+  transition:0.3s all ease-out;
+
+  background-color: lightblue;
 `;
 
-// const ContentBody = styled.main`
-//   margin-top: 1em;
-//   width: 100%;
+const FillHeaderSpace = styled.div<{ fullSidebar?: boolean; width?: number }>`
+  height: ${({ theme }) => theme.constant.header.height}px;
+  width: 100%;
+  ${({ theme, fullSidebar, width }) =>
+    fullSidebar
+      ? ` width: calc(100% - ${
+          width ? `${width}px` : `${theme.constant.sidebar.width}px`
+        }); margin-left:  ${width ? `${width}px` : `${theme.constant.sidebar.width}px`};`
+      : null}
 
-//   background: rgba(4, 103, 160, 0.01);
+  transition:0.3s all ease-out;
+  background-color: #efd10c57;
+`;
 
-//   ${theme.mixin.scrollbar({ size: '1em', foregroundColor: 'slategray' })};
-// `;
+const Footer = styled.footer<{
+  fullWidthFooter?: boolean;
+  height?: string;
+  fixedFooter?: boolean;
+}>`
+  display: block;
+  height: ${({ theme }) => theme.constant.footer.height}px;
+  width: 100%;
+  background-color: lightblue;
+  ${({ fixedFooter, fullWidthFooter }) =>
+    fixedFooter && !fullWidthFooter
+      ? `
+    position: fixed;
+    bottom: 0px;
+  `
+      : null}
 
-export const Page = styled.div``;
+  ${({ fullWidthFooter }) =>
+    fullWidthFooter
+      ? `
+      position: fixed;
+       bottom: 0px;
+       left:0px;
+       right:0px;`
+      : null}
+  z-index: ${({ theme }) => theme.constant.footer.zIndex};
+`;
 
-function Layout({ children, sidebar, me, isLoading }) {
-  const [collapsed, setCollapsed] = useState(false);
-  const [active, setActive] = useState("");
+const FillFooterSpace = styled.div`
+  height: ${({ theme }) => theme.constant.footer.height}px;
+  width: 100%;
+  background-color: #efd10c57;
+`;
+
+const header = <div>header</div>;
+
+const Layout = ({
+  children,
+  footer = <div>footer</div>,
+  fullSidebar = false,
+  fixedFooter = false,
+  fullWidthFooter = false,
+  sidebar,
+  isLoading,
+}: PropsFromRedux | any) => {
+  const contentSectionRef = useRef();
+  const [sidebarWidth, setSidebarWidth] = useState();
 
   if (isLoading) {
     return <Loader />;
   }
 
   return (
-    <>
-      <AppBody>
-        <div style={{ display: "flex", height: "100%", gap: "1em" }}>
-          {sessionStorage.getItem("accessToken") ? (
-            <div
-              style={{
-                flexBasis: "fit-content",
-                overflowY: "auto",
-                height: "100%",
-                minHeight: 750,
-                boxShadow: "2px 4px 6px rgba(0, 0, 0, 0.25)",
-                borderRadius: "1em",
-                minWidth: "fit-content",
-              }}
-            >
-              <Sidebar
-                sidebarItems={sidebar}
-                collapsed={collapsed}
-                setCollapsed={setCollapsed}
-                active={active}
-                setActive={setActive}
-              />
-            </div>
-          ) : null}
+    <Container>
+      <Header fullSidebar={fullSidebar} width={sidebarWidth}>
+        {header}
+      </Header>
+      <FillHeaderSpace fullSidebar={fullSidebar} width={sidebarWidth} />
 
-          <ContentWrapper>
-            {/* <NavBar /> */}
-
-            <AnimatedManager animationName="slideRight">
-              <Content>{children}</Content>
-            </AnimatedManager>
-          </ContentWrapper>
-        </div>
-      </AppBody>
-    </>
+      <Flexbox ref={contentSectionRef}>
+        <DropdownSidebar
+          data={sidebar}
+          nodeKey="label"
+          iconSize={40}
+          contentSectionRef={contentSectionRef}
+          setSidebarWidth={setSidebarWidth}
+          fullSidebar={fullSidebar}
+          fullWidthFooter={fullWidthFooter}
+        />
+        <Flexbox column grow>
+          <Flexbox debug>
+            <AnimationManager>{children}</AnimationManager>
+          </Flexbox>
+          {fixedFooter ? <FillFooterSpace /> : null}
+          <Footer fixedFooter={fixedFooter} fullWidthFooter={fullWidthFooter}>
+            {footer}
+          </Footer>
+        </Flexbox>
+      </Flexbox>
+      <Tooltip id="my-tooltip" place="right" className="react-tooltip" />
+    </Container>
   );
-}
+};
 
-const mapStateToProps = ({ appState: { sidebar, me, notification, isLoading } }: AppState) => ({
-  sidebar,
+const mapStateToProps = ({ appState: { me, notification, isLoading, sidebar } }: AppState) => ({
   me,
   notification,
   isLoading,
+  sidebar,
 });
 
 const mapDispatchToProps = {};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
 export default connector(Layout);

@@ -34,6 +34,7 @@ import { ThemeType } from "theme";
 const actionIconsColor = "#cd171f";
 const DataGridContainer = styled.div`
   margin: 10px;
+  width: 100%;
 `;
 const ActionContainer = styled.div`
   max-width: fit-content;

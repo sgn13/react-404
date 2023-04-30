@@ -8,17 +8,7 @@ import routes from "./routes";
 
 function App(props: PropsFromRedux) {
   const appRouters = useRoutes(routes);
-  return (
-    <Suspense fallback={<Loader />}>
-      {appRouters}
-      {/* <Layout
-        navbar={<div>nav</div>}
-        sidebar={<div>sidebar</div>}
-        content={<div>content</div>}
-        footer={null}
-        /> */}
-    </Suspense>
-  );
+  return <Suspense fallback={<Loader />}>{appRouters}</Suspense>;
 }
 
 const mapStateToProps = ({ appState: { me, isLoading } }: AppState) => ({ me, isLoading });

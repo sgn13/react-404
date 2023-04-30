@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import styled from "theme/styled";
 
 const AnimationStyles = styled.div`
+  width: 100%;
   .slideLeft {
     animation: 0.3s cubic-bezier(0.01, 0.47, 0.42, 1.05) slideLeft;
   }
@@ -76,7 +77,7 @@ const AnimationStyles = styled.div`
   }
 `;
 
-function AnimatedChildren({ children, animationName = "slideRight" }) {
+function AnimationManager({ children, animationName = "slideRight" }) {
   const location = useLocation();
   const [newLocation, setNewLocation] = useState(location);
   const [transitionStage, setTransistionStage] = useState(animationName);
@@ -95,6 +96,7 @@ function AnimatedChildren({ children, animationName = "slideRight" }) {
           }
         }}
         className={transitionStage}
+        style={{ width: "inherit" }}
       >
         {children}
       </div>
@@ -102,4 +104,4 @@ function AnimatedChildren({ children, animationName = "slideRight" }) {
   );
 }
 
-export default AnimatedChildren;
+export default AnimationManager;

@@ -284,7 +284,7 @@ function Users({
   );
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       {selectedItem && (
         <ViewModal
           body={<View item={selectedItem} />}

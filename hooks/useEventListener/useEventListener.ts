@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 
+// for custom element, pass elementRef.current as element
 export default function useEventListener(
   eventType: string,
   callback: Function,
@@ -13,8 +14,8 @@ export default function useEventListener(
   }, [callback]);
 
   useEffect(() => {
-    if (!element) element = window;
     if (element == null || undefined) return;
+    if (!element) element = window;
     const handler = (e: Event) => callbackRef.current(e);
     element.addEventListener(eventType, handler, capture);
 

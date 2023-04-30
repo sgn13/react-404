@@ -21,6 +21,7 @@ import Layout from "containers/Layout";
 
 const OutletWithAuth = withAuth(Outlet);
 const OutletWithSidebar = withProtectedSidebar(Outlet);
+const LayoutWithSidebar = withProtectedSidebar(Layout);
 const IndexWithAuthAndSidebar = withProtectedSidebar(withAuth(Index));
 
 // Non-Layout Routes: Pages which are rendered outside Layout components
@@ -60,9 +61,9 @@ const routes = [
   ...authRoutes,
   {
     element: (
-      <Layout>
+      <LayoutWithSidebar>
         <OutletWithAuth redirectTo="/login" />
-      </Layout>
+      </LayoutWithSidebar>
     ),
     errorElement: () => <div>Encountered route error</div>,
     children: [
