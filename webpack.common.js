@@ -67,6 +67,7 @@ module.exports = (env) => {
       fallback: {
         // no need of fs module in browser
         fs: false,
+        crypto: false,
         // polyfill for os and path modules
         os: require.resolve("os-browserify/browser"),
         path: require.resolve("path-browserify"),

@@ -1,18 +1,30 @@
-import { Loader } from "components/Spinner/Spinner";
-import { Suspense, useEffect, useState } from "react";
-import { connect, ConnectedProps } from "react-redux";
-import { fetchMe } from "store/app/actions";
-import { AppState } from "store/reducer";
-import { useLocation, useRoutes } from "react-router-dom";
-import routes from "./routes";
+import { Suspense } from "react";
+import { ConnectedProps, connect } from "react-redux";
+import { useRoutes } from "react-router-dom";
+import routes from "routes";
+import { Loader } from "src/components/Spinner/Spinner";
+import { fetchMe, setSidebar } from "src/store/app/actions";
+import { AppState } from "src/store/reducer";
 
-function App(props: PropsFromRedux) {
+function AppRoutes() {
   const appRouters = useRoutes(routes);
-  return <Suspense fallback={<Loader />}>{appRouters}</Suspense>;
+  return appRouters;
 }
 
-const mapStateToProps = ({ appState: { me, isLoading } }: AppState) => ({ me, isLoading });
-const mapDispatchToProps = { fetchMe };
+function App({ setSidebar }: PropsFromRedux) {
+  return (
+    <Suspense fallback={<Loader />}>
+      <AppRoutes />
+    </Suspense>
+  );
+}
+
+const mapStateToProps = ({ appState: { me, isLoading } }: AppState) => ({
+  me,
+  isLoading,
+  setSidebar,
+});
+const mapDispatchToProps = { fetchMe, setSidebar };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 

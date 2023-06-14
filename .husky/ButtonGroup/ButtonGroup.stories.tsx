@@ -1,7 +1,6 @@
-import React from "react";
 import { storiesOf } from "@storybook/react";
+import Button from "../../src/components/Button/Button";
 import ButtonGroup from "./ButtonGroup";
-import Button from "../../components/Button/Button";
 
 storiesOf("Components/ButtonGroup", module).add("Demo", () => (
   <ButtonGroup title="Legend" width="fit-content" legendBorderColor="black" legendTextColor="red">

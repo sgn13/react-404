@@ -1,35 +1,42 @@
-import E404 from "pages/Errors/E404";
+import E404 from "src/features/errors/E404";
 
-import Index from "pages/index";
-import Login from "pages/Auth/Login";
-import userRoutes from "app/User/routes";
-import permissionRoutes from "app/Permission/routes";
-import roleRoutes from "app/Role/routes";
-import onlineUserRoutes from "app/LiveClients/routes";
 import { Outlet } from "react-router-dom";
+// import routes
+import controllerRoutes from "src/features/configuration/controllers/routes";
+import exclusionRoutes from "src/features/configuration/exclusions/routes";
+import libraryRoutes from "src/features/configuration/libraries/routes";
+import placementRoutes from "src/features/configuration/placement/routes";
+import fileUploadState from "src/features/source/file-upload/routes";
+import folderRoutes from "src/features/source/folder/routes";
+import streamingRoutes from "src/features/source/streaming/routes";
 
-import withAuth from "hoc/withAuth";
-import withProtectedSidebar from "hoc/withProtectedSidebar";
-import E403 from "pages/Errors/E403";
-import E400 from "pages/Errors/E400";
-import E401 from "pages/Errors/E401";
-import E500 from "pages/Errors/E500";
-import E503 from "pages/Errors/E503";
-import ReactError from "pages/Errors/ReactError";
-import UnderConstruction from "pages/Errors/under-construction";
-import Layout from "containers/Layout";
+import { Login } from "src/features/auth";
+import Index from "src/features/dashboard/index";
+
+import app from "src/constants/app";
+import Layout from "src/containers/Layout";
+import E400 from "src/features/errors/E400";
+import E401 from "src/features/errors/E401";
+import E403 from "src/features/errors/E403";
+import E500 from "src/features/errors/E500";
+import E503 from "src/features/errors/E503";
+import ReactError from "src/features/errors/ReactError";
+import UnderConstruction from "src/features/errors/under-construction";
+import withAuth from "src/hoc/withAuth";
+import withProtectedSidebar from "src/hoc/withProtectedSidebar";
 
 const OutletWithAuth = withAuth(Outlet);
 const OutletWithSidebar = withProtectedSidebar(Outlet);
 const LayoutWithSidebar = withProtectedSidebar(Layout);
 const IndexWithAuthAndSidebar = withProtectedSidebar(withAuth(Index));
+const LayoutWithProtectedSidebar = withProtectedSidebar(Layout);
 
 // Non-Layout Routes: Pages which are rendered outside Layout components
 const authRoutes = [
-  { path: "/login", element: <Login /> },
-  { path: "/register", element: <div>Register</div> },
-  { path: "/forgot-password", element: <div>Forgot Password</div> },
-  { path: "/reset-password", element: <div>Reset Password</div> },
+  { path: app.auth.login, element: <Login /> },
+  { path: app.auth.register, element: <div>Register</div> },
+  { path: app.auth.forgotPassword, element: <div>Forgot Password</div> },
+  { path: app.auth.resetPassword, element: <div>Reset Password</div> },
 ];
 
 // Layout routes: Pages which are rendered inside Layout components
@@ -37,13 +44,13 @@ const authRoutes = [
 const indexRoutes = [
   {
     path: "/",
-    element: <IndexWithAuthAndSidebar sidebarType="index" />,
+    element: <IndexWithAuthAndSidebar />,
   },
 ];
 
 const errorRoutes = [
   {
-    element: <OutletWithSidebar sidebarType="active" />,
+    element: <OutletWithSidebar />,
     children: [
       { path: "/bad-request", element: <E400 /> },
       { path: "/unauthorized", element: <E401 /> },
@@ -61,17 +68,20 @@ const routes = [
   ...authRoutes,
   {
     element: (
-      <LayoutWithSidebar>
+      <LayoutWithProtectedSidebar>
         <OutletWithAuth redirectTo="/login" />
-      </LayoutWithSidebar>
+      </LayoutWithProtectedSidebar>
     ),
     errorElement: () => <div>Encountered route error</div>,
     children: [
       ...indexRoutes,
-      ...userRoutes,
-      ...onlineUserRoutes,
-      ...permissionRoutes,
-      ...roleRoutes,
+      ...libraryRoutes,
+      ...controllerRoutes,
+      ...placementRoutes,
+      ...exclusionRoutes,
+      ...streamingRoutes,
+      ...fileUploadState,
+      ...folderRoutes,
       ...errorRoutes,
     ],
   },

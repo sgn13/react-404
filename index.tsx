@@ -1,14 +1,17 @@
+import React from "react";
 import ReactDOM from "react-dom/client";
-import "theme/sass/index.scss";
 import { ErrorBoundary } from "react-error-boundary";
 import { Provider as ReduxProvider } from "react-redux";
-import ReactError from "pages/Errors/ReactError";
-import { StyledThemeProvider } from "theme/styled";
 import { BrowserRouter } from "react-router-dom";
-import React from "react";
+import Notification from "src/components/Notification_old/Notification";
+import ReactThemeProvider from "src/containers/ReactThemeProvider/ReactThemeProvider";
+import ReactError from "src/features/errors/ReactError";
+import { MuiThemeProvider } from "src/lib/mui/MuiThemeProvider";
+import { initializeStore } from "src/store";
+import "src/styles/index.scss";
+import "src/theme_old/sass/index.scss";
+import { StyledThemeProvider } from "src/theme_old/styled";
 import Routes from "./App";
-import { initializeStore } from "./store";
-import Notification from "components/Notification/Notification";
 // import ReactThemeProvider from "containers/ReactThemeProvider/ReactThemeProvider";
 
 const store = initializeStore();
@@ -23,25 +26,27 @@ function AppIndex() {
   return (
     <ErrorBoundary FallbackComponent={ReactError} onError={errorHandler}>
       <ReduxProvider store={store}>
-        {/* <ReactThemeProvider> */}
-        <StyledThemeProvider>
-          <Notification
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-          <BrowserRouter>
-            <Routes />
-          </BrowserRouter>
-        </StyledThemeProvider>
-        {/* </ReactThemeProvider> */}
+        <ReactThemeProvider>
+          <StyledThemeProvider>
+            <Notification
+              position="bottom-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
+            <MuiThemeProvider>
+              <BrowserRouter>
+                <Routes />
+              </BrowserRouter>
+            </MuiThemeProvider>
+          </StyledThemeProvider>
+        </ReactThemeProvider>
       </ReduxProvider>
     </ErrorBoundary>
   );

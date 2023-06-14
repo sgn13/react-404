@@ -1,0 +1,11 @@
+#Header{
+    background-color: #f1f1f1;
+    .profile_section{
+       @include flexCenterAlignment;
+        gap: 0.5rem;
+        cursor: pointer;
+        .icon{
+            margin-left: .5rem;
+        }
+    }
+}

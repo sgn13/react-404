@@ -1,5 +1,5 @@
-import React, { PropsWithChildren } from "react";
-import styled from "../../theme/styled";
+import { PropsWithChildren } from "react";
+import styled from "../../src/theme_old/styled";
 
 const Group = styled.div`
   display: flex;

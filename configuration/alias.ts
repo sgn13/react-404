@@ -19,6 +19,7 @@ const pathList = [
   "routes",
   "db",
   "widgets",
+  "src",
 ];
 
 // type AliasType = {
