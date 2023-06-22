@@ -1,39 +1,39 @@
 import { Reducer } from "redux";
 import {
-  CREATE_CONTROLLER_DATA,
-  REMOVE_CONTROLLER_DATA,
-  RESET_SEARCHED_CONTROLLERS_DATA,
-  SET_CONTROLLERS_DATA,
-  SET_CONTROLLERS_METADATA,
-  SET_CONTROLLER_DATA,
+  CREATE_ENVIRONMENT_DATA,
+  REMOVE_ENVIRONMENT_DATA,
+  RESET_SEARCHED_ENVIRONMENTS_DATA,
+  SET_ENVIRONMENTS_DATA,
+  SET_ENVIRONMENTS_METADATA,
+  SET_ENVIRONMENT_DATA,
   SET_IS_LOADING,
   SET_IS_SUBMITTING,
-  SET_SEARCHED_CONTROLLERS_DATA,
-  UPDATE_CONTROLLER_DATA,
+  SET_SEARCHED_ENVIRONMENTS_DATA,
+  UPDATE_ENVIRONMENT_DATA,
 } from "./action-types";
 
-import { ControllerActionTypes, ControllerState } from "./types";
+import { EnvironmentActionTypes, EnvironmentState } from "./types";
 
 import { resetSearchState, setSearchState, updateStateNew } from "src/utils/store";
 
-const entity = "controllers";
+const entity = "environments";
 
-export const initialState: ControllerState = {
+export const initialState: EnvironmentState = {
   isLoading: false,
   isSubmitting: false,
 
-  controller: undefined,
-  controllers: [],
+  environment: undefined,
+  environments: [],
 
-  searchedControllers: [],
+  searchedEnvironments: [],
 
   metadata: undefined,
 };
 
-const reducer: Reducer<ControllerState> = (
+const reducer: Reducer<EnvironmentState> = (
   state = initialState,
-  action: ControllerActionTypes,
-): ControllerState => {
+  action: EnvironmentActionTypes,
+): EnvironmentState => {
   switch (action.type) {
     case SET_IS_LOADING:
       return { ...state, isLoading: action.payload };
@@ -41,57 +41,57 @@ const reducer: Reducer<ControllerState> = (
     case SET_IS_SUBMITTING:
       return { ...state, isSubmitting: action.payload };
 
-    case SET_CONTROLLER_DATA:
-      return { ...state, controller: action.payload };
+    case SET_ENVIRONMENT_DATA:
+      return { ...state, environment: action.payload };
 
-    case SET_CONTROLLERS_DATA:
-      return { ...state, controllers: action.payload };
+    case SET_ENVIRONMENTS_DATA:
+      return { ...state, environments: action.payload };
 
-    case SET_CONTROLLERS_METADATA:
+    case SET_ENVIRONMENTS_METADATA:
       return { ...state, metadata: action.payload };
 
-    case SET_SEARCHED_CONTROLLERS_DATA:
+    case SET_SEARCHED_ENVIRONMENTS_DATA:
       return setSearchState({
         state,
         action,
-        local: state.controllers,
+        local: state.environments,
         entity,
       });
 
-    case RESET_SEARCHED_CONTROLLERS_DATA:
+    case RESET_SEARCHED_ENVIRONMENTS_DATA:
       return resetSearchState({
         state,
       });
 
-    case CREATE_CONTROLLER_DATA:
+    case CREATE_ENVIRONMENT_DATA:
       return {
         ...state,
-        controllers: {
-          ...state.controllers,
-          items: [...state.controllers.items, action.payload],
+        environments: {
+          ...state.environments,
+          items: [...state.environments.items, action.payload],
         },
       };
     // return createState({
     //   state,
     //   action,
-    //   local: state.controllers,
+    //   local: state.environments,
     //   entity,
     // });
 
-    case UPDATE_CONTROLLER_DATA:
+    case UPDATE_ENVIRONMENT_DATA:
       return updateStateNew({
         state,
         action,
-        local: state.controllers,
+        local: state.environments,
         entity,
       });
 
-    case REMOVE_CONTROLLER_DATA:
+    case REMOVE_ENVIRONMENT_DATA:
       return {
         ...state,
-        controllers: {
-          ...state.controllers,
-          items: state.controllers.items.filter(
+        environments: {
+          ...state.environments,
+          items: state.environments.items.filter(
             (item: any) => !action.payload.id.includes(item.id),
           ),
         },
@@ -101,7 +101,7 @@ const reducer: Reducer<ControllerState> = (
     // return removeState({
     //   state,
     //   action,
-    //   local: state.controllers,
+    //   local: state.environments,
     //   entity,
     // });
     //        const newItems = prev?.items?.filter(

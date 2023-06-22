@@ -1,0 +1,17 @@
+export const SET_IS_LOADING = "@@environment/SET_IS_LOADING";
+
+export const SET_IS_SUBMITTING = "@@environment/SET_IS_SUBMITTING";
+
+export const SET_ENVIRONMENT_DATA = "@@environment/SET_ENVIRONMENT_DATA";
+export const SET_ENVIRONMENTS_DATA = "@@environment/SET_ENVIRONMENTS_DATA";
+
+export const SET_ENVIRONMENTS_METADATA = "@@environment/SET_ENVIRONMENTS_METADATA";
+
+export const SET_SEARCHED_ENVIRONMENTS_DATA = "@@environment/SET_SEARCHED_ENVIRONMENTS_DATA";
+export const RESET_SEARCHED_ENVIRONMENTS_DATA = "@@environment/RESET_SEARCHED_ENVIRONMENTS_DATA";
+
+export const CREATE_ENVIRONMENT_DATA = "@@environment/CREATE_ENVIRONMENT_DATA";
+
+export const REMOVE_ENVIRONMENT_DATA = "@@environment/REMOVE_ENVIRONMENT_DATA";
+
+export const UPDATE_ENVIRONMENT_DATA = "@@environment/UPDATE_ENVIRONMENT_DATA";

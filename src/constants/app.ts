@@ -18,6 +18,12 @@ const app = {
     passwordResetLink: "/auth/password-reset-link",
   },
 
+  environment: {
+    root: "/environment",
+    create: "/environment/create",
+    update: (id) => `/environment/${id}/update`,
+  },
+
   configuration: {
     libraries: "/configuration/libraries",
     controllers: "/configuration/controllers",
@@ -37,6 +43,7 @@ const app = {
     feature2: "/feature-engineering/feature-py-2",
     feature3: "/feature-engineering/feature-py-3",
   },
+
   aiModel: {
     history: "/ai-model/active-model-and-history",
     modelPy: "/ai-model/model-py",

@@ -25,7 +25,6 @@ function withProtectedSidebar(WrappedComponent: ComponentType<any>) {
       const previousSidebarType = String(window.sessionStorage.getItem("sidebarType"));
       const currentSidebarType = sidebarType;
       if (previousSidebarType === currentSidebarType && sidebar?.length) return;
-      console.log({ previousSidebarType, currentSidebarType, sidebar });
 
       switch (sidebarType) {
         case "index":

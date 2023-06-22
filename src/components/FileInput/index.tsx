@@ -8,7 +8,7 @@ import styled from "src/lib/mui/styled";
 import { getFileNameFromUrl } from "src/utils";
 
 const BrowseButton = styled(Button)`
-  font-family: "Lato";
+  font-family: "Poppins";
   text-transform: none;
   font-weight: 600;
   border: 1px solid gray;
@@ -18,19 +18,27 @@ const BrowseButton = styled(Button)`
 function FileInput({
   id,
   name,
-  editData,
+  formData,
   values,
   errors,
   onChange,
+  accept = '"application/json,.py"',
+  showOnlyBrowseButton = false,
+  buttonName = "Browse",
+  buttonStyle = {},
   ...rest
 }: {
   id: any;
   name?: any;
-  editData?: any;
+  formData?: any;
   values?: any;
   errors?: any;
+  accept?: boolean;
+  showOnlyBrowseButton?: boolean;
   onChange?: (arg?: any) => void;
   rest?: any;
+  buttonName?: string;
+  buttonStyle?: object;
 }) {
   const { theme } = useReactTheme();
   return (
@@ -41,32 +49,38 @@ function FileInput({
             id={`file-upload-${id}`}
             name=""
             type="file"
-            accept="application/json,.py"
+            accept={accept}
             hidden
             onChange={onChange}
           />
-          <BrowseButton component="div">Browse</BrowseButton>
+          <BrowseButton component="div" style={buttonStyle}>
+            {buttonName}
+          </BrowseButton>
         </label>
 
-        {editData && !values?.[id] ? (
-          <a
-            href={values.path}
-            target="_blank"
-            style={{ color: theme.palette.primary.light }}
-            rel="noreferrer"
-          >
-            {`Download ${getFileNameFromUrl(values.path)}`}
-          </a>
-        ) : (
-          <TextField
-            id={id}
-            name={name}
-            type="text"
-            {...rest}
-            sx={{
-              backgroundColor: "#f6f9fba2",
-            }}
-          />
+        {showOnlyBrowseButton ? null : (
+          <>
+            {formData && !values?.[id] ? (
+              <a
+                href={values.path}
+                target="_blank"
+                style={{ color: theme.palette.primary.light }}
+                rel="noreferrer"
+              >
+                {`Download ${getFileNameFromUrl(values.path)}`}
+              </a>
+            ) : (
+              <TextField
+                id={id}
+                name={name}
+                type="text"
+                {...rest}
+                sx={{
+                  backgroundColor: "#f6f9fba2",
+                }}
+              />
+            )}
+          </>
         )}
       </Stack>
 

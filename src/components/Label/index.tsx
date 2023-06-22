@@ -6,6 +6,8 @@ import styled from "src/lib/mui/styled";
 const FormLabel = styled(InputLabel)(({ theme }) => ({
   color: "gray",
   fontFamily: defaultFont,
+  textAlign: "left",
+  marginBottom: 5,
 }));
 
 function Label({
@@ -20,9 +22,7 @@ function Label({
 }) {
   return required ? (
     <FormLabel {...rest}>
-      <div className="label-heading">
-        {children} <sup>*</sup>
-      </div>
+      {children} <sup>*</sup>
     </FormLabel>
   ) : (
     <FormLabel {...rest}>{children}</FormLabel>

@@ -1,10 +1,25 @@
-import { SOCKET_CONNECTED, SOCKET_DISCONNECTED } from "./action-types";
+import { Reducer } from "redux";
+import { SocketState } from "src/store/socket/types";
+import {
+  SOCKET_CONNECT,
+  SOCKET_CONNECTED,
+  SOCKET_DISCONNECT,
+  SOCKET_DISCONNECTED,
+} from "./action-types";
 
-const initialState = { connected: false };
+const initialState: SocketState = {
+  socket: null,
+  connected: false,
+};
 
-// eslint-disable-next-line @typescript-eslint/default-param-last
-const reducer = (state = initialState, action: any) => {
+const reducer: Reducer<SocketState> = (state = initialState, action): SocketState => {
   switch (action.type) {
+    case SOCKET_CONNECT:
+      return { ...state, socket: action.payload };
+
+    case SOCKET_DISCONNECT:
+      return { ...state, socket: null };
+
     case SOCKET_CONNECTED: {
       return { ...state, connected: true };
     }

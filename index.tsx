@@ -54,7 +54,7 @@ function AppIndex() {
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <AppIndex />
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <AppIndex />,
+  // </React.StrictMode>,
 );

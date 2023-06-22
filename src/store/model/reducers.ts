@@ -1,39 +1,39 @@
 import { Reducer } from "redux";
 import {
-  CREATE_CONTROLLER_DATA,
-  REMOVE_CONTROLLER_DATA,
-  RESET_SEARCHED_CONTROLLERS_DATA,
-  SET_CONTROLLERS_DATA,
-  SET_CONTROLLERS_METADATA,
-  SET_CONTROLLER_DATA,
+  CREATE_MODEL_DATA,
+  REMOVE_MODEL_DATA,
+  RESET_SEARCHED_MODELS_DATA,
+  SET_MODELS_DATA,
+  SET_MODELS_METADATA,
+  SET_MODEL_DATA,
   SET_IS_LOADING,
   SET_IS_SUBMITTING,
-  SET_SEARCHED_CONTROLLERS_DATA,
-  UPDATE_CONTROLLER_DATA,
+  SET_SEARCHED_MODELS_DATA,
+  UPDATE_MODEL_DATA,
 } from "./action-types";
 
-import { ControllerActionTypes, ControllerState } from "./types";
+import { ModelActionTypes, ModelState } from "./types";
 
 import { resetSearchState, setSearchState, updateStateNew } from "src/utils/store";
 
-const entity = "controllers";
+const entity = "models";
 
-export const initialState: ControllerState = {
+export const initialState: ModelState = {
   isLoading: false,
   isSubmitting: false,
 
-  controller: undefined,
-  controllers: [],
+  model: undefined,
+  models: [],
 
-  searchedControllers: [],
+  searchedModels: [],
 
   metadata: undefined,
 };
 
-const reducer: Reducer<ControllerState> = (
+const reducer: Reducer<ModelState> = (
   state = initialState,
-  action: ControllerActionTypes,
-): ControllerState => {
+  action: ModelActionTypes,
+): ModelState => {
   switch (action.type) {
     case SET_IS_LOADING:
       return { ...state, isLoading: action.payload };
@@ -41,59 +41,57 @@ const reducer: Reducer<ControllerState> = (
     case SET_IS_SUBMITTING:
       return { ...state, isSubmitting: action.payload };
 
-    case SET_CONTROLLER_DATA:
-      return { ...state, controller: action.payload };
+    case SET_MODEL_DATA:
+      return { ...state, model: action.payload };
 
-    case SET_CONTROLLERS_DATA:
-      return { ...state, controllers: action.payload };
+    case SET_MODELS_DATA:
+      return { ...state, models: action.payload };
 
-    case SET_CONTROLLERS_METADATA:
+    case SET_MODELS_METADATA:
       return { ...state, metadata: action.payload };
 
-    case SET_SEARCHED_CONTROLLERS_DATA:
+    case SET_SEARCHED_MODELS_DATA:
       return setSearchState({
         state,
         action,
-        local: state.controllers,
+        local: state.models,
         entity,
       });
 
-    case RESET_SEARCHED_CONTROLLERS_DATA:
+    case RESET_SEARCHED_MODELS_DATA:
       return resetSearchState({
         state,
       });
 
-    case CREATE_CONTROLLER_DATA:
+    case CREATE_MODEL_DATA:
       return {
         ...state,
-        controllers: {
-          ...state.controllers,
-          items: [...state.controllers.items, action.payload],
+        models: {
+          ...state.models,
+          items: [...state.models.items, action.payload],
         },
       };
     // return createState({
     //   state,
     //   action,
-    //   local: state.controllers,
+    //   local: state.models,
     //   entity,
     // });
 
-    case UPDATE_CONTROLLER_DATA:
+    case UPDATE_MODEL_DATA:
       return updateStateNew({
         state,
         action,
-        local: state.controllers,
+        local: state.models,
         entity,
       });
 
-    case REMOVE_CONTROLLER_DATA:
+    case REMOVE_MODEL_DATA:
       return {
         ...state,
-        controllers: {
-          ...state.controllers,
-          items: state.controllers.items.filter(
-            (item: any) => !action.payload.id.includes(item.id),
-          ),
+        models: {
+          ...state.models,
+          items: state.models.items.filter((item: any) => !action.payload.id.includes(item.id)),
         },
         // items: newItems,
         // archivedCount: Number(prev?.archivedCount || 0) + 1,
@@ -101,7 +99,7 @@ const reducer: Reducer<ControllerState> = (
     // return removeState({
     //   state,
     //   action,
-    //   local: state.controllers,
+    //   local: state.models,
     //   entity,
     // });
     //        const newItems = prev?.items?.filter(

@@ -9,33 +9,33 @@ import { generateMeta, generateQuery } from "src/utils/store";
 import { defaultQuery } from "src/constants/query";
 import { network } from "src/utils/network";
 import {
-  ControllerState,
-  CreateControllerDataType,
-  RemoveControllerDataType,
-  ResetSearchedControllersDataType,
-  SetControllerDataType,
-  SetControllersDataType,
-  SetControllersMetadataType,
+  ModelState,
+  CreateModelDataType,
+  RemoveModelDataType,
+  ResetSearchedModelsDataType,
+  SetModelDataType,
+  SetModelsDataType,
+  SetModelsMetadataType,
   SetIsLoadingType,
   SetIsSubmittingType,
-  SetSearchedControllersDataType,
-  UpdateControllerDataType,
+  SetSearchedModelsDataType,
+  UpdateModelDataType,
 } from "./types";
 import {
-  CREATE_CONTROLLER_DATA,
-  REMOVE_CONTROLLER_DATA,
-  RESET_SEARCHED_CONTROLLERS_DATA,
-  SET_CONTROLLERS_DATA,
-  SET_CONTROLLERS_METADATA,
-  SET_CONTROLLER_DATA,
+  CREATE_MODEL_DATA,
+  REMOVE_MODEL_DATA,
+  RESET_SEARCHED_MODELS_DATA,
+  SET_MODELS_DATA,
+  SET_MODELS_METADATA,
+  SET_MODEL_DATA,
   SET_IS_LOADING,
   SET_IS_SUBMITTING,
-  SET_SEARCHED_CONTROLLERS_DATA,
-  UPDATE_CONTROLLER_DATA,
+  SET_SEARCHED_MODELS_DATA,
+  UPDATE_MODEL_DATA,
 } from "./action-types";
 
 export type AppThunk = ActionCreator<
-  ThunkAction<Promise<boolean>, ControllerState, null, Action<string>>
+  ThunkAction<Promise<boolean>, ModelState, null, Action<string>>
 >;
 
 export const setIsLoading = (payload: any): SetIsLoadingType => ({
@@ -48,58 +48,56 @@ export const setIsSubmitting = (payload: any): SetIsSubmittingType => ({
   payload,
 });
 
-export const setControllerData = (payload: any): SetControllerDataType => ({
-  type: SET_CONTROLLER_DATA,
+export const setModelData = (payload: any): SetModelDataType => ({
+  type: SET_MODEL_DATA,
   payload,
 });
 
-export const setControllersData = (payload: any): SetControllersDataType => ({
-  type: SET_CONTROLLERS_DATA,
+export const setModelsData = (payload: any): SetModelsDataType => ({
+  type: SET_MODELS_DATA,
   payload,
 });
 
-export const setControllersMetadata = (payload: any): SetControllersMetadataType => ({
-  type: SET_CONTROLLERS_METADATA,
+export const setModelsMetadata = (payload: any): SetModelsMetadataType => ({
+  type: SET_MODELS_METADATA,
   payload,
 });
 
-export const setSearchedControllersData = (payload: any): SetSearchedControllersDataType => ({
-  type: SET_SEARCHED_CONTROLLERS_DATA,
+export const setSearchedModelsData = (payload: any): SetSearchedModelsDataType => ({
+  type: SET_SEARCHED_MODELS_DATA,
   payload,
 });
 
-export const resetSearchedControllersData = (payload: any): ResetSearchedControllersDataType => ({
-  type: RESET_SEARCHED_CONTROLLERS_DATA,
+export const resetSearchedModelsData = (payload: any): ResetSearchedModelsDataType => ({
+  type: RESET_SEARCHED_MODELS_DATA,
   payload,
 });
 
-export const createControllerData = (payload: any): CreateControllerDataType => ({
-  type: CREATE_CONTROLLER_DATA,
+export const createModelData = (payload: any): CreateModelDataType => ({
+  type: CREATE_MODEL_DATA,
   payload,
 });
 
-export const removeControllerData = (payload: any): RemoveControllerDataType => ({
-  type: REMOVE_CONTROLLER_DATA,
+export const removeModelData = (payload: any): RemoveModelDataType => ({
+  type: REMOVE_MODEL_DATA,
   payload,
 });
 
-export const updateControllerData = (payload: any): UpdateControllerDataType => ({
-  type: UPDATE_CONTROLLER_DATA,
+export const updateModelData = (payload: any): UpdateModelDataType => ({
+  type: UPDATE_MODEL_DATA,
   payload,
 });
 
-export const fetchController: AppThunk =
-  ({ controllerId }) =>
+export const fetchModel: AppThunk =
+  ({ modelId }) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(setIsLoading(true));
-      const { data, status } = await network({}).get(
-        `${api.configuration.controller}${controllerId}/`,
-      );
+      const { data, status } = await network({}).get(`${api.configuration.model}${modelId}/`);
 
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {
-          dispatch(setControllerData(data));
+          dispatch(setModelData(data));
           dispatch(setIsLoading(false));
           return true;
         }
@@ -112,12 +110,12 @@ export const fetchController: AppThunk =
     }
   };
 
-export const fetchControllers: AppThunk =
+export const fetchModels: AppThunk =
   ({ query = defaultQuery, columns, searchable, search }) =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       const link = generateQuery({
-        url: api.configuration.controller,
+        url: api.model.root,
         query,
         columns,
         searchable,
@@ -132,11 +130,9 @@ export const fetchControllers: AppThunk =
             items: data?.items || [],
             headers: data?.headers || {},
           };
-          search
-            ? dispatch(setSearchedControllersData(result))
-            : dispatch(setControllersData(result));
+          search ? dispatch(setSearchedModelsData(result)) : dispatch(setModelsData(result));
           const metadata = generateMeta({ query, data });
-          dispatch(setControllersMetadata(metadata));
+          dispatch(setModelsMetadata(metadata));
           dispatch(setIsLoading(false));
           return true;
         }
@@ -149,14 +145,14 @@ export const fetchControllers: AppThunk =
     }
   };
 
-export const createController: AppThunk =
+export const createModel: AppThunk =
   ({ values }) =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       dispatch(setIsSubmitting(true));
-      const { data, status } = await network({}).post(api.configuration.controller, [values]);
+      const { data, status } = await network({}).post(api.model.root, [values]);
       if (status === 200 || (status > 200 && status < 300)) {
-        dispatch(createControllerData(data.data[0]));
+        dispatch(createModelData(data.data[0]));
         dispatch(setIsSubmitting(false));
 
         return true;
@@ -169,20 +165,17 @@ export const createController: AppThunk =
     }
   };
 
-export const updateController: AppThunk =
-  ({ controllerId, values }) =>
+export const updateModel: AppThunk =
+  ({ modelId, values }) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(setIsSubmitting(true));
-      const { data, status } = await network({}).put(
-        `${api.configuration.controller}${controllerId}`,
-        values,
-      );
+      const { data, status } = await network({}).put(`${api.model.root}${modelId}`, values);
 
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {
           console.log(data, "das");
-          dispatch(updateControllerData(data.data));
+          dispatch(updateModelData(data.data));
           dispatch(setIsSubmitting(false));
           return true;
         }
@@ -195,19 +188,19 @@ export const updateController: AppThunk =
     }
   };
 
-export const deleteController: AppThunk =
-  ({ controllerId }) =>
+export const deleteModel: AppThunk =
+  ({ modelId }) =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
-      console.log(controllerId);
+      console.log(modelId);
 
       dispatch(setIsSubmitting(true));
-      const { status } = await network({}).delete(api.configuration.controller, {
-        data: { ids: controllerId },
+      const { status } = await network({}).delete(api.model.root, {
+        data: { ids: modelId },
       });
 
       if (status === 200 || status > 200) {
-        dispatch(removeControllerData({ id: controllerId }));
+        dispatch(removeModelData({ id: modelId }));
         dispatch(setIsSubmitting(false));
 
         return true;

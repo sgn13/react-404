@@ -18,6 +18,7 @@ const api = {
   otp_login: "/user/auth/send_token",
   forgotPassword: "/user/auth/reset-password",
   changePassword: "/user/change-password",
+  environment: { root: "/venv_management_handler/" },
   configuration: {
     root: apiRoot.configuation,
     controller: `/controller/`,
@@ -31,6 +32,13 @@ const api = {
     fileUpload: `/file-upload/`,
     streaming: `/streaming/`,
     dbPull: `/db-pull/`,
+  },
+  model: {
+    root: "/model/",
+  },
+
+  template: {
+    root: "/template/",
   },
 
   logout: "/logout/",

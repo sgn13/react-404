@@ -9,7 +9,7 @@ import {
   CREATE_CONTROLLER_DATA,
   REMOVE_CONTROLLER_DATA,
   UPDATE_CONTROLLER_DATA,
-} from './action-types';
+} from "./action-types";
 
 export interface ControllerState {
   isLoading: boolean;

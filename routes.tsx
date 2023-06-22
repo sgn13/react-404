@@ -9,6 +9,7 @@ import placementRoutes from "src/features/configuration/placement/routes";
 import fileUploadState from "src/features/source/file-upload/routes";
 import folderRoutes from "src/features/source/folder/routes";
 import streamingRoutes from "src/features/source/streaming/routes";
+import environmentRoutes from "src/features/environment/routes";
 
 import { Login } from "src/features/auth";
 import Index from "src/features/dashboard/index";
@@ -82,6 +83,7 @@ const routes = [
       ...streamingRoutes,
       ...fileUploadState,
       ...folderRoutes,
+      ...environmentRoutes,
       ...errorRoutes,
     ],
   },

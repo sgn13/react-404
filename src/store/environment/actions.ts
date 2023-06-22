@@ -9,33 +9,33 @@ import { generateMeta, generateQuery } from "src/utils/store";
 import { defaultQuery } from "src/constants/query";
 import { network } from "src/utils/network";
 import {
-  ControllerState,
-  CreateControllerDataType,
-  RemoveControllerDataType,
-  ResetSearchedControllersDataType,
-  SetControllerDataType,
-  SetControllersDataType,
-  SetControllersMetadataType,
+  EnvironmentState,
+  CreateEnvironmentDataType,
+  RemoveEnvironmentDataType,
+  ResetSearchedEnvironmentsDataType,
+  SetEnvironmentDataType,
+  SetEnvironmentsDataType,
+  SetEnvironmentsMetadataType,
   SetIsLoadingType,
   SetIsSubmittingType,
-  SetSearchedControllersDataType,
-  UpdateControllerDataType,
+  SetSearchedEnvironmentsDataType,
+  UpdateEnvironmentDataType,
 } from "./types";
 import {
-  CREATE_CONTROLLER_DATA,
-  REMOVE_CONTROLLER_DATA,
-  RESET_SEARCHED_CONTROLLERS_DATA,
-  SET_CONTROLLERS_DATA,
-  SET_CONTROLLERS_METADATA,
-  SET_CONTROLLER_DATA,
+  CREATE_ENVIRONMENT_DATA,
+  REMOVE_ENVIRONMENT_DATA,
+  RESET_SEARCHED_ENVIRONMENTS_DATA,
+  SET_ENVIRONMENTS_DATA,
+  SET_ENVIRONMENTS_METADATA,
+  SET_ENVIRONMENT_DATA,
   SET_IS_LOADING,
   SET_IS_SUBMITTING,
-  SET_SEARCHED_CONTROLLERS_DATA,
-  UPDATE_CONTROLLER_DATA,
+  SET_SEARCHED_ENVIRONMENTS_DATA,
+  UPDATE_ENVIRONMENT_DATA,
 } from "./action-types";
 
 export type AppThunk = ActionCreator<
-  ThunkAction<Promise<boolean>, ControllerState, null, Action<string>>
+  ThunkAction<Promise<boolean>, EnvironmentState, null, Action<string>>
 >;
 
 export const setIsLoading = (payload: any): SetIsLoadingType => ({
@@ -48,58 +48,56 @@ export const setIsSubmitting = (payload: any): SetIsSubmittingType => ({
   payload,
 });
 
-export const setControllerData = (payload: any): SetControllerDataType => ({
-  type: SET_CONTROLLER_DATA,
+export const setEnvironmentData = (payload: any): SetEnvironmentDataType => ({
+  type: SET_ENVIRONMENT_DATA,
   payload,
 });
 
-export const setControllersData = (payload: any): SetControllersDataType => ({
-  type: SET_CONTROLLERS_DATA,
+export const setEnvironmentsData = (payload: any): SetEnvironmentsDataType => ({
+  type: SET_ENVIRONMENTS_DATA,
   payload,
 });
 
-export const setControllersMetadata = (payload: any): SetControllersMetadataType => ({
-  type: SET_CONTROLLERS_METADATA,
+export const setEnvironmentsMetadata = (payload: any): SetEnvironmentsMetadataType => ({
+  type: SET_ENVIRONMENTS_METADATA,
   payload,
 });
 
-export const setSearchedControllersData = (payload: any): SetSearchedControllersDataType => ({
-  type: SET_SEARCHED_CONTROLLERS_DATA,
+export const setSearchedEnvironmentsData = (payload: any): SetSearchedEnvironmentsDataType => ({
+  type: SET_SEARCHED_ENVIRONMENTS_DATA,
   payload,
 });
 
-export const resetSearchedControllersData = (payload: any): ResetSearchedControllersDataType => ({
-  type: RESET_SEARCHED_CONTROLLERS_DATA,
+export const resetSearchedEnvironmentsData = (payload: any): ResetSearchedEnvironmentsDataType => ({
+  type: RESET_SEARCHED_ENVIRONMENTS_DATA,
   payload,
 });
 
-export const createControllerData = (payload: any): CreateControllerDataType => ({
-  type: CREATE_CONTROLLER_DATA,
+export const createEnvironmentData = (payload: any): CreateEnvironmentDataType => ({
+  type: CREATE_ENVIRONMENT_DATA,
   payload,
 });
 
-export const removeControllerData = (payload: any): RemoveControllerDataType => ({
-  type: REMOVE_CONTROLLER_DATA,
+export const removeEnvironmentData = (payload: any): RemoveEnvironmentDataType => ({
+  type: REMOVE_ENVIRONMENT_DATA,
   payload,
 });
 
-export const updateControllerData = (payload: any): UpdateControllerDataType => ({
-  type: UPDATE_CONTROLLER_DATA,
+export const updateEnvironmentData = (payload: any): UpdateEnvironmentDataType => ({
+  type: UPDATE_ENVIRONMENT_DATA,
   payload,
 });
 
-export const fetchController: AppThunk =
-  ({ controllerId }) =>
+export const fetchEnvironment: AppThunk =
+  ({ environmentId }) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(setIsLoading(true));
-      const { data, status } = await network({}).get(
-        `${api.configuration.controller}${controllerId}/`,
-      );
+      const { data, status } = await network({}).get(`${api.environment.root}${environmentId}`);
 
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {
-          dispatch(setControllerData(data));
+          dispatch(setEnvironmentData(data));
           dispatch(setIsLoading(false));
           return true;
         }
@@ -112,12 +110,12 @@ export const fetchController: AppThunk =
     }
   };
 
-export const fetchControllers: AppThunk =
+export const fetchEnvironments: AppThunk =
   ({ query = defaultQuery, columns, searchable, search }) =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       const link = generateQuery({
-        url: api.configuration.controller,
+        url: api.environment.root,
         query,
         columns,
         searchable,
@@ -133,10 +131,10 @@ export const fetchControllers: AppThunk =
             headers: data?.headers || {},
           };
           search
-            ? dispatch(setSearchedControllersData(result))
-            : dispatch(setControllersData(result));
+            ? dispatch(setSearchedEnvironmentsData(result))
+            : dispatch(setEnvironmentsData(result));
           const metadata = generateMeta({ query, data });
-          dispatch(setControllersMetadata(metadata));
+          dispatch(setEnvironmentsMetadata(metadata));
           dispatch(setIsLoading(false));
           return true;
         }
@@ -149,14 +147,14 @@ export const fetchControllers: AppThunk =
     }
   };
 
-export const createController: AppThunk =
+export const createEnvironment: AppThunk =
   ({ values }) =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       dispatch(setIsSubmitting(true));
-      const { data, status } = await network({}).post(api.configuration.controller, [values]);
+      const { data, status } = await network({}).post(api.environment.root, [values]);
       if (status === 200 || (status > 200 && status < 300)) {
-        dispatch(createControllerData(data.data[0]));
+        dispatch(createEnvironmentData(data.data[0]));
         dispatch(setIsSubmitting(false));
 
         return true;
@@ -169,20 +167,19 @@ export const createController: AppThunk =
     }
   };
 
-export const updateController: AppThunk =
-  ({ controllerId, values }) =>
+export const updateEnvironment: AppThunk =
+  ({ environmentId, values }) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(setIsSubmitting(true));
       const { data, status } = await network({}).put(
-        `${api.configuration.controller}${controllerId}`,
+        `${api.environment.root}${environmentId}`,
         values,
       );
 
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {
-          console.log(data, "das");
-          dispatch(updateControllerData(data.data));
+          dispatch(updateEnvironmentData(data.data));
           dispatch(setIsSubmitting(false));
           return true;
         }
@@ -195,19 +192,19 @@ export const updateController: AppThunk =
     }
   };
 
-export const deleteController: AppThunk =
-  ({ controllerId }) =>
+export const deleteEnvironment: AppThunk =
+  ({ environmentId }) =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
-      console.log(controllerId);
+      console.log(environmentId);
 
       dispatch(setIsSubmitting(true));
-      const { status } = await network({}).delete(api.configuration.controller, {
-        data: { ids: controllerId },
+      const { status } = await network({}).delete(api.environment.root, {
+        data: { ids: environmentId },
       });
 
       if (status === 200 || status > 200) {
-        dispatch(removeControllerData({ id: controllerId }));
+        dispatch(removeEnvironmentData({ id: environmentId }));
         dispatch(setIsSubmitting(false));
 
         return true;

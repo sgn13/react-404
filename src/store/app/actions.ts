@@ -130,7 +130,7 @@ export const showNotification = (payload: {
 
 export const setErrorMessage = (err: any): SetNotificationDataType => {
   console.log("error", err);
-  const message = (err && err.response && err.response.data.detail) || "Error has occurred";
+  const message = err?.response?.data?.detail?.message || "Error has occurred";
   return {
     type: SET_NOTIFICATION_DATA,
     payload: {

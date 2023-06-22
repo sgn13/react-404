@@ -10,6 +10,9 @@ import { AppState } from "src/store/reducer";
 import AnimationManager from "./AnimationManager";
 import DropdownSidebar from "./DropdownSidebar";
 import Heading from "./Header/Header";
+import { connectSocket, setSocketConnected, setSocketDisconnected } from "src/store/socket/actions";
+import env from "src/constants/env";
+import useSocketService from "src/hooks/useSocketService";
 
 const Container = styled.div`
   width: 100vw;
@@ -100,14 +103,24 @@ function Layout({
   sidebar,
   isLoading,
   showFooter = false,
+  socket,
+  connected,
+  connectSocket,
+  setSocketDisconnected,
+  setSocketConnected,
+  me,
 }: PropsFromRedux | any) {
   const contentSectionRef = useRef();
-  const [sidebarWidth, setSidebarWidth] = useState();
-  console.log("layout");
+  useSocketService({
+    socket,
+    connected,
+    connectSocket,
+    setSocketDisconnected,
+    setSocketConnected,
+    me,
+  });
 
-  useEffect(() => {
-    console.log(" layout mounted");
-  }, []);
+  const [sidebarWidth, setSidebarWidth] = useState();
 
   if (isLoading) {
     return <Loader />;
@@ -131,8 +144,16 @@ function Layout({
           fullSidebar={fullSidebar}
           fullWidthFooter={fullWidthFooter}
         />
-        <Flexbox column grow>
-          <Flexbox style={{ padding: 30 }}>
+        <Flexbox column grow className="layout-content">
+          <Flexbox
+            style={{
+              padding: 30,
+              // overflow: "auto",
+              // outline: "1px solid red",
+              marginLeft: 2,
+              marginRight: 2,
+            }}
+          >
             <AnimationManager>{children}</AnimationManager>
           </Flexbox>
           {showFooter ? (
@@ -150,14 +171,23 @@ function Layout({
   );
 }
 
-const mapStateToProps = ({ appState: { me, notification, isLoading, sidebar } }: AppState) => ({
+const mapStateToProps = ({
+  appState: { me, notification, isLoading, sidebar },
+  socketState: { socket, connected },
+}: AppState) => ({
   me,
   notification,
   isLoading,
   sidebar,
+  socket,
+  connected,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  connectSocket,
+  setSocketDisconnected,
+  setSocketConnected,
+};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;

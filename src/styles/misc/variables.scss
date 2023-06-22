@@ -4,11 +4,15 @@ $theme-green: green !important;
 $primary-color: #164996 !important;
 
 $font-weights: (
-  'light': 100,
-  'regular': 400,
-  'medium': 500,
-  'bold': 700,
+  "light": 100,
+  "regular": 400,
+  "medium": 500,
+  "bold": 700,
 );
+
+:root {
+  --sidebar-width: 720px;
+}
 
 // font size
 $p-font: 1.1rem;
@@ -45,3 +49,7 @@ $ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
 
 // import variables from '../styles/variables.module.scss'
 // <div color={variables.primaryColor}
+
+// .layout-content {
+//   width: calc(90vw - (var(--sidebar-width)));
+// }

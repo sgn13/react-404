@@ -29,6 +29,16 @@ export const IndexSidebar = () => [
     Permission: undefined,
     collasped: false,
   },
+  {
+    id: uniqueId(),
+    icon: AiModel,
+    label: "Environment",
+    location: "top",
+    path: app.environment.root,
+    role: "user",
+    Permission: undefined,
+    collasped: false,
+  },
 
   {
     id: uniqueId(),

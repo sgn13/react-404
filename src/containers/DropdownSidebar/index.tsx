@@ -92,6 +92,8 @@ function DraggableSidebar({
 
     if (newWidth >= iconSize) {
       setSidebarWidth(newWidth);
+      // const root = document.querySelector(":root");
+      // root.style.setProperty("--sidebar-width", newWidth);
       setWidth(newWidth);
     }
   };
