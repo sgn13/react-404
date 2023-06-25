@@ -14,8 +14,7 @@ import {
 } from "@mui/material";
 import FullPageLoader from "src/components/FullPageLoader";
 // import './popupList.scss';
-import { useRouter } from "next/router";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IndividualFile } from "src/components/MultiFileUploader/index";
 import { tableIndicatorProps } from ".";
 
@@ -37,7 +36,7 @@ interface CustomPopUpProps extends ButtonProps {
 interface IndividualListProps {
   id?: number;
   domain?: string;
-  router?: any;
+  navigate?: any;
   children?: any;
   handleClose?: any;
   individualData?: any;
@@ -46,7 +45,7 @@ interface IndividualListProps {
 export function IndividualListDisplay({
   id,
   domain,
-  router,
+  navigate,
   children,
   handleClose,
   individualData,
@@ -61,7 +60,7 @@ export function IndividualListDisplay({
         e.stopPropagation();
         if (domain?.toString().toLowerCase() === "findings") {
           handleClose?.();
-          router?.push(`/config/findings-recommendations?findings=${id}`);
+          navigate?.push(`/config/findings-recommendations?findings=${id}`);
         }
       }}
     >
@@ -72,7 +71,9 @@ export function IndividualListDisplay({
 
 function CustomPopUp(props: CustomPopUpProps) {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -86,7 +87,7 @@ function CustomPopUp(props: CustomPopUpProps) {
       ? props?.title?.split(" ").reverse()[0]?.toString()?.toLowerCase() !== "attachments"
         ? props?.tableIndicator?.subSectionUrl && props?.tableIndicator?.subSectionUrl(props?.ID)
         : props?.tableIndicator?.editFrontEndUrlGetter?.(props?.ID)
-      : router?.pathname;
+      : pathname;
 
     return link;
   }
@@ -150,7 +151,7 @@ function CustomPopUp(props: CustomPopUpProps) {
                         key={item?.id}
                         handleClose={handleClose}
                         id={item?.id}
-                        router={router}
+                        navigate={navigate}
                         individualData={item}
                         domain={props?.title?.split(" ").reverse()[0]}
                       >
@@ -164,7 +165,7 @@ function CustomPopUp(props: CustomPopUpProps) {
                         key={item}
                         handleClose={handleClose}
                         id={item}
-                        router={router}
+                        navigate={navigate}
                         individualData={item}
                         domain={props?.title?.split(" ").reverse()[0]}
                       >
