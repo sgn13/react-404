@@ -1080,359 +1080,357 @@ const DataContainer: React.FC<{
   }, [location?.pathname, Object?.keys(searchObject)?.length]);
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box>
-        <ConfirmationModal
-          openModal={openDeleteModal}
-          setOpenModal={() => {
-            setOpenDeleteModal(!openDeleteModal);
-            setSelectedData([]);
-          }}
-          handelConfirmation={async () => {
-            // deleteSelectedRows
-            // await onDelete?.([...selectedData]);
-            await deleteHandler([...selectedData]);
-            setOpenDeleteModal(false);
-            setSelectedData([]);
-          }}
-          confirmationHeading={`Do you want to delete these ${deletePath} ?`}
-          confirmationDesc={`${selectedData?.map(
-            (data: { name?: string }) => data?.name,
-          )}  will be deleted.`}
-          status="warning"
-          confirmationIcon="/assets/icons/icon-feature.svg"
+    <Box>
+      <ConfirmationModal
+        openModal={openDeleteModal}
+        setOpenModal={() => {
+          setOpenDeleteModal(!openDeleteModal);
+          setSelectedData([]);
+        }}
+        handelConfirmation={async () => {
+          // deleteSelectedRows
+          // await onDelete?.([...selectedData]);
+          await deleteHandler([...selectedData]);
+          setOpenDeleteModal(false);
+          setSelectedData([]);
+        }}
+        confirmationHeading={`Do you want to delete these ${deletePath} ?`}
+        confirmationDesc={`${selectedData?.map(
+          (data: { name?: string }) => data?.name,
+        )}  will be deleted.`}
+        status="warning"
+        confirmationIcon="/assets/icons/icon-feature.svg"
+      />
+      <FilterModal
+        openModal={filterModal}
+        setOpenModal={() => {
+          setFilterModal(!filterModal);
+          setSelectedData([]);
+        }}
+        // handelConfirmation={async () => {
+        //   // deleteSelectedRows
+        //   // await onDelete?.([...selectedData]);
+        //   await deleteHandler([...selectedData]);
+        //   setOpenDeleteModal(false);
+        //   setSelectedData([]);
+        // }}
+        confirmationHeading={`Apply Filter`}
+      >
+        {children}
+      </FilterModal>
+
+      <TableColumns
+        headCells={headCells}
+        onHide={handleEditTable as any}
+        modelOpen={isHeaderCellEdit}
+        onUpdate={onUpdate1}
+      />
+
+      <div>
+        <EnhancedTableToolbar
+          name={name}
+          onAdd={onAdd}
+          count={count}
+          configName={configName}
+          numSelected={selectedData.length}
+          onDataChange={onDataChange}
+          handleEditTable={handleEditTable}
+          handleFilterTable={handleFilterTable}
+          archivedCount={data?.archivedCount}
+          backendUrl={backendUrl}
+          tableTitle={tableTitle}
+          tableIndicator={tableIndicator}
+          textTitleLength={textTitleLength}
+          csvDownload={csvDownload}
+          isAddModal={isAddModal}
+          setOpenAddModal={setOpenAddModal}
+          searchValue={urlUtils?.q}
+          allowFilter={allowFilter}
         />
-        <FilterModal
-          openModal={filterModal}
-          setOpenModal={() => {
-            setFilterModal(!filterModal);
-            setSelectedData([]);
-          }}
-          // handelConfirmation={async () => {
-          //   // deleteSelectedRows
-          //   // await onDelete?.([...selectedData]);
-          //   await deleteHandler([...selectedData]);
-          //   setOpenDeleteModal(false);
-          //   setSelectedData([]);
-          // }}
-          confirmationHeading={`Apply Filter`}
-        >
-          {children}
-        </FilterModal>
+      </div>
 
-        <TableColumns
-          headCells={headCells}
-          onHide={handleEditTable as any}
-          modelOpen={isHeaderCellEdit}
-          onUpdate={onUpdate1}
-        />
-
-        <div>
-          <EnhancedTableToolbar
-            name={name}
-            onAdd={onAdd}
-            count={count}
-            configName={configName}
-            numSelected={selectedData.length}
-            onDataChange={onDataChange}
-            handleEditTable={handleEditTable}
-            handleFilterTable={handleFilterTable}
-            archivedCount={data?.archivedCount}
-            backendUrl={backendUrl}
-            tableTitle={tableTitle}
-            tableIndicator={tableIndicator}
-            textTitleLength={textTitleLength}
-            csvDownload={csvDownload}
-            isAddModal={isAddModal}
-            setOpenAddModal={setOpenAddModal}
-            searchValue={urlUtils?.q}
-            allowFilter={allowFilter}
-          />
-        </div>
-
-        <Paper sx={{ width: "100%", mb: 2, boxShadow: "none" }} className="config-table-holder">
+      <Paper sx={{ mb: 2, boxShadow: "none" }} className="config-table-holder">
+        {rows?.length ? (
+          <Stack>
+            <Box style={{ margin: 10 }}>
+              <PerPageSelect
+                rowsPerPage={rowsPerPage}
+                setRowsPerPage={setRowsPerPage}
+                fetchData={fetchData}
+              />
+            </Box>
+          </Stack>
+        ) : null}
+        <TableContainer>
           {rows?.length ? (
-            <Stack>
-              <Box style={{ margin: 10 }}>
-                <PerPageSelect
-                  rowsPerPage={rowsPerPage}
-                  setRowsPerPage={setRowsPerPage}
-                  fetchData={fetchData}
-                />
-              </Box>
-            </Stack>
-          ) : null}
-          <TableContainer>
-            {rows?.length ? (
-              <Table
-                sx={{ minWidth: 750 }}
-                aria-labelledby="tableTitle"
-                size={dense ? "small" : "medium"}
-                key={key}
-              >
-                <EnhancedTableHead
-                  numSelected={selectedData.length}
-                  order={order}
-                  orderBy={orderBy}
-                  onSelectAllClick={handleSelectAllClick}
-                  onRequestSort={handleRequestSort}
-                  rowCount={rows.length}
-                  headCells={headCells}
-                  fetchData={fetchData}
-                />
-                <TableBody>
-                  {/* Search row */}
-                  <TableRow key={11} style={{ height: 40 }}>
-                    {(rows || []).slice(0, 1).map((row: any, index: number) => {
-                      return [...headCells]?.map((hc, index) => {
-                        if (hc.action) return;
-                        if (!hc.show) return;
-                        return (
-                          <TableCell sx={{ borderBottom: "none" }} key={hc.id}>
-                            <Search searchField={hc?.id} onSearch={fetchData} />
-                          </TableCell>
-                        );
-                      });
-                    })}
-                  </TableRow>
-                  {(rows || []).map((row: any, index: number) => {
-                    return (
-                      <Row
-                        key={index}
-                        row={row}
-                        headCells={headCells}
-                        expandableRow={expandableRow}
-                        {...{
-                          handleClick,
-                          onAdd,
-                          onUpdate,
-                          onStatusToggle,
-                          onDelete,
-                          handleIndividualDelete,
-                          isSelected,
-                          handleTableCellVisibility,
-                          tableIndicator,
-                          GetValue,
-                          popUpDisplay,
-                          onTitleNavigate,
-                          tableOptions,
-                          index,
-                          additionalEdit,
-                        }}
-                      />
-                    );
-                    // const name =
-                    //   row?.[`${tableIndicator?.deleteFieldName}`] || row?.name;
-                    // const isItemSelected = isSelected(name as string);
-                    // const labelId = `enhanced-table-checkbox-${index}`;
-                    // let rowEditLink = '';
-                    // if (additionalEdit) {
-                    //   rowEditLink = `${row?.id}?address=${
-                    //     row[`${additionalEdit}`]?.length
-                    //       ? row[`${additionalEdit}`][0].id
-                    //       : ''
-                    //   }`;
-                    // } else {
-                    //   rowEditLink = `${row?.id}`;
-                    // }
-
-                    // return (
-                    //   <>
-                    //     <TableRow
-                    //       hover
-                    //       onClick={(event) => {
-                    //         handleClick(event, name, row.id);
-                    //       }}
-                    //       role="checkbox"
-                    //       aria-checked={isItemSelected}
-                    //       tabIndex={-1}
-                    //       key={row.id}
-                    //       selected={isItemSelected}
-                    //     >
-                    //       {/* checkbox */}
-                    //       {/* <TableCell padding="checkbox">
-                    //        <Checkbox
-                    //          color="primary"
-                    //          checkedIcon={<img src={CheckIcon} alt="check" />}
-                    //          icon={<img src={UnCheckIcon} alt="uncheck" />}
-                    //          checked={isItemSelected}
-                    //          inputProps={{
-                    //            'aria-labelledby': labelId,
-                    //          }}
-                    //        />
-                    //      </TableCell> */}
-
-                    //       {[...headCells]?.map((hc, index) => {
-                    //         if (hc.action) return;
-                    //         if (hc.id === 'created_at' || hc.id === 'updated_at')
-                    //           return (
-                    //             <TableCell
-                    //               key={index}
-                    //               className={handleTableCellVisibility(hc.id)}
-                    //               sx={{
-                    //                 fontFamily: 'Lato',
-                    //                 borderBottom: 'none',
-                    //               }}
-                    //             >
-                    //               {moment(new Date(row[hc.id])).format(
-                    //                 'MMM Do YY'
-                    //               )}
-                    //             </TableCell>
-                    //           );
-                    //         if (hc.id === 'status')
-                    //           return (
-                    //             <TableCell
-                    //               className={handleTableCellVisibility(hc.id)}
-                    //               sx={{
-                    //                 borderBottom: 'none',
-                    //                 fontFamily: 'Lato',
-                    //               }}
-                    //             >
-                    //               <IOSSwitch
-                    //                 checked={row['status']}
-                    //                 // disableText
-                    //                 onChange={(e) => onStatusToggle(row)}
-                    //               />
-                    //             </TableCell>
-                    //           );
-
-                    //         return (
-                    //           <TableCell
-                    //             className={handleTableCellVisibility(hc.id)}
-                    //             key={hc.id}
-                    //             sx={{
-                    //               borderBottom: 'none',
-                    //               fontFamily: 'Lato',
-                    //               fontSize: '1.5rem',
-                    //             }}
-                    //           >
-                    //             <GetValue
-                    //               row={row}
-                    //               columnName={hc?.id}
-                    //               popUpDisplay={
-                    //                 tableIndicator?.popUpField?.key === hc?.id
-                    //                   ? popUpDisplay
-                    //                   : false
-                    //               }
-                    //               onTitleNavigate={onTitleNavigate}
-                    //               title={hc?.label}
-                    //               tableOptions={tableOptions}
-                    //             />
-                    //             {tableIndicator?.popUpField?.key === hc?.id && (
-                    //               <PopUpCustom
-                    //                 data={row[tableIndicator?.popUpField?.key]}
-                    //                 title={tableIndicator?.popUpField?.label}
-                    //                 ID={row?.id}
-                    //                 tableIndicator={tableIndicator}
-                    //               />
-                    //             )}
-
-                    //             {hc?.id === 'attachments' && (
-                    //               <PopUpCustom
-                    //                 data={row[hc?.id]?.map(
-                    //                   (data: any) => data?.attachment
-                    //                 )}
-                    //                 ID={row?.id}
-                    //                 title="View Attachments"
-                    //                 tableIndicator={tableIndicator}
-                    //                 openInNewWindow={true}
-                    //               />
-                    //             )}
-                    //           </TableCell>
-                    //         );
-                    //       })}
-
-                    //       <TableCell
-                    //         className={handleTableCellVisibility('action')}
-                    //         sx={{ borderBottom: 'none' }}
-                    //       >
-                    //         <div
-                    //           className="actions-btns-holder"
-                    //           style={{
-                    //             display: 'flex',
-                    //             justifyContent: 'end',
-                    //           }}
-                    //         >
-                    //           <Button
-                    //             style={{ minWidth: '0' }}
-                    //             onClick={() => {
-                    //               onDelete({ item: row });
-                    //               const name =
-                    //                 row?.[`${tableIndicator?.deleteFieldName}`] ||
-                    //                 row?.name;
-                    //               handleIndividualDelete(row.id, name);
-                    //             }}
-                    //             startIcon={
-                    //               <img
-                    //                 width={18}
-                    //                 height={18}
-                    //                 src={deleteIcon}
-                    //                 alt="delete"
-                    //               />
-                    //             }
-                    //           />
-                    //           {/* <Link
-                    //              href={`${
-                    //                tableIndicator?.editFrontEndUrlGetter
-                    //                  ? tableIndicator?.editFrontEndUrlGetter(row?.id)
-                    //                  : rowEditLink
-                    //                  ? `edit/${rowEditLink}`
-                    //                  : `edit/${row?.id}`
-                    //              }`}>
-                    //              <Button
-                    //                style={{ minWidth: '0' }}
-                    //                startIcon={<img src={IconEdit} alt="edit" />}
-                    //              />
-                    //            </Link> */}
-                    //           <Button
-                    //             onClick={() => {
-                    //               onUpdate({ item: row });
-                    //             }}
-                    //             style={{ minWidth: '0' }}
-                    //             startIcon={
-                    //               <img
-                    //                 width={18}
-                    //                 height={18}
-                    //                 src={editIcon}
-                    //                 alt="edit"
-                    //               />
-                    //             }
-                    //           />
-                    //         </div>
-                    //       </TableCell>
-                    //     </TableRow>
-                    //   </>
-                    // );
+            <Table aria-labelledby="tableTitle" size={dense ? "small" : "medium"} key={key}>
+              <EnhancedTableHead
+                numSelected={selectedData.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={rows.length}
+                headCells={headCells}
+                fetchData={fetchData}
+              />
+              <TableBody>
+                {/* Search row */}
+                <TableRow key={11} style={{ height: 40 }}>
+                  {(rows || []).slice(0, 1).map((row: any, index: number) => {
+                    return [...headCells]?.map((hc, index) => {
+                      if (hc.action) return;
+                      if (!hc.show) return;
+                      return (
+                        <TableCell sx={{ borderBottom: "none" }} key={hc.id}>
+                          <Search searchField={hc?.id} onSearch={fetchData} />
+                        </TableCell>
+                      );
+                    });
                   })}
-                </TableBody>
-              </Table>
-            ) : null}
-            {rows?.length === 0 && (
-              <Box sx={{ pb: 4, width: "100%" }}>
-                <NoDataFound
-                  title={name}
-                  // link={`${location.pathname}/add`}
-                  // title={`${letterHandler(deletePath)}`}
-                />
-              </Box>
-            )}
-          </TableContainer>
-          {rows?.length ? (
-            <TablePagination
-              className="table-pagination"
-              rowsPerPageOptions={rowsPerPageOptions}
-              component="div"
-              count={Number(metadata?.totalItemsCount)}
-              rowsPerPage={Number(metadata.perPage) || Number(defaultQuery.perPage)}
-              page={Number(metadata.page - 1) || Number(defaultQuery.page - 1)}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              style={{ fontFamily: defaultFont }}
-            />
-          ) : null}
-        </Paper>
+                </TableRow>
+                {(rows || []).map((row: any, index: number) => {
+                  return (
+                    <Row
+                      key={index}
+                      row={row}
+                      headCells={headCells}
+                      expandableRow={expandableRow}
+                      {...{
+                        handleClick,
+                        onAdd,
+                        onUpdate,
+                        onStatusToggle,
+                        onDelete,
+                        handleIndividualDelete,
+                        isSelected,
+                        handleTableCellVisibility,
+                        tableIndicator,
+                        GetValue,
+                        popUpDisplay,
+                        onTitleNavigate,
+                        tableOptions,
+                        index,
+                        additionalEdit,
+                      }}
+                    />
+                  );
+                  // const name =
+                  //   row?.[`${tableIndicator?.deleteFieldName}`] || row?.name;
+                  // const isItemSelected = isSelected(name as string);
+                  // const labelId = `enhanced-table-checkbox-${index}`;
+                  // let rowEditLink = '';
+                  // if (additionalEdit) {
+                  //   rowEditLink = `${row?.id}?address=${
+                  //     row[`${additionalEdit}`]?.length
+                  //       ? row[`${additionalEdit}`][0].id
+                  //       : ''
+                  //   }`;
+                  // } else {
+                  //   rowEditLink = `${row?.id}`;
+                  // }
 
-        {/* {selectedData.length > 0 && (
+                  // return (
+                  //   <>
+                  //     <TableRow
+                  //       hover
+                  //       onClick={(event) => {
+                  //         handleClick(event, name, row.id);
+                  //       }}
+                  //       role="checkbox"
+                  //       aria-checked={isItemSelected}
+                  //       tabIndex={-1}
+                  //       key={row.id}
+                  //       selected={isItemSelected}
+                  //     >
+                  //       {/* checkbox */}
+                  //       {/* <TableCell padding="checkbox">
+                  //        <Checkbox
+                  //          color="primary"
+                  //          checkedIcon={<img src={CheckIcon} alt="check" />}
+                  //          icon={<img src={UnCheckIcon} alt="uncheck" />}
+                  //          checked={isItemSelected}
+                  //          inputProps={{
+                  //            'aria-labelledby': labelId,
+                  //          }}
+                  //        />
+                  //      </TableCell> */}
+
+                  //       {[...headCells]?.map((hc, index) => {
+                  //         if (hc.action) return;
+                  //         if (hc.id === 'created_at' || hc.id === 'updated_at')
+                  //           return (
+                  //             <TableCell
+                  //               key={index}
+                  //               className={handleTableCellVisibility(hc.id)}
+                  //               sx={{
+                  //                 fontFamily: 'Lato',
+                  //                 borderBottom: 'none',
+                  //               }}
+                  //             >
+                  //               {moment(new Date(row[hc.id])).format(
+                  //                 'MMM Do YY'
+                  //               )}
+                  //             </TableCell>
+                  //           );
+                  //         if (hc.id === 'status')
+                  //           return (
+                  //             <TableCell
+                  //               className={handleTableCellVisibility(hc.id)}
+                  //               sx={{
+                  //                 borderBottom: 'none',
+                  //                 fontFamily: 'Lato',
+                  //               }}
+                  //             >
+                  //               <IOSSwitch
+                  //                 checked={row['status']}
+                  //                 // disableText
+                  //                 onChange={(e) => onStatusToggle(row)}
+                  //               />
+                  //             </TableCell>
+                  //           );
+
+                  //         return (
+                  //           <TableCell
+                  //             className={handleTableCellVisibility(hc.id)}
+                  //             key={hc.id}
+                  //             sx={{
+                  //               borderBottom: 'none',
+                  //               fontFamily: 'Lato',
+                  //               fontSize: '1.5rem',
+                  //             }}
+                  //           >
+                  //             <GetValue
+                  //               row={row}
+                  //               columnName={hc?.id}
+                  //               popUpDisplay={
+                  //                 tableIndicator?.popUpField?.key === hc?.id
+                  //                   ? popUpDisplay
+                  //                   : false
+                  //               }
+                  //               onTitleNavigate={onTitleNavigate}
+                  //               title={hc?.label}
+                  //               tableOptions={tableOptions}
+                  //             />
+                  //             {tableIndicator?.popUpField?.key === hc?.id && (
+                  //               <PopUpCustom
+                  //                 data={row[tableIndicator?.popUpField?.key]}
+                  //                 title={tableIndicator?.popUpField?.label}
+                  //                 ID={row?.id}
+                  //                 tableIndicator={tableIndicator}
+                  //               />
+                  //             )}
+
+                  //             {hc?.id === 'attachments' && (
+                  //               <PopUpCustom
+                  //                 data={row[hc?.id]?.map(
+                  //                   (data: any) => data?.attachment
+                  //                 )}
+                  //                 ID={row?.id}
+                  //                 title="View Attachments"
+                  //                 tableIndicator={tableIndicator}
+                  //                 openInNewWindow={true}
+                  //               />
+                  //             )}
+                  //           </TableCell>
+                  //         );
+                  //       })}
+
+                  //       <TableCell
+                  //         className={handleTableCellVisibility('action')}
+                  //         sx={{ borderBottom: 'none' }}
+                  //       >
+                  //         <div
+                  //           className="actions-btns-holder"
+                  //           style={{
+                  //             display: 'flex',
+                  //             justifyContent: 'end',
+                  //           }}
+                  //         >
+                  //           <Button
+                  //             style={{ minWidth: '0' }}
+                  //             onClick={() => {
+                  //               onDelete({ item: row });
+                  //               const name =
+                  //                 row?.[`${tableIndicator?.deleteFieldName}`] ||
+                  //                 row?.name;
+                  //               handleIndividualDelete(row.id, name);
+                  //             }}
+                  //             startIcon={
+                  //               <img
+                  //                 width={18}
+                  //                 height={18}
+                  //                 src={deleteIcon}
+                  //                 alt="delete"
+                  //               />
+                  //             }
+                  //           />
+                  //           {/* <Link
+                  //              href={`${
+                  //                tableIndicator?.editFrontEndUrlGetter
+                  //                  ? tableIndicator?.editFrontEndUrlGetter(row?.id)
+                  //                  : rowEditLink
+                  //                  ? `edit/${rowEditLink}`
+                  //                  : `edit/${row?.id}`
+                  //              }`}>
+                  //              <Button
+                  //                style={{ minWidth: '0' }}
+                  //                startIcon={<img src={IconEdit} alt="edit" />}
+                  //              />
+                  //            </Link> */}
+                  //           <Button
+                  //             onClick={() => {
+                  //               onUpdate({ item: row });
+                  //             }}
+                  //             style={{ minWidth: '0' }}
+                  //             startIcon={
+                  //               <img
+                  //                 width={18}
+                  //                 height={18}
+                  //                 src={editIcon}
+                  //                 alt="edit"
+                  //               />
+                  //             }
+                  //           />
+                  //         </div>
+                  //       </TableCell>
+                  //     </TableRow>
+                  //   </>
+                  // );
+                })}
+                <TableRow>
+                  <TableCell colSpan={100} style={{ borderBottom: "none" }}>
+                    {rows?.length ? (
+                      <TablePagination
+                        className="table-pagination"
+                        rowsPerPageOptions={rowsPerPageOptions}
+                        component="div"
+                        count={Number(metadata?.totalItemsCount)}
+                        rowsPerPage={Number(metadata.perPage) || Number(defaultQuery.perPage)}
+                        page={Number(metadata.page - 1) || Number(defaultQuery.page - 1)}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        style={{ fontFamily: defaultFont }}
+                      />
+                    ) : null}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          ) : null}
+          {rows?.length === 0 && (
+            <Box sx={{ pb: 4, width: "100%" }}>
+              <NoDataFound
+                title={name}
+                // link={`${location.pathname}/add`}
+                // title={`${letterHandler(deletePath)}`}
+              />
+            </Box>
+          )}
+        </TableContainer>
+      </Paper>
+
+      {/* {selectedData.length > 0 && (
           <AppBar
             position="sticky"
             enableColorOnDark
@@ -1471,7 +1469,7 @@ const DataContainer: React.FC<{
             </Toolbar>
           </AppBar>
         )} */}
-        {/* {!!(data?.items?.length === 0) && (
+      {/* {!!(data?.items?.length === 0) && (
           <Box sx={{ textAlign: 'center', marginTop: '50px' }}>
             <Link
               href={`${
@@ -1489,7 +1487,6 @@ const DataContainer: React.FC<{
             </Link>
           </Box>
         )} */}
-      </Box>
     </Box>
   );
 };

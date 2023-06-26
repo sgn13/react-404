@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Flexbox } from "src/containers/Grid/Grid";
 import styled from "styled-components";
 
@@ -6,13 +6,12 @@ import { ConnectedProps, connect } from "react-redux";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { Loader } from "src/components/Spinner/Spinner";
+import useSocketService from "src/hooks/useSocketService";
 import { AppState } from "src/store/reducer";
+import { connectSocket, setSocketConnected, setSocketDisconnected } from "src/store/socket/actions";
 import AnimationManager from "./AnimationManager";
 import DropdownSidebar from "./DropdownSidebar";
 import Heading from "./Header/Header";
-import { connectSocket, setSocketConnected, setSocketDisconnected } from "src/store/socket/actions";
-import env from "src/constants/env";
-import useSocketService from "src/hooks/useSocketService";
 
 const Container = styled.div`
   width: 100vw;
@@ -144,14 +143,10 @@ function Layout({
           fullSidebar={fullSidebar}
           fullWidthFooter={fullWidthFooter}
         />
-        <Flexbox column grow className="layout-content">
+        <Flexbox column grow style={{ overflow: "auto" }}>
           <Flexbox
             style={{
               padding: 30,
-              // overflow: "auto",
-              // outline: "1px solid red",
-              marginLeft: 2,
-              marginRight: 2,
             }}
           >
             <AnimationManager>{children}</AnimationManager>

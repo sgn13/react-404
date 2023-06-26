@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { ConnectedProps, connect } from "react-redux";
-import AddModal from "src/components/AddModal/AddModal";
 import ConfirmationModal from "src/components/ConfirmationModal/ConfirmationModal";
 import DataContainer from "src/components/DataContainerBeta";
 import DataLoader from "src/components/DataLoader";
 import { fetchPlacements } from "src/store/configuration/placement/actions";
-import { AppState } from "src/store/reducer";
 import {
   createEnvironment,
   deleteEnvironment,
   fetchEnvironments,
   updateEnvironment,
 } from "src/store/environment/actions";
+import { AppState } from "src/store/reducer";
 
 import { useNavigate } from "react-router-dom";
 import app from "src/constants/app";
@@ -119,7 +118,7 @@ function Environment({
 
       <DataContainer
         name="Model Environments"
-        data={environments}
+        data={res || environments}
         fetchData={fetchEnvironments}
         defaultDisable={["deleted"]}
         onDelete={({ item }: any) => {

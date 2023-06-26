@@ -1,13 +1,8 @@
-import { ArrowDropDown, ExpandMore } from "@mui/icons-material";
+import { ExpandMore } from "@mui/icons-material";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
   Button,
   Checkbox,
   Collapse,
-  Divider,
   FormGroup,
   FormHelperText,
   Grid,
@@ -16,7 +11,6 @@ import {
   Typography,
 } from "@mui/material";
 import { FormikProps } from "formik";
-import { useState } from "react";
 
 import FileInput from "src/components/FileInput";
 import FormikBase from "src/components/FormikBase/FormikBase";
@@ -24,20 +18,15 @@ import Input from "src/components/Input";
 import Label from "src/components/Label";
 import { Multiselect } from "src/components/Multselect_old/Multiselect";
 import IOSSwitch from "src/components/switch";
-import BadgeTab from "src/components/Tabs";
 import defaultFont from "src/constants/css/font";
 // import { lato } from 'src/fonts';
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import CodeEditor from "@uiw/react-textarea-code-editor";
+import { useNavigate } from "react-router-dom";
 import styled from "src/lib/mui/styled";
 import light from "src/theme/data/light";
-import { getNanoID } from "src/utils";
-import toBase64 from "src/utils/toBase64";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import * as Yup from "yup";
-import CodeEditor from "@uiw/react-textarea-code-editor";
 import { readFileContent } from "src/utils/file";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
   name_or_tag: Yup.string().required().label("Name"),
@@ -98,7 +87,7 @@ const StyledMultiSelect = styled("div")`
 function EnvironmentForm({ onEdit, onAdd, formData, onClose, templates = [], models = [] }: any) {
   const navigate = useNavigate();
   return (
-    <Stack style={{ maxWidth: 1000 }}>
+    <Stack style={{}}>
       <Stack direction={"row"} gap={2} justifyContent={"space-between"} sx={{ marginBottom: 2 }}>
         <Typography
           // mt={3}

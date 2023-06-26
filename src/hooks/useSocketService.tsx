@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import env from "src/constants/env";
 import { addMessageHandler } from "src/store/socket/actions";
 import useReconnectingSocket from "src/store/socket/useReconnectingSocket";
@@ -24,7 +24,6 @@ function useSocketService({
     setSocketDisconnected,
     showLog: !false,
   });
-  console.log("socket connection", connected);
 
   // const handleNewClientJoined = (client: string) => {
   //   console.log("new-client-joined", client);

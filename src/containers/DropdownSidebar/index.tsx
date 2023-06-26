@@ -3,9 +3,11 @@ import styled from "../../theme_old/styled";
 import DropdownSidebar from "./DropdownSidebar";
 
 export const headerZIndex = 1;
-export const headerHeight = "80px";
+export const headerHeight = 80;
 export const sidebarZIndex = 2;
 export const sidebarWidth = 270;
+export const sidebarMaxWidth = 500;
+export const sidebarMinWidth = 100;
 
 const DraggingHandle = styled.div`
   position: absolute;
@@ -32,6 +34,8 @@ const Draggable = styled.aside<{
   top: ${({ theme }) => theme.constant.header.height}px;
   left: 0px;
   width: ${({ iconSize, width }) => (iconSize === width ? `${iconSize}px;` : `${width}px;`)};
+  min-width: ${({ iconSize, width, isCollapsed }) =>
+    iconSize === width ? `${iconSize}px;` : `${width}px;`};
   overflow: auto;
   height: ${({ theme, fullWidthFooter }) =>
     fullWidthFooter
@@ -56,6 +60,8 @@ const FillSidebarSpace = styled.div<{ fullWidthFooter; sliderHeld; width; iconSi
   ${({ sliderHeld }) => (sliderHeld ? null : `transition: 0.3s width ease-out;`)}
   background-color:transparent;
   width: ${({ iconSize, width }) => (iconSize === width ? `${iconSize}px;` : `${width}px;`)};
+  min-width: ${({ iconSize, width, isCollapsed }) =>
+    iconSize === width ? `${iconSize}px;` : `${width}px;`};
   height: ${({ theme, fullWidthFooter }) =>
     fullWidthFooter
       ? `calc(100vh - ${theme.constant.header.height + theme.constant.footer.height}px)`
@@ -79,6 +85,18 @@ function DraggableSidebar({
 }) {
   const [width, setWidth] = useState(sidebarWidth);
   const [isResizable, setIsResizable] = useState(false);
+  const [previousWidth, setPreviousWidth] = useState(width);
+
+  const toggleSidebar = () => {
+    if (width === iconSize) {
+      setWidth(previousWidth);
+      setSidebarWidth(previousWidth);
+    } else {
+      setPreviousWidth(width);
+      setWidth(iconSize);
+      setSidebarWidth(iconSize);
+    }
+  };
 
   const handleMouseMove = (event: MouseEvent) => {
     event.stopPropagation();
@@ -91,6 +109,16 @@ function DraggableSidebar({
     const newWidth = event.clientX - left + handleWidthOffset;
 
     if (newWidth >= iconSize) {
+      if (newWidth >= sidebarMaxWidth) {
+        setIsResizable(false);
+        return;
+      }
+
+      if (newWidth <= sidebarMinWidth) {
+        toggleSidebar();
+        setIsResizable(false);
+        return;
+      }
       setSidebarWidth(newWidth);
       // const root = document.querySelector(":root");
       // root.style.setProperty("--sidebar-width", newWidth);
@@ -128,7 +156,17 @@ function DraggableSidebar({
         {...rest}
       >
         <DraggingHandle onMouseDown={allowResize} onMouseUp={stopResize} />
-        <DropdownSidebar {...{ iconSize, width, setWidth, data, nodeKey, setSidebarWidth }} />
+        <DropdownSidebar
+          {...{
+            iconSize,
+            toggleSidebar,
+            width,
+            setWidth,
+            data,
+            nodeKey,
+            setSidebarWidth,
+          }}
+        />
       </Draggable>
       <FillSidebarSpace
         width={width}

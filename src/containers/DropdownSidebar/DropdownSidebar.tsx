@@ -161,12 +161,20 @@ function SidebarItem({
   );
 }
 
-function DropdownSidebar({ width, iconSize = 40, setWidth, data, nodeKey, setSidebarWidth }) {
+function DropdownSidebar({
+  width,
+  iconSize = 40,
+  toggleSidebar,
+  setWidth,
+  data,
+  nodeKey,
+  setSidebarWidth,
+}) {
   const isArray = Array.isArray(data);
   const [selectedItem, setSelectedItem] = useState(null);
   const [collapsedIds, setCollapsedIds] = useState(new Set([]));
-  const [previousWidth, setPreviousWidth] = useState(width);
   const [sidebarItems, setSidebarItems] = useState([]);
+
   // const handleClickDelegation = (e) => {
   //   let itemId = e.target.getAttribute("data-item-id");
   //   if (itemId) {
@@ -224,17 +232,6 @@ function DropdownSidebar({ width, iconSize = 40, setWidth, data, nodeKey, setSid
   }, []);
 
   if (!nodeKey) return <div>Please Provide Node Key Name</div>;
-
-  const toggleSidebar = () => {
-    if (width === iconSize) {
-      setWidth(previousWidth);
-      setSidebarWidth(previousWidth);
-    } else {
-      setPreviousWidth(width);
-      setWidth(iconSize);
-      setSidebarWidth(iconSize);
-    }
-  };
 
   return (
     <SidebarContainer
