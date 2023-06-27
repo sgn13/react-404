@@ -1,2 +1,2 @@
-const defaultFont = "Roboto";
+const defaultFont = "Lato";
 export default defaultFont;

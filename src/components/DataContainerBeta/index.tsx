@@ -1149,7 +1149,7 @@ const DataContainer: React.FC<{
         />
       </div>
 
-      <Paper sx={{ mb: 2, boxShadow: "none" }} className="config-table-holder">
+      <Paper sx={{ boxShadow: "none" }} className="config-table-holder">
         {rows?.length ? (
           <Stack>
             <Box style={{ margin: 10 }}>

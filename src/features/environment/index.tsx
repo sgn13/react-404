@@ -77,7 +77,6 @@ function Environment({
   updateEnvironment,
   isLoading,
   isSubmitting,
-  fetchPlacements,
   environments = { items: [], headers: {} },
 }: PropsFromRedux) {
   const navigate = useNavigate();
@@ -118,7 +117,7 @@ function Environment({
 
       <DataContainer
         name="Model Environments"
-        data={res || environments}
+        data={environments}
         fetchData={fetchEnvironments}
         defaultDisable={["deleted"]}
         onDelete={({ item }: any) => {

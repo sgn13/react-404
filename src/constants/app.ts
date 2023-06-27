@@ -21,7 +21,13 @@ const app = {
   environment: {
     root: "/environment",
     create: "/environment/create",
-    update: (id) => `/environment/${id}/update`,
+    update: (id: string) => `/environment/${id}/update`,
+  },
+
+  model: {
+    root: "/model",
+    create: "/model/create",
+    update: (id: string) => `/model/${id}/update`,
   },
 
   configuration: {

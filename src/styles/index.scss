@@ -1,16 +1,14 @@
-// @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
 @import './misc/variables.scss';
 @import './misc/reset.scss';
 @import './misc/base';
 @import './misc/mixins.scss';
-// @import './misc/fonts.scss';
+@import './misc/fonts.scss';
 @import './components/nprogress/nprogress.css';
 @import './components/layouts/index.scss';
 @import './sagun/index.scss';
 @import '../components/MultiFileUploader/multiFileUploader.scss';
 @import '../components/Multselect/styles.css';
-// have been already applied via next/font in _document
+
 html {
   font-family: Lato, Poppins, Inter, Roboto, sans-serif !important;
   font-weight: 400;

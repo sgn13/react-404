@@ -32,6 +32,16 @@ export const IndexSidebar = () => [
   {
     id: uniqueId(),
     icon: AiModel,
+    label: "Model",
+    location: "top",
+    path: app.model.root,
+    role: "user",
+    Permission: undefined,
+    collasped: false,
+  },
+  {
+    id: uniqueId(),
+    icon: AiModel,
     label: "Environment",
     location: "top",
     path: app.environment.root,
