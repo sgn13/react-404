@@ -22,7 +22,7 @@ function FileInput({
   values,
   errors,
   onChange,
-  accept = '"application/json,.py"',
+  accept = "application/json,.py",
   showOnlyBrowseButton = false,
   buttonName = "Browse",
   buttonStyle = {},

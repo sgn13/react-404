@@ -6,24 +6,29 @@ import DataContainer from "src/components/DataContainerBeta";
 
 import iconFeature from "src/assets/icons/icon-feature.svg";
 import DataLoader from "src/components/DataLoader";
-import { createModel, deleteModel, fetchModels, updateModel } from "src/store/model/actions";
+import {
+  createFeature,
+  deleteFeature,
+  fetchFeatures,
+  updateFeature,
+} from "src/store/feature/actions";
 import { AppState } from "src/store/reducer";
-import ModelForm from "./Form";
+import FeatureForm from "./Form";
 
-const pagename = "AI Model";
+const pagename = "Feature";
 
 function Libraries({
-  fetchModels,
-  createModel,
-  deleteModel,
-  updateModel,
-  models,
+  fetchFeatures,
+  createFeature,
+  deleteFeature,
+  updateFeature,
+  features,
   isLoading,
   isSubmitting,
   metadata,
 }: PropsFromRedux) {
   useEffect(() => {
-    fetchModels({});
+    fetchFeatures({});
   }, []);
 
   const [showModal, setShowModal] = useState(undefined);
@@ -41,20 +46,20 @@ function Libraries({
         setOpenModal={() => handleModalClose()}
         confirmationHeading={pagename}
       >
-        <ModelForm
+        <FeatureForm
           onClose={() => handleModalClose()}
           isSubmitting={isSubmitting}
           editData={showModal === "update" ? selected : null}
           onAdd={async (values: any, { resetForm }) => {
-            if (await createModel({ values })) {
+            if (await createFeature({ values })) {
               handleModalClose();
               resetForm();
             }
           }}
           onEdit={async (values: any, { resetForm }) => {
             if (
-              await updateModel({
-                modelId: selected?.id,
+              await updateFeature({
+                featureId: selected?.id,
                 values,
               })
             ) {
@@ -71,8 +76,8 @@ function Libraries({
           setOpenModal={() => handleModalClose()}
           handelConfirmation={async () => {
             if (
-              await deleteModel({
-                modelId: [selected?.id],
+              await deleteFeature({
+                featureId: [selected?.id],
               })
             ) {
               handleModalClose();
@@ -88,9 +93,9 @@ function Libraries({
       <DataContainer
         expandableRow
         name={pagename}
-        data={models}
+        data={features}
         metadata={metadata}
-        fetchData={fetchModels}
+        fetchData={fetchFeatures}
         defaultDisable={["deleted", "notes"]}
         onDelete={({ item }: any) => {
           setSelected(item);
@@ -106,14 +111,14 @@ function Libraries({
           delete newRow.id;
 
           const request = {
-            modelId: row?.id,
+            featureId: row?.id,
             values: {
               ...newRow,
               status: !newRow?.status,
             },
           };
 
-          await updateModel(request);
+          await updateFeature(request);
         }}
       />
     </>
@@ -122,19 +127,19 @@ function Libraries({
 
 const mapStateToProps = ({
   appState: { me },
-  modelState: { isSubmitting, isLoading, models, metadata },
+  featureState: { isSubmitting, isLoading, features, metadata },
 }: AppState) => ({
   isLoading,
-  models,
+  features,
   isSubmitting,
   metadata,
 });
 
 const mapDispatchToProps = {
-  fetchModels,
-  createModel,
-  deleteModel,
-  updateModel,
+  fetchFeatures,
+  createFeature,
+  deleteFeature,
+  updateFeature,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

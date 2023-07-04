@@ -1,22 +1,22 @@
 import { Outlet } from "react-router-dom";
 import app from "src/constants/app";
-import Model from "src/features/model/index";
+import Data from "src/features/data/index";
 import withProtectedRoute from "src/hoc/withProtectedRoute";
 import withProtectedSidebar from "src/hoc/withProtectedSidebar";
 
-const ProtectedModel = withProtectedSidebar(withProtectedRoute(Model));
+const ProtectedData = withProtectedSidebar(withProtectedRoute(Data));
 
 export default [
   {
-    title: "Model",
-    path: app.model.root,
+    title: "Data",
+    path: app.data.root,
     element: <Outlet />,
 
     children: [
       {
-        title: "Model",
+        title: "Data",
         index: true,
-        element: <ProtectedModel allowAccessTo={[]} sidebarType="index" />,
+        element: <ProtectedData allowAccessTo={[]} sidebarType="index" />,
       },
       // {
       //   title: "Create Library",

@@ -3,27 +3,27 @@ import { ConnectedProps, connect } from "react-redux";
 import AddModal from "src/components/AddModal/AddModal";
 import ConfirmationModal from "src/components/ConfirmationModal/ConfirmationModal";
 import DataContainer from "src/components/DataContainerBeta";
-
-import iconFeature from "src/assets/icons/icon-feature.svg";
 import DataLoader from "src/components/DataLoader";
-import { createModel, deleteModel, fetchModels, updateModel } from "src/store/model/actions";
 import { AppState } from "src/store/reducer";
-import ModelForm from "./Form";
+import {
+  createStreaming,
+  deleteStreaming,
+  fetchStreamings,
+  updateStreaming,
+} from "src/store/source/streaming/actions";
+import StreamingForm from "./Form";
 
-const pagename = "AI Model";
-
-function Libraries({
-  fetchModels,
-  createModel,
-  deleteModel,
-  updateModel,
-  models,
+function Streaming({
+  fetchStreamings,
+  streamings,
+  deleteStreaming,
+  createStreaming,
+  updateStreaming,
   isLoading,
   isSubmitting,
-  metadata,
 }: PropsFromRedux) {
   useEffect(() => {
-    fetchModels({});
+    fetchStreamings({});
   }, []);
 
   const [showModal, setShowModal] = useState(undefined);
@@ -32,6 +32,7 @@ function Libraries({
 
   const handleModalShow = (mode: any) => setShowModal(mode);
   const handleModalClose = () => setShowModal(undefined);
+
   if (isLoading) return <DataLoader />;
 
   return (
@@ -39,27 +40,25 @@ function Libraries({
       <AddModal
         openModal={showModal === "create" || showModal === "update"}
         setOpenModal={() => handleModalClose()}
-        confirmationHeading={pagename}
+        confirmationHeading={`Streaming`}
       >
-        <ModelForm
-          onClose={() => handleModalClose()}
+        <StreamingForm
           isSubmitting={isSubmitting}
+          onClose={() => handleModalClose()}
           editData={showModal === "update" ? selected : null}
-          onAdd={async (values: any, { resetForm }) => {
-            if (await createModel({ values })) {
+          onAdd={async (values: any) => {
+            if (await createStreaming({ values })) {
               handleModalClose();
-              resetForm();
             }
           }}
-          onEdit={async (values: any, { resetForm }) => {
+          onEdit={async (values: any) => {
             if (
-              await updateModel({
-                modelId: selected?.id,
+              await updateStreaming({
+                streamingId: selected?.id,
                 values,
               })
             ) {
               handleModalClose();
-              resetForm();
             }
           }}
         />
@@ -71,27 +70,24 @@ function Libraries({
           setOpenModal={() => handleModalClose()}
           handelConfirmation={async () => {
             if (
-              await deleteModel({
-                modelId: [selected?.id],
+              await deleteStreaming({
+                streamingId: [selected?.id],
               })
             ) {
               handleModalClose();
             }
           }}
-          loader={isSubmitting}
           confirmationHeading={`Do you want to delete`}
           status="warning"
-          confirmationIcon={iconFeature}
+          confirmationIcon="/assets/icons/icon-feature.svg"
         />
       )}
 
       <DataContainer
-        expandableRow
-        name={pagename}
-        data={models}
-        metadata={metadata}
-        fetchData={fetchModels}
-        defaultDisable={["deleted", "notes"]}
+        name="Streaming"
+        data={streamings}
+        fetchData={fetchStreamings}
+        defaultDisable={["status", "deleted"]}
         onDelete={({ item }: any) => {
           setSelected(item);
           handleModalShow("delete");
@@ -101,20 +97,6 @@ function Libraries({
           setSelected(item);
           handleModalShow("update");
         }}
-        onStatusToggle={async (row) => {
-          const newRow = { ...row };
-          delete newRow.id;
-
-          const request = {
-            modelId: row?.id,
-            values: {
-              ...newRow,
-              status: !newRow?.status,
-            },
-          };
-
-          await updateModel(request);
-        }}
       />
     </>
   );
@@ -122,21 +104,21 @@ function Libraries({
 
 const mapStateToProps = ({
   appState: { me },
-  modelState: { isSubmitting, isLoading, models, metadata },
+  streamingState: { isSubmitting, isLoading, streamings },
 }: AppState) => ({
   isLoading,
-  models,
+  streamings,
   isSubmitting,
-  metadata,
 });
 
 const mapDispatchToProps = {
-  fetchModels,
-  createModel,
-  deleteModel,
-  updateModel,
+  fetchStreamings,
+  deleteStreaming,
+  createStreaming,
+  updateStreaming,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
-export default connector(Libraries);
+
+export default connector(Streaming);

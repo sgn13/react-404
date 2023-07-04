@@ -3,27 +3,31 @@ import { ConnectedProps, connect } from "react-redux";
 import AddModal from "src/components/AddModal/AddModal";
 import ConfirmationModal from "src/components/ConfirmationModal/ConfirmationModal";
 import DataContainer from "src/components/DataContainerBeta";
-
-import iconFeature from "src/assets/icons/icon-feature.svg";
 import DataLoader from "src/components/DataLoader";
-import { createModel, deleteModel, fetchModels, updateModel } from "src/store/model/actions";
+import { fetchPlacements } from "src/store/configuration/placement/actions";
 import { AppState } from "src/store/reducer";
-import ModelForm from "./Form";
+import {
+  createFileUpload,
+  deleteFileUpload,
+  fetchFileUploads,
+  updateFileUpload,
+} from "src/store/source/fileUpload/actions";
+import FileUploadForm from "./Form";
 
-const pagename = "AI Model";
-
-function Libraries({
-  fetchModels,
-  createModel,
-  deleteModel,
-  updateModel,
-  models,
+function FileUpload({
+  fetchFileUploads,
+  fileuploads,
+  deleteFileUpload,
+  createFileUpload,
+  updateFileUpload,
   isLoading,
   isSubmitting,
-  metadata,
+  fetchPlacements,
+  placements,
 }: PropsFromRedux) {
   useEffect(() => {
-    fetchModels({});
+    fetchPlacements({});
+    fetchFileUploads({});
   }, []);
 
   const [showModal, setShowModal] = useState(undefined);
@@ -32,6 +36,7 @@ function Libraries({
 
   const handleModalShow = (mode: any) => setShowModal(mode);
   const handleModalClose = () => setShowModal(undefined);
+
   if (isLoading) return <DataLoader />;
 
   return (
@@ -39,22 +44,23 @@ function Libraries({
       <AddModal
         openModal={showModal === "create" || showModal === "update"}
         setOpenModal={() => handleModalClose()}
-        confirmationHeading={pagename}
+        confirmationHeading={`FileUpload`}
       >
-        <ModelForm
-          onClose={() => handleModalClose()}
+        <FileUploadForm
           isSubmitting={isSubmitting}
+          placements={placements?.items || []}
+          onClose={() => handleModalClose()}
           editData={showModal === "update" ? selected : null}
           onAdd={async (values: any, { resetForm }) => {
-            if (await createModel({ values })) {
+            if (await createFileUpload({ values })) {
               handleModalClose();
               resetForm();
             }
           }}
           onEdit={async (values: any, { resetForm }) => {
             if (
-              await updateModel({
-                modelId: selected?.id,
+              await updateFileUpload({
+                fileUploadId: selected?.id,
                 values,
               })
             ) {
@@ -71,27 +77,24 @@ function Libraries({
           setOpenModal={() => handleModalClose()}
           handelConfirmation={async () => {
             if (
-              await deleteModel({
-                modelId: [selected?.id],
+              await deleteFileUpload({
+                fileuploadId: [selected?.id],
               })
             ) {
               handleModalClose();
             }
           }}
-          loader={isSubmitting}
           confirmationHeading={`Do you want to delete`}
           status="warning"
-          confirmationIcon={iconFeature}
+          confirmationIcon="/assets/icons/icon-feature.svg"
         />
       )}
 
       <DataContainer
-        expandableRow
-        name={pagename}
-        data={models}
-        metadata={metadata}
-        fetchData={fetchModels}
-        defaultDisable={["deleted", "notes"]}
+        name="File Upload"
+        data={fileuploads}
+        fetchData={fetchFileUploads}
+        defaultDisable={["deleted"]}
         onDelete={({ item }: any) => {
           setSelected(item);
           handleModalShow("delete");
@@ -102,18 +105,10 @@ function Libraries({
           handleModalShow("update");
         }}
         onStatusToggle={async (row) => {
-          const newRow = { ...row };
-          delete newRow.id;
-
-          const request = {
-            modelId: row?.id,
-            values: {
-              ...newRow,
-              status: !newRow?.status,
-            },
-          };
-
-          await updateModel(request);
+          await updateFileUpload({
+            fileUploadId: row?.id,
+            values: { status: !row.status },
+          });
         }}
       />
     </>
@@ -122,21 +117,24 @@ function Libraries({
 
 const mapStateToProps = ({
   appState: { me },
-  modelState: { isSubmitting, isLoading, models, metadata },
+  fileUploadState: { isSubmitting, isLoading, fileuploads },
+  placementState: { placements },
 }: AppState) => ({
   isLoading,
-  models,
+  fileuploads,
   isSubmitting,
-  metadata,
+  placements,
 });
 
 const mapDispatchToProps = {
-  fetchModels,
-  createModel,
-  deleteModel,
-  updateModel,
+  fetchFileUploads,
+  deleteFileUpload,
+  createFileUpload,
+  updateFileUpload,
+  fetchPlacements,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
-export default connector(Libraries);
+
+export default connector(FileUpload);

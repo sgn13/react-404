@@ -6,3 +6,6 @@ export const readFileContent = (file) => {
     reader.readAsText(file);
   });
 };
+
+const fileToBlob = async (file) =>
+  new Blob([new Uint8Array(await file.arrayBuffer())], { type: file.type });

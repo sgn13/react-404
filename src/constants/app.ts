@@ -17,19 +17,33 @@ const app = {
     passwordResetConfirmation: "/auth/password-reset-confirmation",
     passwordResetLink: "/auth/password-reset-link",
   },
-
-  environment: {
-    root: "/environment",
-    create: "/environment/create",
-    update: (id: string) => `/environment/${id}/update`,
+  data: {
+    root: "/data",
+    fileUpload: "/data/file-upload",
+    database: "/data/database",
+    streaming: "/data/streaming",
   },
-
+  feature: {
+    root: "/feature",
+    create: "/feature/create",
+    update: (id: string) => `/feature/${id}/update`,
+  },
   model: {
     root: "/model",
     create: "/model/create",
     update: (id: string) => `/model/${id}/update`,
   },
-
+  environment: {
+    root: "/environment",
+    create: "/environment/create",
+    update: (id: string) => `/environment/${id}/update`,
+  },
+  train: {
+    root: "/train",
+  },
+  predict: {
+    root: "/predict",
+  },
   configuration: {
     libraries: "/configuration/libraries",
     controllers: "/configuration/controllers",

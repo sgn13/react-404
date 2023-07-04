@@ -1,8 +1,8 @@
-import { createTheme } from '@mui/material/styles';
-import { deepmerge } from '@mui/utils';
-import defaultTheme from '../default';
-import primary from './primary';
-import secondary from './secondary';
+import { createTheme } from "@mui/material/styles";
+import { deepmerge } from "@mui/utils";
+import defaultTheme from "../default";
+import primary from "./primary";
+import secondary from "./secondary";
 
 // const light = createTheme({
 //   ...defaultTheme,
@@ -11,7 +11,7 @@ import secondary from './secondary';
 
 const lightTheme = createTheme({
   palette: {
-    mode: 'light',
+    mode: "light",
     primary,
     secondary,
   },

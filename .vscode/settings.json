@@ -74,6 +74,6 @@
   "prettier.configPath": "./.prettierrc",
   "prettier.prettierPath": "./.prettierrc",
   "editor.formatOnSave": true,
-  // "files.autoSave": "afterDelay",
+  "files.autoSave": "off",
   // "files.autoSaveDelay": 2000,
 }

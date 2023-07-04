@@ -44,7 +44,7 @@ const validationSchema = Yup.object().shape({
 
 const FormStyles = styled("div")``;
 
-const StyledMultiSelect = styled("div")`
+export const StyledMultiSelect = styled("div")`
   .chip {
     font-family: ${defaultFont};
   }
@@ -159,7 +159,7 @@ function EnvironmentForm({ onEdit, onAdd, formData, onClose, templates = [], mod
 
           const formValues = {
             name_or_tag,
-            base_template_id: base_template?.id,
+            base_template_id: base_template?.id || 0,
             use_base_template,
             is_base_template,
             model: model?.[0]?.id,

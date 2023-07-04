@@ -54,6 +54,4 @@ export const env: IEnv = {
   },
 };
 
-console.log("env", env);
-
 export default env;

@@ -1,22 +1,24 @@
 import { Outlet } from "react-router-dom";
 import app from "src/constants/app";
-import Model from "src/features/model/index";
+import FileUpload from "src/features/data/file-upload/index";
 import withProtectedRoute from "src/hoc/withProtectedRoute";
 import withProtectedSidebar from "src/hoc/withProtectedSidebar";
 
-const ProtectedModel = withProtectedSidebar(withProtectedRoute(Model));
+const ProtectedFileUpload = withProtectedSidebar(withProtectedRoute(FileUpload));
 
 export default [
   {
-    title: "Model",
-    path: app.model.root,
+    title: "FileUploads",
+    bodyConfig: { use: true, title: true, goBack: false },
+    path: app.data.fileUpload,
     element: <Outlet />,
 
     children: [
       {
-        title: "Model",
+        title: "FileUploads",
+        bodyConfig: { use: true, title: true, goBack: false },
         index: true,
-        element: <ProtectedModel allowAccessTo={[]} sidebarType="index" />,
+        element: <ProtectedFileUpload allowAccessTo={[]} sidebarType="index" />,
       },
       // {
       //   title: "Create Library",

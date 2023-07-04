@@ -6,16 +6,21 @@ import controllerRoutes from "src/features/configuration/controllers/routes";
 import exclusionRoutes from "src/features/configuration/exclusions/routes";
 import libraryRoutes from "src/features/configuration/libraries/routes";
 import placementRoutes from "src/features/configuration/placement/routes";
-import fileUploadState from "src/features/source/file-upload/routes";
+import fileUploadRoutes from "src/features/data/file-upload/routes";
+import environmentRoutes from "src/features/environment/routes";
+import featureEngineeringRoutes from "src/features/feature-engineering/routes";
+import modelRoutes from "src/features/model/routes";
+import predictRoutes from "src/features/predict/routes";
 import folderRoutes from "src/features/source/folder/routes";
 import streamingRoutes from "src/features/source/streaming/routes";
-import environmentRoutes from "src/features/environment/routes";
+import trainRoutes from "src/features/train/routes";
 
 import { Login } from "src/features/auth";
 import Index from "src/features/dashboard/index";
 
 import app from "src/constants/app";
 import Layout from "src/containers/Layout";
+import dataRoutes from "src/features/data/routes";
 import E400 from "src/features/errors/E400";
 import E401 from "src/features/errors/E401";
 import E403 from "src/features/errors/E403";
@@ -81,9 +86,14 @@ const routes = [
       ...placementRoutes,
       ...exclusionRoutes,
       ...streamingRoutes,
-      ...fileUploadState,
+      ...fileUploadRoutes,
       ...folderRoutes,
       ...environmentRoutes,
+      ...modelRoutes,
+      ...featureEngineeringRoutes,
+      ...trainRoutes,
+      ...predictRoutes,
+      ...dataRoutes,
       ...errorRoutes,
     ],
   },

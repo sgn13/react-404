@@ -37,8 +37,20 @@ const api = {
     root: "/model/",
   },
 
+  feature: {
+    root: "/feature_en/",
+  },
+
   template: {
     root: "/template/",
+  },
+
+  mlPipe: {
+    root: "/ml_pipe/",
+  },
+
+  mlPipeBuild: {
+    root: "/ml_pipe/tunnel/build",
   },
 
   logout: "/logout/",
