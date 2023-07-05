@@ -11,6 +11,7 @@ import placementState from "./configuration/placement/reducers";
 import environmentState from "./environment/reducers";
 import featureState from "./feature/reducers";
 import modelState from "./model/reducers";
+import pipelineState from "./pipeline/reducers";
 import fileUploadState from "./source/fileUpload/reducers";
 import streamingState from "./source/streaming/reducers";
 import templateState from "./template/reducers";
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   modelState,
   templateState,
   featureState,
+  pipelineState,
 });
 
 export default rootReducer;

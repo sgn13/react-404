@@ -4,9 +4,9 @@ import { Button, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import FormikBase from "src/components/FormikBase/FormikBase";
 import Stepper from "src/components/Stepper/Stepper";
+import api from "src/constants/api";
 import styled from "src/lib/mui/styled";
 import { AppState } from "src/store/reducer";
-import { setTheme, toggleLightDarkTheme } from "src/store/theme/actions";
 import network from "src/utils/network";
 import AIModel from "./components/AIModel";
 import Data from "./components/Data";
@@ -20,7 +20,7 @@ const Hidden = styled("div")(({ show }: { show?: boolean }) => ({
 }));
 
 const stepData = [
-  { id: 1, name: "Data", position: 1, icon: "" },
+  { id: 1, name: "Training Dataset", position: 1, icon: "" },
   { id: 3, name: "AI Model", position: 3, icon: "" },
   { id: 2, name: "Features", position: 2, icon: "" },
   { id: 4, name: "Environment", position: 4, icon: "" },
@@ -50,10 +50,12 @@ const getLowestPositionItem = (items) => {
 };
 
 const NO_NEXT_STEP = "no-next-step";
+let tunnelId: any = null;
 // nextstep to currentstep
 function Index({ reduxTheme }: PropsFromRedux) {
   const [steps, setSteps] = useState([]);
   const [nextStep, setNextStep] = useState(null);
+  const [isPipeSubmitting, setIsPipeSubmitting] = useState(false);
 
   // setting next step
   useEffect(() => {
@@ -75,15 +77,35 @@ function Index({ reduxTheme }: PropsFromRedux) {
     return next;
   };
 
-  const handleNext = async () => {
-    const next = getNextItem();
-    if (next && nextStep?.name === "Environment") {
-      const { data, status } = await network({}).post(api.mlPipe.root);
-      if (data) setNextStep(next);
-      return;
-    }
+  const handleNext = async (values: any) => {
+    try {
+      const next = getNextItem();
+      if (next && nextStep?.name === "Environment") {
+        const featureIdsInOrder = values.features.map((item) => item.id);
+        const response = {
+          name: "default-name",
+          fes_order: featureIdsInOrder,
+          ml_mode: values.model.id,
+          prediction_variable: "default-prediction-variable",
+          build_path: "default-build-path",
+          environment: values.environment?.id,
+          data: values?.fileUpload?.id,
+        };
+        setIsPipeSubmitting(true);
+        const { data, status } = await network({}).post(api.mlPipe.root, response);
+        tunnelId = data?.tunnel_id;
+        if (data) {
+          setIsPipeSubmitting(false);
+          setNextStep(next);
+        }
+        return;
+      }
 
-    if (next) setNextStep(next);
+      if (next) setNextStep(next);
+    } catch (err) {
+      console.log("error while moving next", err);
+      setIsPipeSubmitting(false);
+    }
   };
 
   const getPrevItem = (): any => {
@@ -99,7 +121,7 @@ function Index({ reduxTheme }: PropsFromRedux) {
     return prev;
   };
 
-  const handlePrev = () => {
+  const handlePrev = (values: any) => {
     const prev = getPrevItem();
     if (prev) setNextStep(prev);
   };
@@ -168,7 +190,7 @@ function Index({ reduxTheme }: PropsFromRedux) {
                     width: "100%",
                   }}
                 >
-                  <Hidden show={nextStep?.name === "Data"}>
+                  <Hidden show={nextStep?.name === "Training Dataset"}>
                     <Data
                       name="fileUpload"
                       setFieldValue={setFieldValue}
@@ -198,16 +220,22 @@ function Index({ reduxTheme }: PropsFromRedux) {
                       setFieldValue={setFieldValue}
                       setNextStep={setNextStep}
                       next={getNextItem()}
+                      noNextStep={NO_NEXT_STEP}
+                      tunnelId={tunnelId}
                     />
                   </Hidden>
                 </div>
               </Paper>
               <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 10 }}>
-                <Button variant="outlined" onClick={handlePrev}>
+                <Button variant="outlined" onClick={() => handlePrev(values)}>
                   prev
                 </Button>
-                <Button variant="outlined" onClick={handleNext}>
-                  next
+                <Button
+                  variant="outlined"
+                  disabled={isPipeSubmitting}
+                  onClick={() => handleNext(values)}
+                >
+                  {isPipeSubmitting ? "Processing" : "next"}
                 </Button>
               </div>
             </form>
@@ -218,11 +246,8 @@ function Index({ reduxTheme }: PropsFromRedux) {
   );
 }
 
-const mapStateToProps = ({ themeState: { theme: reduxTheme } }: AppState) => ({});
-const mapDispatchToProps = {
-  toggleLightDarkTheme,
-  setTheme,
-};
+const mapStateToProps = ({ themeState: {} }: AppState) => ({});
+const mapDispatchToProps = {};
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

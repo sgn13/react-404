@@ -32,6 +32,7 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
         editData
           ? {
               name: editData.name,
+              model_instance: editData?.model_instance,
               effective_from: editData.effective_from
                 ? convertToDateTimeLocalString(new Date(editData.effective_from))
                 : "",
@@ -45,6 +46,7 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
             }
           : {
               name: "",
+              model_instance: "",
               effective_from: "",
               effective_to: "",
               pythonFile: "",
@@ -77,7 +79,8 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
             const base64OnNewFile = await toBase64(newFile);
             values = {
               ...values,
-              python: base64OnNewFile,
+              source: base64OnNewFile,
+              file_name: values?.pythonFile?.name,
             };
           }
           // never send path field
@@ -111,7 +114,7 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
           >
             <Box padding={"0 15px"}>
               <Grid container spacing={2}>
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                   <Label htmlFor="name" required>
                     Name
                   </Label>
@@ -128,6 +131,28 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
                       onBlur={handleBlur}
                       value={values.name}
                       error={Boolean(errors.name)}
+                      errors={errors}
+                    />
+                  </FormGroup>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Label htmlFor="model_instance" required>
+                    Model Instance
+                  </Label>
+
+                  <FormGroup className="input-holder">
+                    <Input
+                      id="model_instance"
+                      type="text"
+                      placeholder=""
+                      size="small"
+                      fullWidth
+                      name="model_instance"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.model_instance}
+                      error={Boolean(errors.model_instance)}
                       errors={errors}
                     />
                   </FormGroup>

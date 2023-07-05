@@ -7,16 +7,22 @@ function Train({
   nextStep,
   setNextStep,
   next,
+  noNextStep,
+  tunnelId,
 }: {
   nextStep?: any;
   setFieldValue?: any;
   setNextStep?: any;
   next?: any;
+  noNextStep?: string;
+  tunnelId?: string;
 }) {
   const handleTrain = async () => {
-    if (nextStep?.name === "Train") {
-      const { data, status } = await network({}).post(api.mlPipeBuild.root);
-      if (data) setNextStep(next);
+    if (nextStep === noNextStep) {
+      const { data, status } = await network({}).post(api.mlPipeBuild.root, {
+        tunnel_id: tunnelId,
+      });
+      console.log("train res data", data);
     }
   };
   return (

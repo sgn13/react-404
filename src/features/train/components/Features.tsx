@@ -22,9 +22,7 @@ function Feature({
   console.log({ features });
   return (
     <Grid item>
-      <Label htmlFor="code_type" required>
-        Code Type
-      </Label>
+      <Label htmlFor="code_type">Select Features of the dataset</Label>
       <FormGroup className="input-holder">
         <ReactSelect
           onChange={(selected) => {

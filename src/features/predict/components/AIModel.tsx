@@ -4,46 +4,46 @@ import { useEffect } from "react";
 import { ConnectedProps, connect } from "react-redux";
 import Label from "src/components/Label";
 import ReactSelect from "src/components/ReactSelect/ReactSelect";
+import { fetchPipelines } from "src/store/pipeline/actions";
 import { AppState } from "src/store/reducer";
-import { fetchFileUploads } from "src/store/source/fileUpload/actions";
 
-function Data({
-  fileuploads,
+function Model({
+  pipelines,
   isLoading,
-  fetchFileUploads,
+  fetchPipelines,
   setFieldValue,
   value,
   name,
 }: PropsFromRedux & { setFieldValue?: any; value?: any; name?: any }) {
   useEffect(() => {
-    fetchFileUploads({});
+    fetchPipelines({});
   }, []);
 
   return (
     <Grid item>
-      <Label htmlFor="code_type">Dataset</Label>
+      <Label htmlFor="code_type">Select Your AI Model</Label>
       <FormGroup className="input-holder">
         <ReactSelect
           onChange={(selected) => {
             setFieldValue(name, selected);
           }}
-          selectedValue={undefined}
+          // selectedValue={undefined}
           keyname="name"
-          options={fileuploads?.items || []}
+          options={pipelines?.items || []}
         />
       </FormGroup>
     </Grid>
   );
 }
 
-const mapStateToProps = ({ fileUploadState: { fileuploads, isLoading } }: AppState) => ({
-  fileuploads,
+const mapStateToProps = ({ pipelineState: { pipelines, isLoading } }: AppState) => ({
+  pipelines,
   isLoading,
 });
 
-const mapDispatchToProps = { fetchFileUploads };
+const mapDispatchToProps = { fetchPipelines };
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-export default connector(Data);
+export default connector(Model);

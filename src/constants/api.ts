@@ -53,6 +53,8 @@ const api = {
     root: "/ml_pipe/tunnel/build",
   },
 
+  predict: "/predict/",
+
   logout: "/logout/",
   me: "/me/",
   folder: "/folder",

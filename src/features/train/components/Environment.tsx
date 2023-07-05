@@ -20,9 +20,7 @@ function Environment({
   }, []);
   return (
     <Grid item>
-      <Label htmlFor="code_type" required>
-        Code Type
-      </Label>
+      <Label htmlFor="code_type">Select Runtime Environment</Label>
       <FormGroup className="input-holder">
         <ReactSelect
           onChange={(selected) => {
