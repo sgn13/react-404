@@ -16,7 +16,7 @@ function Model({
   name,
 }: PropsFromRedux & { setFieldValue?: any; value?: any; name?: any }) {
   useEffect(() => {
-    fetchModels({});
+    fetchModels({ query: { perPage: 90 } });
   }, []);
 
   return (

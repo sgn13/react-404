@@ -16,7 +16,7 @@ function Data({
   name,
 }: PropsFromRedux & { setFieldValue?: any; value?: any; name?: any }) {
   useEffect(() => {
-    fetchFileUploads({});
+    fetchFileUploads({ query: { perPage: 90 } });
   }, []);
 
   return (

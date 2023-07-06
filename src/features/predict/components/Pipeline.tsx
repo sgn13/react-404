@@ -7,13 +7,6 @@ import ReactSelect from "src/components/ReactSelect/ReactSelect";
 import { fetchPipelines } from "src/store/pipeline/actions";
 import { AppState } from "src/store/reducer";
 
-const dummyPipelines = [
-  { id: 1, name: "Pipeline 1" },
-  { id: 2, name: "Pipeline 2" },
-  { id: 3, name: "Pipeline 3" },
-  { id: 4, name: "Pipeline 4" },
-];
-
 function Pipeline({
   pipelines,
   isLoading,
@@ -23,7 +16,7 @@ function Pipeline({
   name,
 }: PropsFromRedux & { setFieldValue?: any; value?: any; name?: any }) {
   useEffect(() => {
-    fetchPipelines({});
+    fetchPipelines({ query: { perPage: 90 } });
   }, []);
 
   return (

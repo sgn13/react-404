@@ -133,7 +133,6 @@ function Index({ reduxTheme }: PropsFromRedux) {
     return singleSourceCode;
   };
 
-  console.log("result is", result);
   return (
     <StyledDiv>
       <Typography variant="h5" gutterBottom={1} sx={{ color: "#143467c9" }}>

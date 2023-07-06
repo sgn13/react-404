@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ConnectedProps, connect } from "react-redux";
+import iconFeature from "src/assets/icons/icon-feature.svg";
 import AddModal from "src/components/AddModal/AddModal";
 import ConfirmationModal from "src/components/ConfirmationModal/ConfirmationModal";
 import DataContainer from "src/components/DataContainerBeta";
@@ -86,7 +87,7 @@ function FileUpload({
           }}
           confirmationHeading={`Do you want to delete`}
           status="warning"
-          confirmationIcon="/assets/icons/icon-feature.svg"
+          confirmationIcon={iconFeature}
         />
       )}
 

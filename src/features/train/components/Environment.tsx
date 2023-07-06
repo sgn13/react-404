@@ -16,7 +16,7 @@ function Environment({
   name,
 }: PropsFromRedux & { setFieldValue?: any; name?: any; value?: any }) {
   useEffect(() => {
-    fetchEnvironments({});
+    fetchEnvironments({ query: { perPage: 90 } });
   }, []);
   return (
     <Grid item>

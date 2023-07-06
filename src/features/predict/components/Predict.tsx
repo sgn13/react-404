@@ -12,7 +12,7 @@ function Predict({
   return (
     <Stack>
       {result ? (
-        <Typography variant="body2">{result}</Typography>
+        <Typography variant="body2">Reusul: {result}</Typography>
       ) : (
         <Button type="submit" variant="contained">
           {isPredicting ? "Predicting..." : "Predict"}

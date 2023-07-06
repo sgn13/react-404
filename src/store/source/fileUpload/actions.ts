@@ -193,7 +193,7 @@ export const deleteFileUpload: AppThunk =
       });
 
       if (status === 200 || status > 200) {
-        dispatch(removeFileUploadData({ id: fileUploadId[0] }));
+        dispatch(removeFileUploadData({ id: fileUploadId }));
         dispatch(setIsSubmitting(false));
         console.log("success");
         return true;

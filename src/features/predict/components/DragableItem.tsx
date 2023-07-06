@@ -3,7 +3,15 @@ import { CSS } from "@dnd-kit/utilities";
 import { Button, Checkbox, Stack, Typography } from "@mui/material";
 import dragIcon from "src/assets/icons/dots.svg";
 
-function DraggableItem({ id, item, disabled, onCheckboxChange, onView, onUpdate }: any) {
+function DraggableItem({
+  id,
+  item,
+  disabled,
+  onCheckboxChange,
+  onView,
+  onUpdate,
+  handleSourceCodeSourceCode,
+}: any) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id,
   });
@@ -52,13 +60,13 @@ function DraggableItem({ id, item, disabled, onCheckboxChange, onView, onUpdate 
             disableElevation
             size="small"
             variant="outlined"
-            onClick={() => {}}
+            onClick={() => onView(item)}
             style={{ padding: 0 }}
           >
             View
           </Button>
 
-          <Button disableElevation size="small" variant="outlined" onClick={() => {}}>
+          <Button disableElevation size="small" variant="outlined" onClick={() => onUpdate(item)}>
             Edit
           </Button>
         </Stack>

@@ -16,7 +16,7 @@ function Feature({
   name,
 }: PropsFromRedux & { setFieldValue?: any; value?: any; name?: any }) {
   useEffect(() => {
-    fetchFeatures({});
+    fetchFeatures({ query: { perPage: 90 } });
   }, []);
 
   console.log({ features });

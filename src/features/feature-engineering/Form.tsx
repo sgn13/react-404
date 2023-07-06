@@ -10,6 +10,7 @@ import IOSSwitch from "src/components/switch";
 import { readFileContent } from "src/utils/file";
 import toBase64 from "src/utils/toBase64";
 
+import { useState } from "react";
 import ReactSelect from "src/components/ReactSelect/ReactSelect";
 import * as Yup from "yup";
 
@@ -26,7 +27,11 @@ const validationSchema = Yup.object().shape({
   deleted: Yup.boolean().optional().label("Deleted"),
 });
 
+const pythonCode = "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\n";
+const fromSever = "import pandas as pd\\nimport numpy as np\\nimport matplotlib.pyplot as plt\\n";
+
 function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
+  const [text, setText] = useState("");
   return (
     <FormikBase
       initialValues={
@@ -73,15 +78,15 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
             ...values,
             // overwriting the file with base64string
             code_file: base64OnNewFile,
-            source_type: "python file",
+            source_type: `python file`,
             source: values.code_source,
             code_type: values?.code_type?.name,
           };
 
           // never send path field
-          // delete values.code_file;
-          // delete values.code_source;
-          console.log("submitting 2", values);
+          delete values.code_file;
+          delete values.code_source;
+          console.log("submitting", values);
           editData ? onEdit(values, formikHelpers) : onAdd(values, formikHelpers);
         } catch (err) {
           console.error("formik submit error", err);
@@ -102,6 +107,7 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
           setFieldTouched,
         } = props;
 
+        console.log({ text, code: values?.code_source });
         return (
           <form
             className="assign-activity-form"
@@ -154,7 +160,15 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
                           const { files } = event.target;
                           const file = files[0];
                           setFieldValue("code_file", file);
-                          const codeSource: unknown = await readFileContent(file);
+                          const codeSource: string = await readFileContent(file);
+                          console.log("codeSource", codeSource);
+                          // const withoutEscChar = codeSource.replace(/\r/g, "");
+                          // console.log("without-slash:", withoutEscChar);
+                          const result =
+                            "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt";
+
+                          console.log({ codeSource, result, isSame: codeSource === result });
+                          setText(codeSource);
                           setFieldValue("code_source", codeSource);
                         }}
                         placeholder="Choose file"
@@ -169,6 +183,9 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
                     </Stack>
                     <CodeEditor
                       value={values.code_source}
+                      // value={
+                      //   "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt"
+                      // }
                       language="python"
                       onChange={(evn) => setFieldValue("code_source", evn.target.value)}
                       padding={15}
