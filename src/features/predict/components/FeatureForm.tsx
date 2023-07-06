@@ -37,8 +37,8 @@ function FeatureForm({
     <FormikBase
       initialValues={{
         code_file: "",
-        // code_source: `${selected?.source}`,
-        code_source: pythonCode,
+        code_source: `${selected?.source}`,
+        // code_source: pythonCode,
       }}
       validateOnBlur={false}
       validateOnChange={false}
@@ -64,11 +64,7 @@ function FeatureForm({
           setFieldValue,
           setFieldTouched,
         } = props;
-        console.log("got", {
-          codeSource: values?.code_source,
-          python: pythonCode,
-          selected: selected?.source,
-        });
+
         return (
           <form
             className="assign-activity-form"
