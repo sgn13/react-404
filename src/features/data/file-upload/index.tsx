@@ -78,7 +78,7 @@ function FileUpload({
           handelConfirmation={async () => {
             if (
               await deleteFileUpload({
-                fileuploadId: [selected?.id],
+                fileUploadId: [selected?.id],
               })
             ) {
               handleModalClose();

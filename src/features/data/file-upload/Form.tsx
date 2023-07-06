@@ -180,14 +180,14 @@ function FileUploadForm({ onEdit, onAdd, editData, onClose, placements }: any) {
                 </Grid>
                 <Grid item xs={12}>
                   <Label htmlFor="source" required>
-                    Source
+                    Source (.csv file)
                   </Label>
 
                   <FormGroup className="input-holder">
                     <FileInput
                       id="source"
                       name="source"
-                      accept="*"
+                      accept="application/json,.csv"
                       editData={editData}
                       onChange={(event) => {
                         const { files } = event.target;
@@ -208,7 +208,7 @@ function FileUploadForm({ onEdit, onAdd, editData, onClose, placements }: any) {
 
                 <Grid item xs={12}>
                   <Label htmlFor="parameters" required>
-                    Parameters
+                    Parameters (.py file)
                   </Label>
 
                   <FormGroup className="input-holder">

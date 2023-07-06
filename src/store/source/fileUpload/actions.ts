@@ -1,19 +1,25 @@
-import { Action, ActionCreator, Dispatch } from 'redux';
-import { ThunkAction } from 'redux-thunk';
+import { Action, ActionCreator, Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
 
+import api from "src/constants/api";
+
+import { setErrorMessage } from "src/store/app/actions";
+import { generateQuery } from "src/utils/store";
+
+import { defaultQuery } from "src/constants/query";
+import { network } from "src/utils/network";
 import {
   CREATE_FILEUPLOAD_DATA,
   REMOVE_FILEUPLOAD_DATA,
   RESET_SEARCHED_FILEUPLOADS_DATA,
-  SET_FILEUPLOAD_DATA,
   SET_FILEUPLOADS_DATA,
   SET_FILEUPLOADS_METADATA,
+  SET_FILEUPLOAD_DATA,
   SET_IS_LOADING,
   SET_IS_SUBMITTING,
   SET_SEARCHED_FILEUPLOADS_DATA,
   UPDATE_FILEUPLOAD_DATA,
-} from './action-types';
-
+} from "./action-types";
 import {
   CreateFileUploadDataType,
   FileUploadState,
@@ -26,15 +32,7 @@ import {
   SetIsSubmittingType,
   SetSearchedFileUploadsDataType,
   UpdateFileUploadDataType,
-} from './types';
-
-import api from 'src/constants/api';
-
-import { setErrorMessage } from 'src/store/app/actions';
-import { generateQuery } from 'src/utils/store';
-
-import { defaultQuery } from 'src/constants/query';
-import { network } from 'src/utils/network';
+} from "./types";
 
 export type AppThunk = ActionCreator<
   ThunkAction<Promise<boolean>, FileUploadState, null, Action<string>>
@@ -60,44 +58,32 @@ export const setFileUploadsData = (payload: any): SetFileUploadsDataType => ({
   payload,
 });
 
-export const setFileUploadsMetadata = (
-  payload: any
-): SetFileUploadsMetadataType => ({
+export const setFileUploadsMetadata = (payload: any): SetFileUploadsMetadataType => ({
   type: SET_FILEUPLOADS_METADATA,
   payload,
 });
 
-export const setSearchedFileUploadsData = (
-  payload: any
-): SetSearchedFileUploadsDataType => ({
+export const setSearchedFileUploadsData = (payload: any): SetSearchedFileUploadsDataType => ({
   type: SET_SEARCHED_FILEUPLOADS_DATA,
   payload,
 });
 
-export const resetSearchedFileUploadsData = (
-  payload: any
-): ResetSearchedFileUploadsDataType => ({
+export const resetSearchedFileUploadsData = (payload: any): ResetSearchedFileUploadsDataType => ({
   type: RESET_SEARCHED_FILEUPLOADS_DATA,
   payload,
 });
 
-export const createFileUploadData = (
-  payload: any
-): CreateFileUploadDataType => ({
+export const createFileUploadData = (payload: any): CreateFileUploadDataType => ({
   type: CREATE_FILEUPLOAD_DATA,
   payload,
 });
 
-export const removeFileUploadData = (
-  payload: any
-): RemoveFileUploadDataType => ({
+export const removeFileUploadData = (payload: any): RemoveFileUploadDataType => ({
   type: REMOVE_FILEUPLOAD_DATA,
   payload,
 });
 
-export const updateFileUploadData = (
-  payload: any
-): UpdateFileUploadDataType => ({
+export const updateFileUploadData = (payload: any): UpdateFileUploadDataType => ({
   type: UPDATE_FILEUPLOAD_DATA,
   payload,
 });
@@ -107,9 +93,7 @@ export const fetchFileUpload: AppThunk =
   async (dispatch: Dispatch) => {
     try {
       dispatch(setIsLoading(true));
-      const { data, status } = await network({}).get(
-        `${api.source.fileUpload}${fileUploadId}/`
-      );
+      const { data, status } = await network({}).get(`${api.source.fileUpload}${fileUploadId}/`);
 
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {
@@ -141,9 +125,7 @@ export const fetchFileUploads: AppThunk =
       const { data, status } = await network({}).get(link);
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {
-          search
-            ? dispatch(setSearchedFileUploadsData(data))
-            : dispatch(setFileUploadsData(data));
+          search ? dispatch(setSearchedFileUploadsData(data)) : dispatch(setFileUploadsData(data));
 
           dispatch(setIsLoading(false));
           return true;
@@ -162,13 +144,10 @@ export const createFileUpload: AppThunk =
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       dispatch(setIsSubmitting(true));
-      const { data, status } = await network({}).post(api.source.fileUpload, [
-        values,
-      ]);
+      const { data, status } = await network({}).post(api.source.fileUpload, [values]);
       if (status === 200 || (status > 200 && status < 300)) {
         dispatch(createFileUploadData(data.data[0]));
         dispatch(setIsSubmitting(false));
-
         return true;
       }
       return false;
@@ -186,7 +165,7 @@ export const updateFileUpload: AppThunk =
       dispatch(setIsSubmitting(true));
       const { data, status } = await network({}).put(
         `${api.source.fileUpload}${fileUploadId}`,
-        values
+        values,
       );
 
       if (status === 200 || (status > 200 && status < 300)) {
@@ -214,9 +193,9 @@ export const deleteFileUpload: AppThunk =
       });
 
       if (status === 200 || status > 200) {
-        dispatch(removeFileUploadData({ id: fileUploadId }));
+        dispatch(removeFileUploadData({ id: fileUploadId[0] }));
         dispatch(setIsSubmitting(false));
-
+        console.log("success");
         return true;
       }
       return false;

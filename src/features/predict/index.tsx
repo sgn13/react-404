@@ -129,7 +129,8 @@ function Index({ reduxTheme }: PropsFromRedux) {
   const getFeatures = (features: any) => {
     const selecteds = features.filter((item) => item?.selected === true);
     const selectedSourceCode = selecteds.map((item) => item.source);
-    return selectedSourceCode;
+    const singleSourceCode = selectedSourceCode.join("\n");
+    return singleSourceCode;
   };
 
   console.log("result is", result);
