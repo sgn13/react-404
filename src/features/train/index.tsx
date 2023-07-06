@@ -83,16 +83,16 @@ function Index({ reduxTheme }: PropsFromRedux) {
       if (next && nextStep?.name === "Environment") {
         const featureIdsInOrder = values.features.map((item) => item.id);
         const response = {
-          name: "default-name",
+          name: `default-name-${new Date().getTime()}`,
           fes_order: featureIdsInOrder,
-          ml_mode: values.model.id,
+          ml_model: values.model.id,
           prediction_variable: "default-prediction-variable",
           build_path: "default-build-path",
           environment: values.environment?.id,
           data: values?.fileUpload?.id,
         };
         setIsPipeSubmitting(true);
-        const { data, status } = await network({}).post(api.mlPipe.root, response);
+        const { data, status } = await network({}).post(api.mlPipe.root, [response]);
         tunnelId = data?.tunnel_id;
         if (data) {
           setIsPipeSubmitting(false);

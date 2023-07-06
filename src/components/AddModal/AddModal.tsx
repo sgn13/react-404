@@ -14,6 +14,10 @@ export const style = {
   right: "auto",
   bottom: "auto",
   transform: "translate(-50%, -50%)",
+  overflow: "auto",
+  maxHeight: "100vh",
+  marginTop: 1,
+
   width: 800,
   bgcolor: "background.paper",
   border: "2px solid #000",
@@ -54,7 +58,10 @@ function AddModal({
 }: ModalProps) {
   return (
     <Modal
-      sx={{ border: "none", borderRadius: "8px" }}
+      sx={{
+        border: "none",
+        borderRadius: "8px",
+      }}
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       open={openModal}
@@ -65,54 +72,52 @@ function AddModal({
         timeout: 500,
       }}
     >
-      <>
-        <Fade in={openModal}>
-          <Box sx={style}>
-            <div className="assign__modal-body">
-              {/* <Stack direction="column"> */}
-              <Stack
-                direction="row"
-                //     alignItems="center"
-                justifyContent="space-between"
-              >
-                <Stack direction={"column"} gap={2} sx={{ width: "100%" }}>
-                  <Typography
-                    // mt={3}
-                    variant="h6"
-                    component="h6"
-                    sx={{
-                      fontWeight: "600",
-                      fontSize: "16px",
-                      color: "#384874",
-                    }}
-                  >
-                    {`Add ${confirmationHeading} `}
-                  </Typography>
-                  <Divider style={{ width: "100%" }} />
-                </Stack>
-                {!isSuccess && (
-                  <div className="deactivate_modal_close" onClick={() => setOpenModal(false)}>
-                    <img src={CrossIcon} alt="cross" width={24} height={24} />
-                  </div>
-                )}
+      <Fade in={openModal}>
+        <Box sx={style}>
+          <div className="assign__modal-body">
+            {/* <Stack direction="column"> */}
+            <Stack
+              direction="row"
+              //     alignItems="center"
+              justifyContent="space-between"
+            >
+              <Stack direction={"column"} gap={2} sx={{ width: "100%" }}>
+                <Typography
+                  // mt={3}
+                  variant="h6"
+                  component="h6"
+                  sx={{
+                    fontWeight: "600",
+                    fontSize: "16px",
+                    color: "#384874",
+                  }}
+                >
+                  {`${confirmationHeading} `}
+                </Typography>
+                <Divider style={{ width: "100%" }} />
               </Stack>
-              <Typography
-                sx={{
-                  color: "#475467",
-                }}
-                variant="body2"
-                component="p"
-                //     mt={1}
-              >
-                {confirmationDesc}
-              </Typography>
+              {!isSuccess && (
+                <div className="deactivate_modal_close" onClick={() => setOpenModal(false)}>
+                  <img src={CrossIcon} alt="cross" width={24} height={24} />
+                </div>
+              )}
+            </Stack>
+            <Typography
+              sx={{
+                color: "#475467",
+              }}
+              variant="body2"
+              component="p"
+              //     mt={1}
+            >
+              {confirmationDesc}
+            </Typography>
 
-              {children}
-              {/* </Stack> */}
-            </div>
-          </Box>
-        </Fade>
-      </>
+            {children}
+            {/* </Stack> */}
+          </div>
+        </Box>
+      </Fade>
     </Modal>
   );
 }

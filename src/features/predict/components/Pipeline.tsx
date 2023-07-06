@@ -7,7 +7,14 @@ import ReactSelect from "src/components/ReactSelect/ReactSelect";
 import { fetchPipelines } from "src/store/pipeline/actions";
 import { AppState } from "src/store/reducer";
 
-function Model({
+const dummyPipelines = [
+  { id: 1, name: "Pipeline 1" },
+  { id: 2, name: "Pipeline 2" },
+  { id: 3, name: "Pipeline 3" },
+  { id: 4, name: "Pipeline 4" },
+];
+
+function Pipeline({
   pipelines,
   isLoading,
   fetchPipelines,
@@ -21,7 +28,7 @@ function Model({
 
   return (
     <Grid item>
-      <Label htmlFor="code_type">Select Your AI Model</Label>
+      <Label htmlFor="code_type">Select Your Pipeline</Label>
       <FormGroup className="input-holder">
         <ReactSelect
           onChange={(selected) => {
@@ -46,4 +53,4 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-export default connector(Model);
+export default connector(Pipeline);

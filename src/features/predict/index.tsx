@@ -10,8 +10,9 @@ import styled from "src/lib/mui/styled";
 import { AppState } from "src/store/reducer";
 import network from "src/utils/network";
 import toBase64 from "src/utils/toBase64";
-import AIModel from "./components/AIModel";
 import Data from "./components/Data";
+import Features from "./components/Features";
+import Pipeline from "./components/Pipeline";
 import Predict from "./components/Predict";
 
 const StyledDiv = styled("div")(({ theme }) => ({}));
@@ -19,10 +20,17 @@ const Hidden = styled("div")(({ show }: { show?: boolean }) => ({
   display: show ? "block" : "none",
 }));
 
+const featureList = [
+  { id: 1, name: "Clean", selected: false },
+  { id: 2, name: "Fix missing value", selected: true },
+  { id: 3, name: "Add Color", selected: true },
+];
+
 const stepData = [
-  { id: 1, name: "Test Dataset", position: 1, icon: "" },
-  { id: 2, name: "AI Model", position: 2, icon: "" },
-  { id: 3, name: "Predict", position: 3, icon: "" },
+  { id: 1, name: "Pipeline", position: 1, icon: "" },
+  { id: 2, name: "Features", position: 2, icon: "" },
+  { id: 3, name: "Dataset", position: 3, icon: "" },
+  { id: 4, name: "Predict", position: 4, icon: "" },
 ];
 
 // stepper component
@@ -53,6 +61,7 @@ function Index({ reduxTheme }: PropsFromRedux) {
   const [steps, setSteps] = useState([]);
   const [nextStep, setNextStep] = useState(null);
   const [isPredicting, setIsPredicting] = useState(false);
+  const [result, setResult] = useState(null);
 
   // setting next step
   useEffect(() => {
@@ -103,20 +112,27 @@ function Index({ reduxTheme }: PropsFromRedux) {
     if (prev) setNextStep(prev);
   };
 
-  const handlePredict = async (values: any) => {
-    const response = {
-      name: "default-name",
-      ml_model: values.model.id,
-      data: values?.csvFile?.id,
-    };
-    setIsPredicting(true);
-    const { data, status } = await network({}).post(api.predict, response);
-    if (data) {
-      setIsPredicting(false);
-      setNextStep(next);
-    }
+  // const handlePredict = async (values: any) => {
+  //   const response = {
+  //     name: "default-name",
+  //     ml_model: values.model.id,
+  //     data: values?.csvFile?.id,
+  //   };
+  //   setIsPredicting(true);
+  //   const { data, status } = await network({}).post(api.predict, response);
+  //   if (data) {
+  //     setIsPredicting(false);
+  //     setNextStep(next);
+  //   }
+  // };
+
+  const getFeatures = (features: any) => {
+    const selecteds = features.filter((item) => item?.selected === true);
+    const selectedSourceCode = selecteds.map((item) => item.source);
+    return selectedSourceCode;
   };
 
+  console.log("result is", result);
   return (
     <StyledDiv>
       <Typography variant="h5" gutterBottom={1} sx={{ color: "#143467c9" }}>
@@ -130,27 +146,39 @@ function Index({ reduxTheme }: PropsFromRedux) {
       />
       <FormikBase
         initialValues={{
+          pipeline: "",
+          features: [],
           csvFile: "",
-          model: "",
         }}
         validateOnBlur={false}
         validateOnChange={false}
         enableReinitialize
         // validationSchema={validationSchema}
         onSubmit={async (values, formikHelpers) => {
-          console.log("formik submitting");
           try {
             if (nextStep?.name === "Predict") {
               const payload = {
                 ...values,
-                csv_file: values?.csvFile ? await toBase64(values.csvFile) : null,
-                model: values.model?.id,
+                feature_code: getFeatures(values.features),
+                source_file: values?.csvFile ? await toBase64(values.csvFile) : null,
               };
-              if (await network({}).post(api.predict, payload)) {
+              const tunnleId = values.pipeline?.id;
+              delete payload.csvFile;
+              delete payload.pipeline;
+              delete payload.features;
+              setIsPredicting(true);
+              const { data, status } = await network({}).post(
+                `${api.predict}?tunnel_id=${tunnleId}`,
+                payload,
+              );
+              if (status === 200 || (status > 200 && status < 300)) {
                 formikHelpers.resetForm();
+                setResult(data);
+                setIsPredicting(false);
               }
             }
           } catch (err) {
+            setIsPredicting(false);
             console.error("formik submit error", err);
           }
         }}
@@ -193,16 +221,31 @@ function Index({ reduxTheme }: PropsFromRedux) {
                     width: "100%",
                   }}
                 >
-                  <Hidden show={nextStep?.name === "Test Dataset"}>
+                  <Hidden show={nextStep?.name === "Pipeline"}>
+                    <Pipeline
+                      name="pipeline"
+                      setFieldValue={setFieldValue}
+                      value={values.pipleline}
+                    />
+                  </Hidden>
+
+                  <Hidden show={nextStep?.name === "Features"}>
+                    <Features
+                      name="features"
+                      setFieldValue={setFieldValue}
+                      value={values.features}
+                      featureList={featureList}
+                      pipelineId={values.pipeline?.id}
+                    />
+                  </Hidden>
+
+                  <Hidden show={nextStep?.name === "Dataset"}>
                     <Data
                       name="csvFile"
                       setFieldValue={setFieldValue}
                       values={values}
                       value={values.csvFile}
                     />
-                  </Hidden>
-                  <Hidden show={nextStep?.name === "AI Model"}>
-                    <AIModel name="model" setFieldValue={setFieldValue} value={values.model} />
                   </Hidden>
 
                   <Hidden show={nextStep?.name === "Predict"}>
@@ -212,6 +255,8 @@ function Index({ reduxTheme }: PropsFromRedux) {
                       setNextStep={setNextStep}
                       values={values}
                       next={getNextItem()}
+                      result={result}
+                      isPredicting={isPredicting}
                     />
                   </Hidden>
                 </div>
@@ -223,8 +268,9 @@ function Index({ reduxTheme }: PropsFromRedux) {
                     variant="outlined"
                     onClick={() => {
                       setNextStep(steps[0]);
-                      setFieldValue("model", "");
+                      setFieldValue("pipeline", "");
                       setFieldValue("csvFile", "");
+                      setResult(null);
                       // resetForm();
                     }}
                   >
@@ -244,7 +290,7 @@ function Index({ reduxTheme }: PropsFromRedux) {
                   disabled={
                     isPredicting ||
                     nextStep?.name === "Predict" ||
-                    (nextStep?.name === "Test Dataset" && !values.csvFile)
+                    (nextStep?.name === "Dataset" && !values.csvFile)
                   }
                   onClick={() => handleNext(values)}
                 >

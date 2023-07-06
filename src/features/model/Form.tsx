@@ -41,12 +41,16 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
                 : "",
               pythonFile: editData.pythonFile,
               pythonFileContent: editData?.pythonFileContent,
+              extract_code_file: editData?.extract_code_file,
+              extract_code_source: editData?.extract_code_source,
               status: editData.status,
               deleted: editData.deleted,
             }
           : {
               name: "",
               model_instance: "",
+              extract_code_file: "",
+              extract_code_source: "",
               effective_from: "",
               effective_to: "",
               pythonFile: "",
@@ -81,6 +85,7 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
               ...values,
               source: base64OnNewFile,
               file_name: values?.pythonFile?.name,
+              extract_code: values?.extract_code_source,
             };
           }
           // never send path field
@@ -204,11 +209,9 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
                   <FormGroup className="input-holder">
                     <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
                       <Label style={{ marginBottom: 10 }}>
-                        Enter{" "}
-                        <span style={{ fontStyle: "italic", backgroundColor: "#f5f5f5" }}>
-                          python
-                        </span>{" "}
-                        <Typography variant="caption1">code. (Type/Paste/Browse)</Typography>
+                        <Typography variant="caption1">
+                          Code Editor for Code to create AI Model (type/paste/browse)
+                        </Typography>
                       </Label>
                       <FileInput
                         id="requirements"
@@ -253,6 +256,63 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
                           "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
                       }}
                     />
+                  </FormGroup>
+                </Grid>
+                <Grid item xs={12} style={{ paddingTop: 6 }}>
+                  <FormGroup className="input-holder">
+                    <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+                      <Label style={{ marginBottom: 10 }}>
+                        <Typography variant="caption1">
+                          Code Editor for Code to extract model (type/paste/browse)
+                        </Typography>
+                      </Label>
+                      <FileInput
+                        id="extract_code_file"
+                        name="extract_code_file"
+                        formData={editData}
+                        showOnlyBrowseButton
+                        buttonName="Import code file"
+                        buttonStyle={{
+                          backgroundColor: "#f6f9fba2",
+                          border: "1px dashed #4c4d4e9a",
+                          borderBottomColor: "#f6f9fba2",
+                        }}
+                        accept="application/txt,.py"
+                        onChange={async (event) => {
+                          const { files } = event.target;
+                          const file = files[0];
+                          setFieldValue("extract_code_file", file);
+                          const codeSource: unknown = await readFileContent(file);
+                          setFieldValue("extract_code_source", codeSource);
+                        }}
+                        placeholder="Choose file"
+                        size="small"
+                        disabled
+                        fullWidth
+                        values={values}
+                        value={values?.extract_code_file?.name}
+                        error={Boolean(errors.extract_code_source)}
+                        errors={errors}
+                      />
+                    </Stack>
+                    <CodeEditor
+                      value={values.extract_code_source}
+                      language="python"
+                      onChange={(evn) => setFieldValue("extract_code_source", evn.target.value)}
+                      padding={15}
+                      style={{
+                        fontSize: 12,
+                        backgroundColor: "#f6f9fba2",
+                        border: "1px dashed #4c4d4e9a",
+                        fontFamily:
+                          "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
+                      }}
+                    />
+                    {errors?.extract_code_source ? (
+                      <FormHelperText error id={"extract_code_source"}>
+                        {errors?.extract_code_source}
+                      </FormHelperText>
+                    ) : null}
                   </FormGroup>
                 </Grid>
                 <Grid item xs={12}>

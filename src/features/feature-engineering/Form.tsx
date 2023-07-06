@@ -101,6 +101,7 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
           setFieldValue,
           setFieldTouched,
         } = props;
+
         return (
           <form
             className="assign-activity-form"

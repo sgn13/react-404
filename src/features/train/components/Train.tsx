@@ -18,7 +18,7 @@ function Train({
   tunnelId?: string;
 }) {
   const handleTrain = async () => {
-    if (nextStep === noNextStep) {
+    if (nextStep?.name === "Train") {
       const { data, status } = await network({}).post(api.mlPipeBuild.root, {
         tunnel_id: tunnelId,
       });

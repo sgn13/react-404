@@ -1,10 +1,24 @@
-import { Button } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 
-function Predict() {
+function Predict({
+  nextStep,
+  setFieldValue,
+  setNextStep,
+  values,
+  next,
+  isPredicting,
+  result,
+}: any) {
   return (
-    <Button type="submit" variant="contained">
-      Predict
-    </Button>
+    <Stack>
+      {result ? (
+        <Typography variant="body2">{result}</Typography>
+      ) : (
+        <Button type="submit" variant="contained">
+          {isPredicting ? "Predicting..." : "Predict"}
+        </Button>
+      )}
+    </Stack>
   );
 }
 
