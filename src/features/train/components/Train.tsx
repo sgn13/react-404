@@ -42,12 +42,15 @@ function Train({
   return (
     <div>
       {" "}
-      <Button type="submit" variant="contained" onClick={handleTrain}>
-        {isSubmitting ? "Submitting..." : "Train"}
-      </Button>
-      <Box>
-        <Typography variant="body2">Training of the model started at the server</Typography>
-      </Box>
+      {isTraining ? (
+        <Box>
+          <Typography variant="body2">Training of the model started at the server</Typography>
+        </Box>
+      ) : (
+        <Button type="submit" variant="contained" onClick={handleTrain}>
+          {isSubmitting ? "Submitting..." : "Train"}
+        </Button>
+      )}
     </div>
   );
 }
