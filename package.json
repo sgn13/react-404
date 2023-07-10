@@ -99,6 +99,7 @@
     "react-dropzone": "^14.2.3",
     "react-error-boundary": "^3.1.4",
     "react-icons": "^4.7.1",
+    "react-image-annotation": "^0.9.10",
     "react-redux": "^8.0.7",
     "react-router-dom": "^6.3.0",
     "react-select": "^5.7.3",

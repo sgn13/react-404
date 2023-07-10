@@ -9,22 +9,23 @@ import {
   InputLabel,
   OutlinedInput,
   Typography,
-} from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useDropzone } from "react-dropzone";
 // import './multiFileUploader.scss';
-import CloseIcon from '@mui/icons-material/Close';
-import { makeStyles } from '@mui/styles';
-import { IndividualFile } from './index';
+import CloseIcon from "@mui/icons-material/Close";
+import { makeStyles } from "@mui/styles";
+import uploadIcon from "src/assets/icons/upload.svg";
+import { IndividualFile } from "./index";
 
 const useStyles = makeStyles({
   error: {
     marginBottom: 20,
   },
   close: {
-    fill: '#667085',
-    right: '5px',
-    top: '6px',
+    fill: "#667085",
+    right: "5px",
+    top: "6px",
   },
 });
 
@@ -56,46 +57,38 @@ interface UploadModalProps {
 
 const formatFileSize = (bytes: number) => {
   if (bytes < 1024) {
-    return bytes + ' bytes';
-  } else if (bytes < 1024 * 1024) {
-    return (bytes / 1024).toFixed(2) + ' KB';
-  } else {
-    return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    return `${bytes} bytes`;
   }
+  if (bytes < 1024 * 1024) {
+    return `${(bytes / 1024).toFixed(2)} KB`;
+  }
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 };
 
-export const RenderArea = ({
-  dragText = false,
-  accept = {},
-  maxFileSize,
-}: any) => (
-  <div className="drag-drop">
-    <div className="drop-input">
-      <Box className="text-center" id="hell">
-        <img
-          id="upload_csv_icon"
-          src="/assets/icons/upload.svg"
-          width={40}
-          height={40}
-          alt="upload here"
-        />
-        <Typography variant="body1" component="p">
-          <strong className="info-title">Click to upload </strong>{' '}
-          {dragText && 'or drag and drop'} <br />
-          <small className="info">
-            {/* {type === 'csv' ? 'CSV (max. 2 MB)' : 'SVG, PNG or JPG. (max. 400x400px)'} */}
-            {Object.values(accept)
-              .join('')
-              .replace(',', '')
-              .replace('.', '')
-              .replaceAll('.', ', ')}{' '}
-            (max. {maxFileSize} MB)
-          </small>
-        </Typography>
-      </Box>
+export function RenderArea({ dragText = false, accept = {}, maxFileSize }: any) {
+  return (
+    <div className="drag-drop">
+      <div className="drop-input">
+        <Box className="text-center" id="hell">
+          <img id="upload_csv_icon" src={uploadIcon} width={40} height={40} alt="upload here" />
+          <Typography variant="body1" component="p">
+            <strong className="info-title">Click to upload </strong>{" "}
+            {dragText && "or drag and drop"} <br />
+            <small className="info">
+              {/* {type === 'csv' ? 'CSV (max. 2 MB)' : 'SVG, PNG or JPG. (max. 400x400px)'} */}
+              {Object.values(accept)
+                .join("")
+                .replace(",", "")
+                .replace(".", "")
+                .replaceAll(".", ", ")}{" "}
+              (max. {maxFileSize} MB)
+            </small>
+          </Typography>
+        </Box>
+      </div>
     </div>
-  </div>
-);
+  );
+}
 
 const UploadModal: React.FC<UploadModalProps> = ({
   open,
@@ -108,7 +101,7 @@ const UploadModal: React.FC<UploadModalProps> = ({
   multiple = true,
 }) => {
   const [files, setFiles] = useState<FileUpload[]>([]);
-  const [fileError, setFileError] = useState('');
+  const [fileError, setFileError] = useState("");
   const classes = useStyles();
 
   useEffect(() => {
@@ -120,13 +113,11 @@ const UploadModal: React.FC<UploadModalProps> = ({
   const handleFileDrop = (acceptedFiles: File[]) => {
     const newFiles: Upload[] = [];
     acceptedFiles.forEach((file) => {
-      setFileError('');
+      setFileError("");
       const reader = new FileReader();
       const MAXFILESIZE = Number(maxFileSize) * 1024 * 1024;
       if (Number(file?.size) > MAXFILESIZE) {
-        setFileError(
-          `File size must be less than ${formatFileSize(MAXFILESIZE)}`
-        );
+        setFileError(`File size must be less than ${formatFileSize(MAXFILESIZE)}`);
         return;
       }
       reader.onloadstart = () => {
@@ -150,7 +141,7 @@ const UploadModal: React.FC<UploadModalProps> = ({
           copyFile[0].documents = [uploadFile, ...copyFile[0].documents];
           setFiles(copyFile);
         } else {
-          const newFile = [{ documents: [uploadFile], title: '' }];
+          const newFile = [{ documents: [uploadFile], title: "" }];
           setFiles(newFile);
         }
       };
@@ -164,9 +155,7 @@ const UploadModal: React.FC<UploadModalProps> = ({
           // Update the progress of the file in the state
           if (files?.length > 0) {
             const copyFile: any = [...files];
-            const index = copyFile[0].documents.findIndex(
-              (doc: Upload) => doc.name === file.name
-            );
+            const index = copyFile[0].documents.findIndex((doc: Upload) => doc.name === file.name);
             copyFile[0].documents[index].progress = percentLoaded;
             setFiles(copyFile);
           }
@@ -182,9 +171,7 @@ const UploadModal: React.FC<UploadModalProps> = ({
         // Update the state with the base64 data
         if (files?.length > 0) {
           const copyFile: any = [...files];
-          const index = copyFile[0].documents.findIndex(
-            (doc: Upload) => doc.name === file.name
-          );
+          const index = copyFile[0].documents.findIndex((doc: Upload) => doc.name === file.name);
           copyFile[0].documents[index].base64 = base64Data;
           setFiles(copyFile);
         }
@@ -194,12 +181,8 @@ const UploadModal: React.FC<UploadModalProps> = ({
     });
   };
 
-  const handleDescriptionChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    index?: number
-  ) => {
-    const updatedFiles =
-      files?.length >= 1 ? [...files] : [{ title: '', documents: [] }];
+  const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>, index?: number) => {
+    const updatedFiles = files?.length >= 1 ? [...files] : [{ title: "", documents: [] }];
 
     updatedFiles.forEach((file) => {
       file.title = event.target.value;
@@ -220,13 +203,13 @@ const UploadModal: React.FC<UploadModalProps> = ({
   };
 
   const dropzoneOptions = accept
-    ? { onDrop: handleFileDrop, accept: accept, multiple }
+    ? { onDrop: handleFileDrop, accept, multiple }
     : { onDrop: handleFileDrop, multiple };
 
   const { getRootProps, getInputProps } = useDropzone(dropzoneOptions);
 
   const handleCloseError = () => {
-    setFileError('');
+    setFileError("");
   };
 
   return (
@@ -235,7 +218,7 @@ const UploadModal: React.FC<UploadModalProps> = ({
       onClose={() => {
         onClose({ reset: false, closePopup: true });
       }}
-      sx={{ overflow: 'hidden' }}
+      sx={{ overflow: "hidden" }}
     >
       <DialogTitle>
         Upload and attach files
@@ -250,28 +233,28 @@ const UploadModal: React.FC<UploadModalProps> = ({
           onClose({ reset: false, closePopup: true });
         }}
         sx={{
-          position: 'absolute',
-          fontSize: '2rem',
+          position: "absolute",
+          fontSize: "2rem",
         }}
       >
         <CloseIcon />
       </IconButton>
 
-      <div style={{ padding: '0px 24px' }}>
+      <div style={{ padding: "0px 24px" }}>
         <Grid
           spacing={1}
           sx={{
-            marginLeft: '0',
-            marginRight: '0',
-            paddingBottom: '10px',
-            lineHeight: '4.6',
+            marginLeft: "0",
+            marginRight: "0",
+            paddingBottom: "10px",
+            lineHeight: "4.6",
           }}
         >
           {!!requireDescription && (
-            <div style={{ width: '100%' }}>
+            <div style={{ width: "100%" }}>
               <InputLabel htmlFor="website">
                 <div className="label-heading">
-                  Description <sub>*</sub>{' '}
+                  Description <sub>*</sub>{" "}
                 </div>
               </InputLabel>
               <OutlinedInput
@@ -295,29 +278,25 @@ const UploadModal: React.FC<UploadModalProps> = ({
             file?.documents?.length >= 1 ? (
               file?.documents?.map((doc, index) => (
                 <Grid item key={index}>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <IndividualFile
                       key={index}
                       file={doc}
                       onDelete={() => {
                         handleRemoveFile(index);
                       }}
-                    ></IndividualFile>
+                    />
                   </div>
                 </Grid>
               ))
             ) : (
               <></>
-            )
+            ),
           )}
         </div>
       </div>
       {fileError && (
-        <Alert
-          severity="error"
-          className={classes.error}
-          onClose={handleCloseError}
-        >
+        <Alert severity="error" className={classes.error} onClose={handleCloseError}>
           {fileError}
         </Alert>
       )}
@@ -332,20 +311,16 @@ const UploadModal: React.FC<UploadModalProps> = ({
             }
           }}
           variant="outlined"
-          sx={{ boxShadow: '0px 1px 2px rgba(16,24,40,0.05)' }}
+          sx={{ boxShadow: "0px 1px 2px rgba(16,24,40,0.05)" }}
         >
-          {multiple ? 'Remove All' : 'Cancel'}
+          {multiple ? "Remove All" : "Cancel"}
         </Button>
         <Button
           onClick={handleUpload}
           disabled={
             !(!requireDescription
               ? !!(files.length && files[0]?.documents?.length)
-              : !!(
-                  files.length &&
-                  files[0]?.title &&
-                  files[0]?.documents?.length
-                ))
+              : !!(files.length && files[0]?.title && files[0]?.documents?.length))
           }
           variant="contained"
         >

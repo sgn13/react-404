@@ -7,6 +7,7 @@ import exclusionRoutes from "src/features/configuration/exclusions/routes";
 import libraryRoutes from "src/features/configuration/libraries/routes";
 import placementRoutes from "src/features/configuration/placement/routes";
 import fileUploadRoutes from "src/features/data/file-upload/routes";
+import imageAnnotationRoutes from "src/features/data/image-Annotation/routes";
 import environmentRoutes from "src/features/environment/routes";
 import featureEngineeringRoutes from "src/features/feature-engineering/routes";
 import modelRoutes from "src/features/model/routes";
@@ -94,6 +95,7 @@ const routes = [
       ...trainRoutes,
       ...predictRoutes,
       ...dataRoutes,
+      ...imageAnnotationRoutes,
       ...errorRoutes,
     ],
   },

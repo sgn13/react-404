@@ -11,8 +11,9 @@ const StyledDiv = styled("div")(({ theme }) => ({}));
 
 const dataSources = [
   { id: 1, name: "File Upload", icon: "", link: app.data.fileUpload },
+  { id: 2, name: "Image", icon: "", link: app.data.imageAnnotation },
   { id: 3, name: "Streaming", icon: "", link: app.data.streaming },
-  { id: 2, name: "Database", icon: "", link: app.data.database },
+  { id: 4, name: "Database", icon: "", link: app.data.database },
 ];
 
 const NO_NEXT_STEP = "no-next-step";

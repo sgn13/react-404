@@ -26,6 +26,10 @@ const api = {
     exclusion: `/exclusion/`,
     placement: `/placement/`,
   },
+  data: {
+    annotationImage: "/image-upload/",
+    annotationData: "/image-upload/annotate",
+  },
   source: {
     root: apiRoot.source,
     folder: `/folder/`,

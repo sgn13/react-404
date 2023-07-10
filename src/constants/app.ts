@@ -22,6 +22,7 @@ const app = {
     fileUpload: "/data/file-upload",
     database: "/data/database",
     streaming: "/data/streaming",
+    imageAnnotation: "/data/image-annotation",
   },
   feature: {
     root: "/feature",

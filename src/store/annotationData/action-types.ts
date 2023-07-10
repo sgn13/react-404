@@ -1,0 +1,25 @@
+export const SET_IS_LOADING = '@@annotationData/SET_IS_LOADING';
+
+export const SET_IS_SUBMITTING = '@@annotationData/SET_IS_SUBMITTING';
+
+export const SET_ANNOTATION_DATA_DATA =
+  '@@annotationData/SET_ANNOTATION_DATA_DATA';
+export const SET_ANNOTATION_DATAS_DATA =
+  '@@annotationData/SET_ANNOTATION_DATAS_DATA';
+
+export const SET_ANNOTATION_DATAS_METADATA =
+  '@@annotationData/SET_ANNOTATION_DATAS_METADATA';
+
+export const SET_SEARCHED_ANNOTATION_DATAS_DATA =
+  '@@annotationData/SET_SEARCHED_ANNOTATION_DATAS_DATA';
+export const RESET_SEARCHED_ANNOTATION_DATAS_DATA =
+  '@@annotationData/RESET_SEARCHED_ANNOTATION_DATAS_DATA';
+
+export const CREATE_ANNOTATION_DATA_DATA =
+  '@@annotationData/CREATE_ANNOTATION_DATA_DATA';
+
+export const REMOVE_ANNOTATION_DATA_DATA =
+  '@@annotationData/REMOVE_ANNOTATION_DATA_DATA';
+
+export const UPDATE_ANNOTATION_DATA_DATA =
+  '@@annotationData/UPDATE_ANNOTATION_DATA_DATA';
