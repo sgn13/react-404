@@ -92,6 +92,17 @@ export const IndexSidebar = () => [
     collasped: false,
   },
 
+  {
+    id: uniqueId(),
+    icon: AiModel,
+    label: "Finetune",
+    location: "top",
+    path: app.finetune.root,
+    role: "user",
+    Permission: undefined,
+    collasped: false,
+  },
+
   // {
   //   id: uniqueId(),
   //   icon: Source,

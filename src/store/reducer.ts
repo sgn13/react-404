@@ -4,6 +4,7 @@ import socketState from "./socket/reducers";
 import folderState from "./source/folder/reducers";
 import themeState from "./theme/reducers";
 
+import annotationState from "./annotation/reducers";
 import annotationImageState from "./annotationImage/reducers";
 import controllerState from "./configuration/controller/reducers";
 import exclusionState from "./configuration/exclusion/reducers";
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   featureState,
   pipelineState,
   annotationImageState,
+  annotationState,
 });
 
 export default rootReducer;

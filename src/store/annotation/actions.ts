@@ -4,38 +4,38 @@ import { ThunkAction } from "redux-thunk";
 import api from "src/constants/api";
 
 import { setErrorMessage } from "src/store/app/actions";
-import { generateQuery } from "src/utils/store";
+import { generateMeta, generateQuery } from "src/utils/store";
 
 import { defaultQuery } from "src/constants/query";
 import { network } from "src/utils/network";
 import {
-  CREATE_ANNOTATION_IMAGE_DATA,
-  REMOVE_ANNOTATION_IMAGE_DATA,
-  RESET_SEARCHED_ANNOTATION_IMAGES_DATA,
-  SET_ANNOTATION_IMAGES_DATA,
-  SET_ANNOTATION_IMAGES_METADATA,
-  SET_ANNOTATION_IMAGE_DATA,
+  CREATE_ANNOTATION_DATA,
+  REMOVE_ANNOTATION_DATA,
+  RESET_SEARCHED_ANNOTATIONS_DATA,
+  SET_ANNOTATIONS_DATA,
+  SET_ANNOTATIONS_METADATA,
+  SET_ANNOTATION_DATA,
   SET_IS_LOADING,
   SET_IS_SUBMITTING,
-  SET_SEARCHED_ANNOTATION_IMAGES_DATA,
-  UPDATE_ANNOTATION_IMAGE_DATA,
+  SET_SEARCHED_ANNOTATIONS_DATA,
+  UPDATE_ANNOTATION_DATA,
 } from "./action-types";
 import {
-  AnnotationImageState,
-  CreateAnnotationImageDataType,
-  RemoveAnnotationImageDataType,
-  ResetSearchedAnnotationImagesDataType,
-  SetAnnotationImageDataType,
-  SetAnnotationImagesDataType,
-  SetAnnotationImagesMetadataType,
+  AnnotationState,
+  CreateAnnotationDataType,
+  RemoveAnnotationDataType,
+  ResetSearchedAnnotationsDataType,
+  SetAnnotationDataType,
+  SetAnnotationsDataType,
+  SetAnnotationsMetadataType,
   SetIsLoadingType,
   SetIsSubmittingType,
-  SetSearchedAnnotationImagesDataType,
-  UpdateAnnotationImageDataType,
+  SetSearchedAnnotationsDataType,
+  UpdateAnnotationDataType,
 } from "./types";
 
 export type AppThunk = ActionCreator<
-  ThunkAction<Promise<boolean>, AnnotationImageState, null, Action<string>>
+  ThunkAction<Promise<boolean>, AnnotationState, null, Action<string>>
 >;
 
 export const setIsLoading = (payload: any): SetIsLoadingType => ({
@@ -48,62 +48,56 @@ export const setIsSubmitting = (payload: any): SetIsSubmittingType => ({
   payload,
 });
 
-export const setAnnotationImageData = (payload: any): SetAnnotationImageDataType => ({
-  type: SET_ANNOTATION_IMAGE_DATA,
+export const setAnnotationData = (payload: any): SetAnnotationDataType => ({
+  type: SET_ANNOTATION_DATA,
   payload,
 });
 
-export const setAnnotationImagesData = (payload: any): SetAnnotationImagesDataType => ({
-  type: SET_ANNOTATION_IMAGES_DATA,
+export const setAnnotationsData = (payload: any): SetAnnotationsDataType => ({
+  type: SET_ANNOTATIONS_DATA,
   payload,
 });
 
-export const setAnnotationImagesMetadata = (payload: any): SetAnnotationImagesMetadataType => ({
-  type: SET_ANNOTATION_IMAGES_METADATA,
+export const setAnnotationsMetadata = (payload: any): SetAnnotationsMetadataType => ({
+  type: SET_ANNOTATIONS_METADATA,
   payload,
 });
 
-export const setSearchedAnnotationImagesData = (
-  payload: any,
-): SetSearchedAnnotationImagesDataType => ({
-  type: SET_SEARCHED_ANNOTATION_IMAGES_DATA,
+export const setSearchedAnnotationsData = (payload: any): SetSearchedAnnotationsDataType => ({
+  type: SET_SEARCHED_ANNOTATIONS_DATA,
   payload,
 });
 
-export const resetSearchedAnnotationImagesData = (
-  payload: any,
-): ResetSearchedAnnotationImagesDataType => ({
-  type: RESET_SEARCHED_ANNOTATION_IMAGES_DATA,
+export const resetSearchedAnnotationsData = (payload: any): ResetSearchedAnnotationsDataType => ({
+  type: RESET_SEARCHED_ANNOTATIONS_DATA,
   payload,
 });
 
-export const createAnnotationImageData = (payload: any): CreateAnnotationImageDataType => ({
-  type: CREATE_ANNOTATION_IMAGE_DATA,
+export const createAnnotationData = (payload: any): CreateAnnotationDataType => ({
+  type: CREATE_ANNOTATION_DATA,
   payload,
 });
 
-export const removeAnnotationImageData = (payload: any): RemoveAnnotationImageDataType => ({
-  type: REMOVE_ANNOTATION_IMAGE_DATA,
+export const removeAnnotationData = (payload: any): RemoveAnnotationDataType => ({
+  type: REMOVE_ANNOTATION_DATA,
   payload,
 });
 
-export const updateAnnotationImageData = (payload: any): UpdateAnnotationImageDataType => ({
-  type: UPDATE_ANNOTATION_IMAGE_DATA,
+export const updateAnnotationData = (payload: any): UpdateAnnotationDataType => ({
+  type: UPDATE_ANNOTATION_DATA,
   payload,
 });
 
-export const fetchAnnotationImage: AppThunk =
-  ({ annotationImageId }) =>
+export const fetchAnnotation: AppThunk =
+  ({ annotationId }) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(setIsLoading(true));
-      const { data, status } = await network({}).get(
-        `${api.data.annotationImage}${annotationImageId}/`,
-      );
+      const { data, status } = await network({}).get(`${api.annotation.annotate}${annotationId}/`);
 
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {
-          dispatch(setAnnotationImageData(data));
+          dispatch(setAnnotationData(data));
           dispatch(setIsLoading(false));
           return true;
         }
@@ -116,24 +110,31 @@ export const fetchAnnotationImage: AppThunk =
     }
   };
 
-export const fetchAnnotationImages: AppThunk =
+export const fetchAnnotations: AppThunk =
   ({ query = defaultQuery, columns, searchable, search }) =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       const link = generateQuery({
-        url: api.data.annotationImage,
+        url: api.annotation.annotate,
         query,
         columns,
         searchable,
       });
 
       dispatch(setIsLoading(true));
-      const { data, status } = await network({ requireToken: true }).get(link);
+      const { data, status } = await network({}).get(link);
+
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {
+          const result = {
+            items: data?.items || [],
+            headers: data?.headers || {},
+          };
           search
-            ? dispatch(setSearchedAnnotationImagesData(data))
-            : dispatch(setAnnotationImagesData(data));
+            ? dispatch(setSearchedAnnotationsData(result))
+            : dispatch(setAnnotationsData(result));
+          const metadata = generateMeta({ query, data });
+          dispatch(setAnnotationsMetadata(metadata));
           dispatch(setIsLoading(false));
           return true;
         }
@@ -146,42 +147,40 @@ export const fetchAnnotationImages: AppThunk =
     }
   };
 
-export const createAnnotationImage: AppThunk =
+export const createAnnotation: AppThunk =
   ({ values }) =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       dispatch(setIsSubmitting(true));
-      const { data, status } = await network({}).post(api.data.annotationImage, values);
-      console.log(data, "dadadatatat");
-
+      const { data, status } = await network({}).post(api.annotation.annotate, [values]);
       if (status === 200 || (status > 200 && status < 300)) {
-        // dispatch(createAnnotationImageData(data?.data?.[0]));
+        dispatch(createAnnotationData(data.data[0]));
         dispatch(setIsSubmitting(false));
-        localStorage.setItem("images", data?.images);
+
         return true;
       }
       return false;
     } catch (error: any) {
-      console.log(error);
       error.response && dispatch(setErrorMessage(error));
       dispatch(setIsSubmitting(false));
       return false;
     }
   };
 
-export const updateAnnotationImage: AppThunk =
-  ({ annotationImageId, values }) =>
+export const updateAnnotation: AppThunk =
+  ({ annotationId, values }) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(setIsSubmitting(true));
       const { data, status } = await network({}).put(
-        `${api.data.annotationImage}/${annotationImageId}`,
+        `${api.annotation.annotate}${annotationId}`,
         values,
       );
 
       if (status === 200 || (status > 200 && status < 300)) {
         if (data) {
-          dispatch(updateAnnotationImageData(data.data));
+          console.log(data, "das");
+          dispatch(updateAnnotationData(data.data));
           dispatch(setIsSubmitting(false));
           return true;
         }
@@ -194,17 +193,19 @@ export const updateAnnotationImage: AppThunk =
     }
   };
 
-export const deleteAnnotationImage: AppThunk =
-  ({ annotationImageId }) =>
+export const deleteAnnotation: AppThunk =
+  ({ annotationId }) =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
+      console.log(annotationId);
+
       dispatch(setIsSubmitting(true));
-      const { status } = await network({}).delete(api.data.annotationImage, {
-        data: { ids: annotationImageId },
+      const { status } = await network({}).delete(api.annotation.annotate, {
+        data: { ids: annotationId },
       });
 
       if (status === 200 || status > 200) {
-        dispatch(removeAnnotationImageData({ id: annotationImageId }));
+        dispatch(removeAnnotationData({ id: annotationId }));
         dispatch(setIsSubmitting(false));
 
         return true;

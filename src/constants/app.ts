@@ -42,6 +42,9 @@ const app = {
   train: {
     root: "/train",
   },
+  finetune: {
+    root: "/finetune",
+  },
   predict: {
     root: "/predict",
   },

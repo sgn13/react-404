@@ -57,8 +57,13 @@ const api = {
     root: "/ml_pipe/tunnel/build",
   },
 
+  finetune: "/fine-tune",
+
   predict: "/ml_pipe/tunnel/predict",
   featureFiles: "/ml_pipe/get_feature_engineering_files/",
+  annotation: {
+    annotate: "/image-upload/annotate",
+  },
 
   logout: "/logout/",
   me: "/me/",

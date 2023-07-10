@@ -50,7 +50,6 @@ const validationSchema = Yup.object().shape({});
 // `;
 
 function AnnotationForm({ onEdit, onAdd, editData, onClose, placements }: any) {
-  console.log("annotation form");
   return (
     <FormikBase
       initialValues={
@@ -118,7 +117,7 @@ function AnnotationForm({ onEdit, onAdd, editData, onClose, placements }: any) {
 
                 <Grid item xs={12}>
                   <Label htmlFor="valid" required>
-                    Valid (B)
+                    Valid/Test (B)
                   </Label>
 
                   <FormGroup className="input-holder">
