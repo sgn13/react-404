@@ -98,7 +98,7 @@ export const fetchAnnotationImage: AppThunk =
     try {
       dispatch(setIsLoading(true));
       const { data, status } = await network({}).get(
-        `${api.data.annotationImage}${annotationImageId}/`,
+        `${api.annotation.upload}${annotationImageId}/`,
       );
 
       if (status === 200 || (status > 200 && status < 300)) {
@@ -121,7 +121,7 @@ export const fetchAnnotationImages: AppThunk =
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       const link = generateQuery({
-        url: api.data.annotationImage,
+        url: api.annotation.upload,
         query,
         columns,
         searchable,
@@ -151,7 +151,7 @@ export const createAnnotationImage: AppThunk =
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       dispatch(setIsSubmitting(true));
-      const { data, status } = await network({}).post(api.data.annotationImage, values);
+      const { data, status } = await network({}).post(api.annotation.upload, values);
       console.log(data, "dadadatatat");
 
       if (status === 200 || (status > 200 && status < 300)) {
@@ -175,7 +175,7 @@ export const updateAnnotationImage: AppThunk =
     try {
       dispatch(setIsSubmitting(true));
       const { data, status } = await network({}).put(
-        `${api.data.annotationImage}/${annotationImageId}`,
+        `${api.annotation.upload}/${annotationImageId}`,
         values,
       );
 
@@ -199,7 +199,7 @@ export const deleteAnnotationImage: AppThunk =
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       dispatch(setIsSubmitting(true));
-      const { status } = await network({}).delete(api.data.annotationImage, {
+      const { status } = await network({}).delete(api.annotation.upload, {
         data: { ids: annotationImageId },
       });
 

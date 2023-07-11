@@ -1,17 +1,27 @@
 import { useEffect, useState } from "react";
 import { ConnectedProps, connect } from "react-redux";
 
+import { Paper } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
+import styled from "@mui/styles/styled";
 import Annotation from "react-image-annotation";
 import { RectangleSelector } from "react-image-annotation/lib/selectors";
-
-import { Button } from "@mui/material";
 import AddModal from "src/components/AddModal/AddModal";
-import MultiUploader from "src/components/MultiFileUploader/index";
 import { createAnnotation } from "src/store/annotation/actions";
 import { createAnnotationImage, fetchAnnotationImages } from "src/store/annotationImage/actions";
 import AnnotationForm from "./Form";
 
-function AnnotationImage({ createAnnotationImage, createAnnotation }: PropsFromRedux) {
+const Item = styled("div")(({ theme }) => ({}));
+
+function AnnotationImage({
+  fetchAnnotationImages,
+  createAnnotationImage,
+  createAnnotation,
+  annotationImages,
+  setFieldValue,
+  name,
+  values,
+}: PropsFromRedux) {
   const [showModal, setShowModal] = useState(undefined);
 
   const [selected, setSelected] = useState<any>(undefined);
@@ -42,6 +52,19 @@ function AnnotationImage({ createAnnotationImage, createAnnotation }: PropsFromR
   }, []);
 
   useEffect(() => {
+    let obj = {};
+    let objImg = {};
+    annotationImages?.forEach((image: any, index: any) => {
+      obj = { ...obj, [`image_${index}`]: {} };
+      objImg = { ...objImg, [`image_${index}`]: image };
+    });
+    // assigning names to   annotationimages url
+    setAllImages(objImg);
+    // creating map data structure to store corresponding annotation data
+    setAnnotation(obj);
+  }, [annotationImages]);
+
+  useEffect(() => {
     const transformedAnnations: any = Object.entries(annotations || []).map(
       ([imageName, imageAnnotations]: any) => ({
         image_url: allImages[`${imageName}`],
@@ -64,20 +87,8 @@ function AnnotationImage({ createAnnotationImage, createAnnotation }: PropsFromR
 
     const annotatedItems = transformedAnnations.filter((item: any) => item.data.length);
     setAnnotatedImages(annotatedItems);
-  }, [allImages, annotations]);
-
-  useEffect(() => {
-    let obj = {};
-    let objImg = {};
-    images?.forEach((image: any, index: any) => {
-      obj = { ...obj, [`image_${index}`]: {} };
-      objImg = { ...objImg, [`image_${index}`]: image };
-    });
-    // assigning names to images url
-    setAllImages(objImg);
-    // creating map data structure to store corresponding annotation data
-    setAnnotation(obj);
-  }, []);
+    setFieldValue(name, annotatedItems);
+  }, [allImages, annotations, name]);
 
   useEffect(() => {
     const loadImages = async () => {
@@ -151,7 +162,7 @@ function AnnotationImage({ createAnnotationImage, createAnnotation }: PropsFromR
   console.log({ allImages, annotatedImages, annotations, imageSizes, annotation });
 
   return (
-    <>
+    <div>
       <AddModal
         openModal={showModal === "publish"}
         setOpenModal={() => handleModalClose()}
@@ -159,7 +170,6 @@ function AnnotationImage({ createAnnotationImage, createAnnotation }: PropsFromR
       >
         <AnnotationForm
           // isSubmitting={isSubmitting}
-          // // placements={placements}
           onClose={() => handleModalClose()}
           editData={showModal === "update" ? selected : null}
           onAdd={async (values: any, resetForm: any) => {
@@ -175,158 +185,97 @@ function AnnotationImage({ createAnnotationImage, createAnnotation }: PropsFromR
               handleModalClose();
               resetForm();
             }
-            // console.log(values,"values")
-            // if (await createFileUpload({ values })) {
-            //   handleModalClose();
-            //   resetForm();
-            // }
           }}
-          // onEdit={async (values: any, { resetForm }) => {
-          //   if (
-          //     await updateFileUpload({
-          //       fileUploadId: selected?.id,
-          //       values,
-          //     })
-          //   ) {
-          //     handleModalClose();
-          //     resetForm();
-          //   }
-          // }}
         />
       </AddModal>
-      <div style={{ display: "flex", border: "1px solid silver" }}>
-        <div
-          style={{ flexBasis: "15%", padding: "1rem", background: "#f1f1f1", marginRight: "1rem" }}
-        >
-          <MultiUploader
-            setOpenMultiImage={setOpenMultiImage}
-            openMultiImage={openMultiImage}
-            initialData={
-              // handleFormikFields?.values?.[`${item?.component}__${item.id}`]
-              //   ?.media || []
-              []
-            }
-            // For={'Objects'}
-            // clearData={clearData}
-            // setClearData={setClearData}
-            maxFileSize={10}
-            requireDescription={false}
-            accept={{
-              "image/jpeg": [".jpeg", ".jpg"],
-              "image/png": [".png"],
-              "application/pdf": [".pdf"],
-            }}
-            icon={
-              <div className="attach__files-icon">
-                {/* <AttachFileIcon></AttachFileIcon> */}
-                <Button variant="contained">+</Button>
-              </div>
-            }
-            defaultViewer={false}
-            getFileData={async (files: any = []) => {
-              const formData = new FormData();
-              const linkFiles: any = [];
-              const Files = files[0]?.documents?.map((doc: any, index: number) => {
-                if (doc.file) {
-                  formData.append(`files`, doc?.file);
-                } else {
-                  linkFiles.push(doc);
-                }
-              });
-
-              const response = await createAnnotationImage({ values: formData });
-              if (response) console.log(response, "eresponse");
-            }}
-          />
-
-          <div
-            style={{
-              margin: "1rem 0",
-            }}
-          >
-            {images?.map((image: any, index: number) => (
-              <div
-                onClick={() => {
-                  setActiveImage(`image_${index}`);
-                }}
-              >
-                <img src={`${process.env.APP_HOST}/${image}`} width="80" />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div style={{ flex: "3", background: "#555" }}>
-          <div style={{ background: "black", color: "white" }}>Toolbar</div>
-          <div style={{ width: "750px", margin: "0 auto", display: "grid" }}>
-            <Annotation
-              activeAnnotationComparator={activeAnnotationComparator}
-              src={`${process.env.APP_HOST}/${allImages[`${activeImage}`]}`}
-              alt="Image"
-              annotations={annotations?.[`${activeImage}`] || []}
-              type={type?.type}
-              value={annotation?.[`${activeImage}`]}
-              onChange={(value: any) => {
-                setAnnotation({ ...annotation, [`${activeImage}`]: value });
+      <Paper elevation={1} sx={{ padding: "8px" }}>
+        <Paper elevation={0} sx={{ display: "flex", gap: "2px" }}>
+          {annotationImages?.map((image: any, index: number) => (
+            <div
+              onClick={() => {
+                setActiveImage(`image_${index}`);
               }}
-              onSubmit={(e: any) => onSubmit(e)}
-              allowTouch
-            />
-          </div>
-        </div>
-
-        <div
-          style={{
-            background: "#f1f1f1",
-            flex: "1",
-            padding: "1rem",
-            borderRadius: "0.25rem",
-            marginLeft: "1rem",
-          }}
-        >
-          <h5>Label</h5>
-          <br />
-          <div style={{ width: "100%", textAlign: "left" }}>
-            {!!annotations[`${activeImage}`] &&
-              !!annotations[`${activeImage}`].length &&
-              annotations[`${activeImage}`].map((annotate: any) => (
+              style={{ width: "100px", height: "100px" }}
+            >
+              <img
+                src={`${process.env.APP_HOST}/${image}`}
+                style={{ width: "100px", height: "100px", objectFit: "cover" }}
+              />
+            </div>
+          ))}
+        </Paper>
+        <Paper elevation={0} sx={{ mt: "2px" }}>
+          <Grid container>
+            <Grid xs={9}>
+              <Item>
+                <Annotation
+                  activeAnnotationComparator={activeAnnotationComparator}
+                  src={`${process.env.APP_HOST}/${allImages[`${activeImage}`]}`}
+                  alt="Image"
+                  annotations={annotations?.[`${activeImage}`] || []}
+                  type={type?.type}
+                  value={annotation?.[`${activeImage}`]}
+                  onChange={(value: any) => {
+                    setAnnotation({ ...annotation, [`${activeImage}`]: value });
+                  }}
+                  onSubmit={(e: any) => onSubmit(e)}
+                  allowTouch
+                />
+              </Item>
+            </Grid>
+            <Grid xs={3}>
+              <Item>
                 <div
-                  style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+                  style={{
+                    background: "#f1f1f1",
+                    flex: "1",
+                    padding: "1rem",
+                    borderRadius: "0.25rem",
+                    marginLeft: "4px",
+                  }}
                 >
-                  <div>{annotate.data.text}</div>
-                  <div onClick={() => deleteObject(activeImage, annotate?.data?.id)}>Delete</div>
+                  <h5>Labels</h5>
+                  <ol style={{ width: "100%", textAlign: "left" }}>
+                    {!!annotations[`${activeImage}`] &&
+                      !!annotations[`${activeImage}`].length &&
+                      annotations[`${activeImage}`].map((annotate: any) => (
+                        <li
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>{annotate.data.text}</div>
+                          <div onClick={() => deleteObject(activeImage, annotate?.data?.id)}>
+                            Delete
+                          </div>
+                        </li>
+                      ))}
+                  </ol>
                 </div>
-              ))}
-          </div>
-        </div>
-      </div>
-      <br />
-      <br />
-      <Button
-        style={{ float: "right" }}
-        variant="contained"
-        onClick={() => handleModalShow("publish")}
-      >
-        Publish
-      </Button>
-    </>
+              </Item>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Paper>
+    </div>
   );
 }
 
 const mapStateToProps = ({
   appState: { me },
   annotationImageState: { isSubmitting, isLoading, annotationImages },
-}: // // placementState: { placements },
-any) => ({
+}: any) => ({
   isLoading,
   annotationImages,
   isSubmitting,
-  // placements,
 });
 
 const mapDispatchToProps = {
   createAnnotationImage,
   createAnnotation,
+  fetchAnnotationImages,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

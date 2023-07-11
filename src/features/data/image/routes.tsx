@@ -1,6 +1,8 @@
 import { Outlet } from "react-router-dom";
 import app from "src/constants/app";
-import Annotation from "src/features/data/image-Annotation/index";
+// import Annotation from "src/features/data/image/components/annotation/index";
+import Annotation from "src/features/data/image/index";
+
 import withProtectedRoute from "src/hoc/withProtectedRoute";
 import withProtectedSidebar from "src/hoc/withProtectedSidebar";
 

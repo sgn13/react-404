@@ -26,10 +26,6 @@ const api = {
     exclusion: `/exclusion/`,
     placement: `/placement/`,
   },
-  data: {
-    annotationImage: "/image-upload/",
-    annotationData: "/image-upload/annotate",
-  },
   source: {
     root: apiRoot.source,
     folder: `/folder/`,
@@ -63,6 +59,7 @@ const api = {
   featureFiles: "/ml_pipe/get_feature_engineering_files/",
   annotation: {
     annotate: "/image-upload/annotate",
+    upload: "/image-upload/",
   },
 
   logout: "/logout/",
