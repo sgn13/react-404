@@ -2,7 +2,14 @@ import { Box } from "@mui/material";
 import { useState } from "react";
 import Select from "react-select";
 
-export default function ReactSelect({ onChange, selectedValue, options, keyname, ...rest }: any) {
+export default function ReactSelect({
+  onChange,
+  selectedValue,
+  options,
+  placeholder = "Select Response Type",
+  keyname,
+  ...rest
+}: any) {
   const [isClearable, setIsClearable] = useState(true);
   const [isSearchable, setIsSearchable] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -54,7 +61,7 @@ export default function ReactSelect({ onChange, selectedValue, options, keyname,
         isRtl={isRtl}
         className="SelectResponseType"
         classNamePrefix="select"
-        placeholder="Select Response Type"
+        placeholder={placeholder}
         onChange={onChange}
         isDisabled={isDisabled}
         value={selectedValue}

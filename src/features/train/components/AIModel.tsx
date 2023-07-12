@@ -6,15 +6,16 @@ import Label from "src/components/Label";
 import ReactSelect from "src/components/ReactSelect/ReactSelect";
 import { fetchModels } from "src/store/model/actions";
 import { AppState } from "src/store/reducer";
+import VariableInputTable from "./VariableInput";
 
 function Model({
   models,
   isLoading,
   fetchModels,
   setFieldValue,
-  value,
+  values,
   name,
-}: PropsFromRedux & { setFieldValue?: any; value?: any; name?: any }) {
+}: PropsFromRedux & { setFieldValue?: any; values?: any; name?: any }) {
   useEffect(() => {
     fetchModels({ query: { perPage: 90 } });
   }, []);
@@ -32,6 +33,15 @@ function Model({
           options={models?.items || []}
         />
       </FormGroup>
+      {values[name].variables?.length ? (
+        <FormGroup>
+          <VariableInputTable
+            name="modelVariables"
+            variables={values[name].variables}
+            setFieldValue={setFieldValue}
+          />
+        </FormGroup>
+      ) : null}
     </Grid>
   );
 }
