@@ -53,7 +53,7 @@ const api = {
     root: "/ml_pipe/tunnel/build",
   },
 
-  finetune: "/fine-tune",
+  finetune: "/ml_pipe/fine-tune",
 
   predict: "/ml_pipe/tunnel/predict",
   featureFiles: "/ml_pipe/get_feature_engineering_files/",
