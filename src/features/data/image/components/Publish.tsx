@@ -1,5 +1,5 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ConnectedProps, connect } from "react-redux";
 import { createAnnotation } from "src/store/annotation/actions";
 import { AppState } from "src/store/reducer";
@@ -24,6 +24,10 @@ function Train({
 }) {
   const [isTraining, setIsTraining] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (nextStep?.name === "Publish") setIsTraining(false);
+  }, [nextStep?.name]);
 
   const handlePublish = async () => {
     try {
@@ -56,6 +60,7 @@ function Train({
         }));
 
         const payload = {
+          project_name: values?.projectName,
           train: trainData,
           valid: validData,
         };

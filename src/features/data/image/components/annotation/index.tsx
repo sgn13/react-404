@@ -40,10 +40,10 @@ function AnnotationImage({
   const [imageSizes, setImageSizes] = useState({});
 
   useEffect(() => {
-    if (next?.name === "Ratio" && values?.projectName) {
+    if (next?.name === "Ratio" && values?.projectName && !annotationImages.length) {
       fetchAnnotationImages({ query: { project_name: values.projectName, perPage: 99 } });
     }
-  }, [values.projectName, next?.name]);
+  }, [values.projectName, next?.name, annotationImages]);
 
   useEffect(() => {
     if (!annotationImages && !annotationImages?.length) return;
@@ -236,7 +236,7 @@ function AnnotationImage({
                     marginLeft: "4px",
                   }}
                 >
-                  <h5>Labels</h5>
+                  <h5>Boxes</h5>
                   <ol style={{ width: "100%", textAlign: "left" }}>
                     {!!annotations[`${activeImage}`] &&
                       !!annotations[`${activeImage}`].length &&
