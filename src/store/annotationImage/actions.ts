@@ -147,12 +147,14 @@ export const fetchAnnotationImages: AppThunk =
   };
 
 export const createAnnotationImage: AppThunk =
-  ({ values }) =>
+  ({ values, projectName }) =>
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       dispatch(setIsSubmitting(true));
-      const { data, status } = await network({}).post(api.annotation.upload, values);
-      console.log(data, "dadadatatat");
+      const { data, status } = await network({}).post(
+        `${api.annotation.upload}?project_name=${projectName}`,
+        values,
+      );
 
       if (status === 200 || (status > 200 && status < 300)) {
         // dispatch(createAnnotationImageData(data?.data?.[0]));

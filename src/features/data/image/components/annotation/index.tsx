@@ -20,6 +20,7 @@ function AnnotationImage({
   annotationImages,
   setFieldValue,
   name,
+  next,
   values,
 }: PropsFromRedux) {
   const [showModal, setShowModal] = useState(undefined);
@@ -29,17 +30,8 @@ function AnnotationImage({
   const handleModalShow = (mode: any) => setShowModal(mode);
   const handleModalClose = () => setShowModal(undefined);
 
-  const images = localStorage.getItem("images")?.split(",");
-
-  const [openMultiImage, setOpenMultiImage] = useState(false);
-
   const [type, setType] = useState(RectangleSelector);
-  const [annotations, setAnnotations] = useState<any>({
-    image_0: [],
-    image_1: [],
-    image_2: [],
-    image_3: [],
-  });
+  const [annotations, setAnnotations] = useState<any>({});
   const [allImages, setAllImages] = useState<any>("");
   const [annotatedImages, setAnnotatedImages] = useState([]);
   const [annotation, setAnnotation] = useState<any>("");
@@ -48,10 +40,13 @@ function AnnotationImage({
   const [imageSizes, setImageSizes] = useState({});
 
   useEffect(() => {
-    fetchAnnotationImages({});
-  }, []);
+    if (next?.name === "Ratio" && values?.projectName) {
+      fetchAnnotationImages({ query: { project_name: values.projectName, perPage: 99 } });
+    }
+  }, [values.projectName, next?.name]);
 
   useEffect(() => {
+    if (!annotationImages && !annotationImages?.length) return;
     let obj = {};
     let objImg = {};
     annotationImages?.forEach((image: any, index: any) => {
@@ -62,6 +57,13 @@ function AnnotationImage({
     setAllImages(objImg);
     // creating map data structure to store corresponding annotation data
     setAnnotation(obj);
+
+    const initialAnnotations = annotationImages.reduce((acc, item, index) => {
+      acc[`image_${index}`] = [];
+      return acc;
+    }, {});
+
+    setAnnotations(initialAnnotations);
   }, [annotationImages]);
 
   useEffect(() => {
@@ -93,7 +95,7 @@ function AnnotationImage({
   useEffect(() => {
     const loadImages = async () => {
       const imagesURLs = Object.entries(allImages).map((image: any) => {
-        return `${process.env.APP_HOST}/${image[1]}`;
+        return `${process.env.API_HOST}/${image[1]}`;
       });
       let imageIndividualSizes = {};
 
@@ -159,7 +161,7 @@ function AnnotationImage({
     });
   };
 
-  console.log({ allImages, annotatedImages, annotations, imageSizes, annotation });
+  // console.log({ allImages, annotatedImages, annotations, activeImage, imageSizes, annotation });
 
   return (
     <div>
@@ -198,7 +200,7 @@ function AnnotationImage({
               style={{ width: "100px", height: "100px" }}
             >
               <img
-                src={`${process.env.APP_HOST}/${image}`}
+                src={`${process.env.API_HOST}/${image}`}
                 style={{ width: "100px", height: "100px", objectFit: "cover" }}
               />
             </div>
@@ -210,7 +212,7 @@ function AnnotationImage({
               <Item>
                 <Annotation
                   activeAnnotationComparator={activeAnnotationComparator}
-                  src={`${process.env.APP_HOST}/${allImages[`${activeImage}`]}`}
+                  src={`${process.env.API_HOST}/${allImages[`${activeImage}`]}`}
                   alt="Image"
                   annotations={annotations?.[`${activeImage}`] || []}
                   type={type?.type}

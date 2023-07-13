@@ -152,11 +152,11 @@ export const createAnnotation: AppThunk =
   async (dispatch: Dispatch): Promise<boolean> => {
     try {
       dispatch(setIsSubmitting(true));
-      const { data, status } = await network({}).post(api.annotation.annotate, [values]);
+      const { data, status } = await network({}).post(api.annotation.annotate, values);
       if (status === 200 || (status > 200 && status < 300)) {
-        dispatch(createAnnotationData(data.data[0]));
+        console.log("annotation created");
+        // dispatch(createAnnotationData(data.data[0]));
         dispatch(setIsSubmitting(false));
-
         return true;
       }
       return false;

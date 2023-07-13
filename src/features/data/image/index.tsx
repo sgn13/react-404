@@ -140,7 +140,7 @@ function Index({ reduxTheme }: PropsFromRedux) {
           projectName: "",
           images: "",
           annotations: [],
-          train: 20,
+          train: 80,
         }}
         validateOnBlur={false}
         validateOnChange={false}
@@ -191,7 +191,12 @@ function Index({ reduxTheme }: PropsFromRedux) {
                 />
               </Hidden>
               <Hidden show={nextStep?.name === "Annotate"}>
-                <Annotation name="annotations" setFieldValue={setFieldValue} values={values} />
+                <Annotation
+                  name="annotations"
+                  next={getNextItem()}
+                  setFieldValue={setFieldValue}
+                  values={values}
+                />
               </Hidden>
               <Hidden show={nextStep?.name === "Ratio"}>
                 <Ratio setFieldValue={setFieldValue} values={values} errors={errors} />

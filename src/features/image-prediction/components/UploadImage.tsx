@@ -19,15 +19,9 @@ function UploadImages({
       <MultiUploader
         setOpenMultiImage={setOpenMultiImage}
         openMultiImage={openMultiImage}
-        initialData={
-          // handleFormikFields?.values?.[`${item?.component}__${item.id}`]
-          //   ?.media || []
-          []
-        }
-        // For={'Objects'}
-        // clearData={clearData}
-        // setClearData={setClearData}
+        initialData={[]}
         maxFileSize={10}
+        multiple={false}
         requireDescription={false}
         accept={{
           "image/jpeg": [".jpeg", ".jpg"],
@@ -37,15 +31,16 @@ function UploadImages({
         icon={
           <div className="attach__files-icon">
             <Button sx={{ textTransform: "none" }} variant="contained">
-              Upload Images to {values?.projectName}
+              Upload image to be predicted
             </Button>
           </div>
         }
         defaultViewer={false}
         getFileData={async (files: any = []) => {
+          console.log("file submitted");
           const formData = new FormData();
           const linkFiles: any = [];
-          files[0]?.documents?.forEach((doc: any, index: number) => {
+          const Files = files[0]?.documents?.map((doc: any, index: number) => {
             if (doc.file) {
               formData.append(`files`, doc?.file);
             } else {
@@ -53,10 +48,9 @@ function UploadImages({
             }
           });
 
-          await createAnnotationImage({
-            values: formData,
-            projectName: values.projectName,
-          });
+          console.log("files", Files);
+
+          // await createAnnotationImage({ values: formData });
         }}
       />
     </Grid>

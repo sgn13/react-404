@@ -11,6 +11,7 @@ import imageRoutes from "src/features/data/image/routes";
 import environmentRoutes from "src/features/environment/routes";
 import featureEngineeringRoutes from "src/features/feature-engineering/routes";
 import finetuneRoutes from "src/features/finetune/routes";
+import ImagePredictionRoutes from "src/features/image-prediction/routes";
 import modelRoutes from "src/features/model/routes";
 import predictRoutes from "src/features/predict/routes";
 import folderRoutes from "src/features/source/folder/routes";
@@ -98,6 +99,7 @@ const routes = [
       ...finetuneRoutes,
       ...dataRoutes,
       ...imageRoutes,
+      ...ImagePredictionRoutes,
       ...errorRoutes,
     ],
   },

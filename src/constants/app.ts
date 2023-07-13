@@ -47,6 +47,7 @@ const app = {
   },
   predict: {
     root: "/predict",
+    image: "/image-prediction",
   },
   configuration: {
     libraries: "/configuration/libraries",
@@ -99,13 +100,6 @@ const app = {
     create: `/role/create`,
     update: (id = "") => `/role/${id}/update`,
     view: (id = "") => `/role/${id}/view`,
-  },
-
-  movie: {
-    root: "/movie",
-    create: `/movie/create`,
-    update: (id = "") => `/movie/${id}/update`,
-    view: (id = "") => `/movie/${id}/view`,
   },
 
   liveClients: `/live-clients`,

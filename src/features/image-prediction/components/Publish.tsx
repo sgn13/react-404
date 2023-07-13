@@ -55,7 +55,10 @@ function Train({
           })),
         }));
 
+        console.log({ trainData, validData });
+
         const payload = {
+          project_name: values?.projectName,
           train: trainData,
           valid: validData,
         };
@@ -67,7 +70,6 @@ function Train({
       }
     } catch (err) {
       console.log("error", err);
-      setIsTraining(false);
       setIsSubmitting(false);
     }
   };

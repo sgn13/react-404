@@ -62,6 +62,12 @@ const api = {
     upload: "/image-upload/",
   },
 
+  imagePrediction: {
+    root: "/predict-image",
+    imageProject: "/image-project",
+    uploadPredictImage: "/upload-predict-image",
+  },
+
   logout: "/logout/",
   me: "/me/",
   folder: "/folder",

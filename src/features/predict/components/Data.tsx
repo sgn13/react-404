@@ -30,7 +30,8 @@ function Data({
         <FileInput
           id={name}
           name={name}
-          accept="application/json,.csv"
+          accept="*"
+          // accept="application/json,.csv"
           // editData={editData}
           onChange={(event) => {
             const { files } = event.target;

@@ -1,18 +1,15 @@
 import { ConnectedProps, connect } from "react-redux";
 // import Layout from 'src/layouts/common/Index';
-import { Button, Paper, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import { FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import FormikBase from "src/components/FormikBase/FormikBase";
 import Stepper from "src/components/Stepper/Stepper";
-import api from "src/constants/api";
 import styled from "src/lib/mui/styled";
 import { AppState } from "src/store/reducer";
-import network from "src/utils/network";
-import AIModel from "./components/AIModel";
-import Data from "./components/Data";
-import Environment from "./components/Environment";
-import Features from "./components/Features";
-import Train from "./components/Train";
+import Project from "./components/Project";
+import Publish from "./components/Publish";
+import UploadImages from "./components/UploadImage";
 
 const StyledDiv = styled("div")(({ theme }) => ({}));
 const Hidden = styled("div")(({ show }: { show?: boolean }) => ({
@@ -20,11 +17,9 @@ const Hidden = styled("div")(({ show }: { show?: boolean }) => ({
 }));
 
 const stepData = [
-  { id: 1, name: "Training Dataset", position: 1, icon: "" },
-  { id: 2, name: "Features", position: 2, icon: "" },
-  { id: 3, name: "AI Model", position: 3, icon: "" },
-  { id: 4, name: "Environment", position: 4, icon: "" },
-  { id: 5, name: "Train", position: 5, icon: "" },
+  { id: 1, name: "Project", position: 1, icon: "" },
+  { id: 2, name: "Upload Image", position: 2, icon: "" },
+  { id: 5, name: "Predict", position: 5, icon: "" },
 ];
 
 // stepper component
@@ -50,7 +45,7 @@ const getLowestPositionItem = (items) => {
 };
 
 const NO_NEXT_STEP = "no-next-step";
-let tunnelId: any = null;
+const tunnelId: any = null;
 // nextstep to currentstep
 function Index({ reduxTheme }: PropsFromRedux) {
   const [steps, setSteps] = useState([]);
@@ -80,26 +75,26 @@ function Index({ reduxTheme }: PropsFromRedux) {
   const handleNext = async (values: any) => {
     try {
       const next = getNextItem();
-      if (next && nextStep?.name === "Environment") {
-        const featureIdsInOrder = values.features.map((item) => item.id);
-        const response = {
-          name: `default-name-${new Date().getTime()}`,
-          fes_order: featureIdsInOrder,
-          ml_model: values.model.id,
-          prediction_variable: "default-prediction-variable",
-          build_path: "default-build-path",
-          environment: values.environment?.id,
-          data: values?.fileUpload?.id,
-        };
-        setIsPipeSubmitting(true);
-        const { data, status } = await network({}).post(api.mlPipe.root, [response]);
-        tunnelId = data?.tunnel_id;
-        if (data) {
-          setIsPipeSubmitting(false);
-          setNextStep(next);
-        }
-        return;
-      }
+      // if (next && nextStep?.name === "Environment") {
+      //   const featureIdsInOrder = values.features.map((item) => item.id);
+      //   const response = {
+      //     name: `default-name-${new Date().getTime()}`,
+      //     fes_order: featureIdsInOrder,
+      //     ml_model: values.model.id,
+      //     prediction_variable: "default-prediction-variable",
+      //     build_path: "default-build-path",
+      //     environment: values.environment?.id,
+      //     data: values?.fileUpload?.id,
+      //   };
+      //   setIsPipeSubmitting(true);
+      //   const { data, status } = await network({}).post(api.mlPipe.root, [response]);
+      //   tunnelId = data?.tunnel_id;
+      //   if (data) {
+      //     setIsPipeSubmitting(false);
+      //     setNextStep(next);
+      //   }
+      //   return;
+      // }
 
       if (next) setNextStep(next);
     } catch (err) {
@@ -129,7 +124,7 @@ function Index({ reduxTheme }: PropsFromRedux) {
   return (
     <StyledDiv>
       <Typography variant="h5" gutterBottom={1} sx={{ color: "#143467c9" }}>
-        Train your AI Model
+        Image Prediction
       </Typography>
       <Stepper
         steps={steps}
@@ -138,12 +133,10 @@ function Index({ reduxTheme }: PropsFromRedux) {
       />
       <FormikBase
         initialValues={{
-          fileUpload: "",
-          features: [],
-          featureVariables: "",
-          model: "",
-          modelVariables: "",
-          environment: "",
+          projectName: "",
+          images: "",
+          annotations: [],
+          train: 20,
         }}
         validateOnBlur={false}
         validateOnChange={false}
@@ -168,63 +161,43 @@ function Index({ reduxTheme }: PropsFromRedux) {
             dirty,
             setFieldValue,
             setFieldTouched,
+            resetForm,
           } = props;
-
           return (
             <form
               className="assign-activity-form"
               onSubmit={handleSubmit}
-              style={{ margin: ".8rem 0" }}
+              style={{ margin: "1rem 0" }}
             >
-              <Paper
-                style={{
-                  marginTop: 10,
-                  padding: 8,
-                  minHeight: "100px",
-                  color: "gray",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <div
-                  style={{
-                    maxWidth: 500,
-                    width: "100%",
-                  }}
-                >
-                  <Hidden show={nextStep?.name === "Training Dataset"}>
-                    <Data
-                      name="fileUpload"
-                      setFieldValue={setFieldValue}
-                      value={values.fileUpload}
-                    />
-                  </Hidden>
-                  <Hidden show={nextStep?.name === "Features"}>
-                    <Features name="features" setFieldValue={setFieldValue} values={values} />
-                  </Hidden>
-                  <Hidden show={nextStep?.name === "AI Model"}>
-                    <AIModel name="model" setFieldValue={setFieldValue} values={values} />
-                  </Hidden>
-                  <Hidden show={nextStep?.name === "Environment"}>
-                    <Environment
-                      name="environment"
-                      setFieldValue={setFieldValue}
-                      value={values.environment}
-                    />
-                  </Hidden>
-                  <Hidden show={nextStep?.name === "Train"}>
-                    <Train
-                      nextStep={nextStep}
-                      setFieldValue={setFieldValue}
-                      setNextStep={setNextStep}
-                      next={getNextItem()}
-                      noNextStep={NO_NEXT_STEP}
-                      tunnelId={tunnelId}
-                      values={values}
-                    />
-                  </Hidden>
-                </div>
-              </Paper>
+              <Hidden show={nextStep?.name === "Project"}>
+                <Project
+                  name="project"
+                  setFieldValue={setFieldValue}
+                  values={values}
+                  errors={errors}
+                />
+              </Hidden>
+              <Hidden show={nextStep?.name === "Upload Image"}>
+                <UploadImages
+                  name="images"
+                  setFieldValue={setFieldValue}
+                  values={values}
+                  errors={errors}
+                />
+              </Hidden>
+
+              <Hidden show={nextStep?.name === "Publish"}>
+                <Publish
+                  nextStep={nextStep}
+                  setFieldValue={setFieldValue}
+                  setNextStep={setNextStep}
+                  next={getNextItem()}
+                  noNextStep={NO_NEXT_STEP}
+                  resetForm={resetForm}
+                  values={values}
+                />
+              </Hidden>
+
               <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 10 }}>
                 <Button variant="outlined" onClick={() => handlePrev(values)}>
                   prev

@@ -105,6 +105,17 @@ export const IndexSidebar = () => [
 
   // {
   //   id: uniqueId(),
+  //   icon: AiModel,
+  //   label: "Image Prediction",
+  //   location: "top",
+  //   path: app.predict.image,
+  //   role: "user",
+  //   Permission: undefined,
+  //   collasped: false,
+  // },
+
+  // {
+  //   id: uniqueId(),
   //   icon: Source,
   //   label: "Source",
   //   location: "top",
