@@ -21,8 +21,8 @@ const Hidden = styled("div")(({ show }: { show?: boolean }) => ({
 
 const stepData = [
   { id: 1, name: "Training Dataset", position: 1, icon: "" },
-  { id: 3, name: "AI Model", position: 3, icon: "" },
   { id: 2, name: "Features", position: 2, icon: "" },
+  { id: 3, name: "AI Model", position: 3, icon: "" },
   { id: 4, name: "Environment", position: 4, icon: "" },
   { id: 5, name: "Train", position: 5, icon: "" },
 ];
@@ -140,7 +140,9 @@ function Index({ reduxTheme }: PropsFromRedux) {
         initialValues={{
           fileUpload: "",
           features: [],
+          featureVariables: "",
           model: "",
+          modelVariables: "",
           environment: "",
         }}
         validateOnBlur={false}
@@ -167,6 +169,7 @@ function Index({ reduxTheme }: PropsFromRedux) {
             setFieldValue,
             setFieldTouched,
           } = props;
+
           console.log({ values });
           return (
             <form
@@ -198,14 +201,10 @@ function Index({ reduxTheme }: PropsFromRedux) {
                     />
                   </Hidden>
                   <Hidden show={nextStep?.name === "Features"}>
-                    <Features
-                      name="features"
-                      setFieldValue={setFieldValue}
-                      value={values.features}
-                    />
+                    <Features name="features" setFieldValue={setFieldValue} values={values} />
                   </Hidden>
                   <Hidden show={nextStep?.name === "AI Model"}>
-                    <AIModel name="model" setFieldValue={setFieldValue} value={values.model} />
+                    <AIModel name="model" setFieldValue={setFieldValue} values={values} />
                   </Hidden>
                   <Hidden show={nextStep?.name === "Environment"}>
                     <Environment
@@ -222,6 +221,7 @@ function Index({ reduxTheme }: PropsFromRedux) {
                       next={getNextItem()}
                       noNextStep={NO_NEXT_STEP}
                       tunnelId={tunnelId}
+                      values={values}
                     />
                   </Hidden>
                 </div>

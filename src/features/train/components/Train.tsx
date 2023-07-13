@@ -10,6 +10,7 @@ function Train({
   next,
   noNextStep,
   tunnelId,
+  values,
 }: {
   nextStep?: any;
   setFieldValue?: any;
@@ -17,6 +18,7 @@ function Train({
   next?: any;
   noNextStep?: string;
   tunnelId?: string;
+  values?: any;
 }) {
   const [isTraining, setIsTraining] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,15 +29,15 @@ function Train({
         setIsSubmitting(true);
         const { data, status } = await network({}).post(api.mlPipeBuild.root, {
           tunnel_id: tunnelId,
+          feature_vars: values.featureVariables,
+          model_vars: values.modelVariables,
         });
         if (status === 200 || (status > 200 && status < 300)) {
           setIsTraining(true);
           setIsSubmitting(false);
         }
-        console.log("train res data", data);
       }
     } catch (err) {
-      console.log("error", err);
       setIsSubmitting(false);
     }
   };
