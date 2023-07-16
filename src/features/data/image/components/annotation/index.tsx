@@ -22,6 +22,7 @@ function AnnotationImage({
   name,
   next,
   values,
+  nextStep,
 }: PropsFromRedux) {
   const [showModal, setShowModal] = useState(undefined);
 
@@ -30,28 +31,29 @@ function AnnotationImage({
   const handleModalShow = (mode: any) => setShowModal(mode);
   const handleModalClose = () => setShowModal(undefined);
 
-  const [type, setType] = useState(RectangleSelector);
+  const [type, setType] = useState(RectangleSelector.TYPE);
   const [annotations, setAnnotations] = useState<any>({});
   const [allImages, setAllImages] = useState<any>("");
   const [annotatedImages, setAnnotatedImages] = useState([]);
-  const [annotation, setAnnotation] = useState<any>("");
-  const [activeImage, setActiveImage] = useState("image_0");
+  const [annotation, setAnnotation] = useState<any>({});
+  const [activeImage, setActiveImage] = useState("");
 
   const [imageSizes, setImageSizes] = useState({});
 
   useEffect(() => {
-    if (next?.name === "Ratio" && values?.projectName && !annotationImages.length) {
+    if (nextStep?.name === "Annotate" && values?.projectName) {
       fetchAnnotationImages({ query: { project_name: values.projectName, perPage: 99 } });
     }
-  }, [values.projectName, next?.name, annotationImages]);
+  }, [values.projectName, nextStep?.name]);
 
   useEffect(() => {
     if (!annotationImages && !annotationImages?.length) return;
+    setActiveImage(annotationImages[0]);
     let obj = {};
     let objImg = {};
     annotationImages?.forEach((image: any, index: any) => {
-      obj = { ...obj, [`image_${index}`]: {} };
-      objImg = { ...objImg, [`image_${index}`]: image };
+      obj = { ...obj, image: {} };
+      objImg = { ...objImg, [image]: image };
     });
     // assigning names to   annotationimages url
     setAllImages(objImg);
@@ -59,7 +61,7 @@ function AnnotationImage({
     setAnnotation(obj);
 
     const initialAnnotations = annotationImages.reduce((acc, item, index) => {
-      acc[`image_${index}`] = [];
+      acc[item] = [];
       return acc;
     }, {});
 
@@ -92,44 +94,44 @@ function AnnotationImage({
     setFieldValue(name, annotatedItems);
   }, [allImages, annotations, name]);
 
-  useEffect(() => {
-    const loadImages = async () => {
-      const imagesURLs = Object.entries(allImages).map((image: any) => {
-        return `${process.env.API_HOST}/${image[1]}`;
-      });
-      let imageIndividualSizes = {};
+  // useEffect(() => {
+  //   const loadImages = async () => {
+  //     const imagesURLs = Object.entries(allImages).map((image: any) => {
+  //       return `${process.env.API_HOST}/${image[1]}`;
+  //     });
+  //     let imageIndividualSizes = {};
 
-      if (imagesURLs.length) {
-        await Promise.all<void>(
-          imagesURLs.map((imageUrl: any, index: number) => {
-            return new Promise<void>((resolve, reject) => {
-              const img = new Image();
-              img.src = imageUrl;
+  //     if (imagesURLs.length) {
+  //       await Promise.all<void>(
+  //         imagesURLs.map((imageUrl: any, index: number) => {
+  //           return new Promise<void>((resolve, reject) => {
+  //             const img = new Image();
+  //             img.src = imageUrl;
 
-              img.onload = () => {
-                imageIndividualSizes = {
-                  ...imageIndividualSizes,
-                  [`image_${index}`]: {
-                    width: img.width,
-                    height: img.height,
-                  },
-                };
-                resolve();
-              };
+  //             img.onload = () => {
+  //               imageIndividualSizes = {
+  //                 ...imageIndividualSizes,
+  //                 [imageUrl]: {
+  //                   width: img.width,
+  //                   height: img.height,
+  //                 },
+  //               };
+  //               resolve();
+  //             };
 
-              img.onerror = (err) => {
-                reject(err);
-              };
-            });
-          }),
-        );
-      }
+  //             img.onerror = (err) => {
+  //               reject(err);
+  //             };
+  //           });
+  //         }),
+  //       );
+  //     }
 
-      setImageSizes(imageIndividualSizes);
-    };
+  //     setImageSizes(imageIndividualSizes);
+  //   };
 
-    loadImages();
-  }, [allImages]);
+  //   loadImages();
+  // }, [allImages]);
 
   const onSubmit = (e: any) => {
     const { geometry, data }: any = annotation[`${activeImage}`];
@@ -162,6 +164,16 @@ function AnnotationImage({
   };
 
   // console.log({ allImages, annotatedImages, annotations, activeImage, imageSizes, annotation });
+  console.log({
+    annotationImages,
+    allImages,
+    activeImage,
+    src: `${process.env.API_HOST}/${allImages[`${activeImage}`]}`,
+    annotations: annotations?.[`${activeImage}`],
+    value: annotation?.[`${activeImage}`],
+    type,
+    activeAnnotation: annotations?.[`${activeImage}`],
+  });
 
   return (
     <div>
@@ -195,7 +207,7 @@ function AnnotationImage({
           {annotationImages?.map((image: any, index: number) => (
             <div
               onClick={() => {
-                setActiveImage(`image_${index}`);
+                setActiveImage(image);
               }}
               style={{ width: "100px", height: "100px" }}
             >
@@ -210,19 +222,21 @@ function AnnotationImage({
           <Grid container>
             <Grid xs={9}>
               <Item>
-                <Annotation
-                  activeAnnotationComparator={activeAnnotationComparator}
-                  src={`${process.env.API_HOST}/${allImages[`${activeImage}`]}`}
-                  alt="Image"
-                  annotations={annotations?.[`${activeImage}`] || []}
-                  type={type?.type}
-                  value={annotation?.[`${activeImage}`]}
-                  onChange={(value: any) => {
-                    setAnnotation({ ...annotation, [`${activeImage}`]: value });
-                  }}
-                  onSubmit={(e: any) => onSubmit(e)}
-                  allowTouch
-                />
+                {activeImage && type && annotations?.[`${activeImage}`] ? (
+                  <Annotation
+                    activeAnnotationComparator={activeAnnotationComparator}
+                    src={`${process.env.API_HOST}/${allImages[`${activeImage}`]}`}
+                    alt="Image"
+                    annotations={annotations?.[`${activeImage}`] || []}
+                    type={type}
+                    value={annotation?.[`${activeImage}`] || {}}
+                    onChange={(value: any) => {
+                      setAnnotation({ ...annotation, [`${activeImage}`]: value });
+                    }}
+                    onSubmit={(e: any) => onSubmit(e)}
+                    allowTouch
+                  />
+                ) : null}
               </Item>
             </Grid>
             <Grid xs={3}>

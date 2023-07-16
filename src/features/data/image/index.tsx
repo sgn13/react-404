@@ -167,7 +167,7 @@ function Index({ reduxTheme }: PropsFromRedux) {
             setFieldTouched,
             resetForm,
           } = props;
-          console.log("image formik", values);
+          // console.log("image formik", values);
           return (
             <form
               className="assign-activity-form"
@@ -192,6 +192,7 @@ function Index({ reduxTheme }: PropsFromRedux) {
               </Hidden>
               <Hidden show={nextStep?.name === "Annotate"}>
                 <Annotation
+                  nextStep={nextStep}
                   name="annotations"
                   next={getNextItem()}
                   setFieldValue={setFieldValue}
