@@ -2,7 +2,6 @@ import { uniqueId } from "lodash";
 import { AiOutlineFile } from "react-icons/ai";
 import { FcFolder } from "react-icons/fc";
 import AiModel from "src/assets/icons/sidebar/ai.png";
-import Configuration from "src/assets/icons/sidebar/configuration.png";
 import Source from "src/assets/icons/sidebar/source.png";
 
 import { filterNode, findNode } from "src/utils/pollyfills";
@@ -103,6 +102,17 @@ export const IndexSidebar = () => [
     collasped: false,
   },
 
+  {
+    id: uniqueId(),
+    icon: AiModel,
+    label: "File Explorer",
+    location: "top",
+    path: app.fileExplorer,
+    role: "user",
+    Permission: undefined,
+    collasped: false,
+  },
+
   // {
   //   id: uniqueId(),
   //   icon: AiModel,
@@ -177,58 +187,58 @@ export const IndexSidebar = () => [
   //   Permission: undefined,
   //   collasped: false,
   // },
-  {
-    id: uniqueId(),
-    icon: Configuration,
-    label: "Configuration",
-    location: "top",
-    path: "",
-    role: "user",
-    Permission: undefined,
-    collasped: true,
-    children: [
-      {
-        id: uniqueId(),
-        icon: Configuration,
-        label: "Library",
-        location: "top",
-        path: app.configuration.libraries,
-        role: "user",
-        Permission: undefined,
-        collasped: true,
-      },
-      {
-        id: uniqueId(),
-        icon: Configuration,
-        label: "Controllers",
-        location: "top",
-        path: app.configuration.controllers,
-        role: "user",
-        Permission: undefined,
-        collasped: true,
-      },
-      {
-        id: uniqueId(),
-        icon: Configuration,
-        label: "Placement",
-        location: "top",
-        path: app.configuration.placement,
-        role: "user",
-        Permission: undefined,
-        collasped: true,
-      },
-      {
-        id: uniqueId(),
-        icon: Configuration,
-        label: "Exclusion",
-        location: "top",
-        path: app.configuration.exclusion,
-        role: "user",
-        Permission: undefined,
-        collasped: true,
-      },
-    ],
-  },
+  // {
+  //   id: uniqueId(),
+  //   icon: Configuration,
+  //   label: "Configuration",
+  //   location: "top",
+  //   path: "",
+  //   role: "user",
+  //   Permission: undefined,
+  //   collasped: true,
+  //   children: [
+  //     {
+  //       id: uniqueId(),
+  //       icon: Configuration,
+  //       label: "Library",
+  //       location: "top",
+  //       path: app.configuration.libraries,
+  //       role: "user",
+  //       Permission: undefined,
+  //       collasped: true,
+  //     },
+  //     {
+  //       id: uniqueId(),
+  //       icon: Configuration,
+  //       label: "Controllers",
+  //       location: "top",
+  //       path: app.configuration.controllers,
+  //       role: "user",
+  //       Permission: undefined,
+  //       collasped: true,
+  //     },
+  //     {
+  //       id: uniqueId(),
+  //       icon: Configuration,
+  //       label: "Placement",
+  //       location: "top",
+  //       path: app.configuration.placement,
+  //       role: "user",
+  //       Permission: undefined,
+  //       collasped: true,
+  //     },
+  //     {
+  //       id: uniqueId(),
+  //       icon: Configuration,
+  //       label: "Exclusion",
+  //       location: "top",
+  //       path: app.configuration.exclusion,
+  //       role: "user",
+  //       Permission: undefined,
+  //       collasped: true,
+  //     },
+  //   ],
+  // },
 
   // {
   //   id: uniqueId(),

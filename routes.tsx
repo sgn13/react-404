@@ -10,6 +10,7 @@ import fileUploadRoutes from "src/features/data/file-upload/routes";
 import imageRoutes from "src/features/data/image/routes";
 import environmentRoutes from "src/features/environment/routes";
 import featureEngineeringRoutes from "src/features/feature-engineering/routes";
+import fileExplorerRoutes from "src/features/file-explorer/routes";
 import finetuneRoutes from "src/features/finetune/routes";
 import ImagePredictionRoutes from "src/features/image-prediction/routes";
 import modelRoutes from "src/features/model/routes";
@@ -100,6 +101,7 @@ const routes = [
       ...dataRoutes,
       ...imageRoutes,
       ...ImagePredictionRoutes,
+      ...fileExplorerRoutes,
       ...errorRoutes,
     ],
   },

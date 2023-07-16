@@ -70,7 +70,7 @@ const api = {
 
   logout: "/logout/",
   me: "/me/",
-  folder: "/folder",
+  folder: "/folder/",
   getUserVideoUploadPath: (id: string) => `/users/${id}/upload/video/`,
   uploadFile: "/upload/file",
 

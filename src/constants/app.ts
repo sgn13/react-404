@@ -45,6 +45,7 @@ const app = {
   finetune: {
     root: "/finetune",
   },
+  fileExplorer: "/file-explorer",
   predict: {
     root: "/predict",
     image: "/image-prediction",
