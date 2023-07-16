@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { ConnectedProps, connect } from "react-redux";
 
-import { Paper } from "@mui/material";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { Button, Paper } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import styled from "@mui/styles/styled";
 import Annotation from "react-image-annotation";
@@ -12,6 +13,36 @@ import { createAnnotationImage, fetchAnnotationImages } from "src/store/annotati
 import AnnotationForm from "./Form";
 
 const Item = styled("div")(({ theme }) => ({}));
+
+const AnnotationImg = styled("div")(({ theme, image, activeImage }) => ({
+  width: "100px",
+  boxSizing: "border-box",
+  height: "100px",
+  transform: image === activeImage ? "translateY(-5px)" : "none",
+  transition: "0.4s transform",
+  cursor: "pointer",
+  borderRadius: "2px",
+}));
+
+const AnnotationBoxes = styled("div")(({ theme }) => ({
+  background: "#052A63",
+  flex: "1",
+  padding: "1rem",
+  borderRadius: "0.25rem",
+  marginLeft: "4px",
+}));
+
+const AnnotationBox = styled("div")(({ theme }) => ({
+  width: "100%",
+  textAlign: "left",
+  borderBottom: "0.5px solid #cccccc86",
+  padding: "4px",
+  lineHeight: 2,
+  "&:hover": {
+    background: "#d6ca2142",
+    borderRadius: "2px",
+  },
+}));
 
 function AnnotationImage({
   fetchAnnotationImages,
@@ -37,8 +68,13 @@ function AnnotationImage({
   const [annotatedImages, setAnnotatedImages] = useState([]);
   const [annotation, setAnnotation] = useState<any>({});
   const [activeImage, setActiveImage] = useState("");
+  const [activeAnnotations, setActiveAnnotations] = useState([]);
 
   const [imageSizes, setImageSizes] = useState({});
+
+  useEffect(() => {
+    setActiveAnnotations(annotations[activeImage]);
+  }, [activeImage, annotations]);
 
   useEffect(() => {
     if (nextStep?.name === "Annotate" && values?.projectName) {
@@ -151,9 +187,16 @@ function AnnotationImage({
     });
   };
 
-  const activeAnnotationComparator = (a: any, b: any) => {
-    return a.data.id === b;
+  const handleMouseOver = (id: any) => (e: any) => {
+    setActiveAnnotations((prev: any) => [...prev, id]);
   };
+
+  const handleMouseOut = (id: any) => (e: any) => {
+    const index = activeAnnotations.indexOf(id);
+    setActiveAnnotations((prev: any) => [prev.slice[(0, index)], prev.slice[index + 1]]);
+  };
+
+  const activeAnnotationComparator = (a: any, b: any) => a.data.id === b;
 
   const deleteObject = (imageKey: any, id: number) => {
     setAnnotations((prevState: any) => {
@@ -163,17 +206,19 @@ function AnnotationImage({
     });
   };
 
+  console.log(annotations?.[`${activeImage}`]);
+
   // console.log({ allImages, annotatedImages, annotations, activeImage, imageSizes, annotation });
-  console.log({
-    annotationImages,
-    allImages,
-    activeImage,
-    src: `${process.env.API_HOST}/${allImages[`${activeImage}`]}`,
-    annotations: annotations?.[`${activeImage}`],
-    value: annotation?.[`${activeImage}`],
-    type,
-    activeAnnotation: annotations?.[`${activeImage}`],
-  });
+  // console.log({
+  //   annotationImages,
+  //   allImages,
+  //   activeImage,
+  //   src: `${process.env.API_HOST}/${allImages[`${activeImage}`]}`,
+  //   annotations: annotations?.[`${activeImage}`],
+  //   value: annotation?.[`${activeImage}`],
+  //   type,
+  //   activeAnnotation: annotations?.[`${activeImage}`],
+  // });
 
   return (
     <div>
@@ -203,28 +248,30 @@ function AnnotationImage({
         />
       </AddModal>
       <Paper elevation={1} sx={{ padding: "8px" }}>
-        <Paper elevation={0} sx={{ display: "flex", gap: "2px" }}>
+        <Paper elevation={0} sx={{ display: "flex", gap: "5px" }}>
           {annotationImages?.map((image: any, index: number) => (
-            <div
+            <AnnotationImg
               onClick={() => {
                 setActiveImage(image);
               }}
-              style={{ width: "100px", height: "100px" }}
+              image={image}
+              activeImage={activeImage}
             >
               <img
                 src={`${process.env.API_HOST}/${image}`}
                 style={{ width: "100px", height: "100px", objectFit: "cover" }}
               />
-            </div>
+            </AnnotationImg>
           ))}
         </Paper>
-        <Paper elevation={0} sx={{ mt: "2px" }}>
+        <Paper elevation={0} sx={{ mt: "5px" }}>
           <Grid container>
             <Grid xs={9}>
               <Item>
                 {activeImage && type && annotations?.[`${activeImage}`] ? (
                   <Annotation
                     activeAnnotationComparator={activeAnnotationComparator}
+                    activeAnnotations={activeAnnotations || []}
                     src={`${process.env.API_HOST}/${allImages[`${activeImage}`]}`}
                     alt="Image"
                     annotations={annotations?.[`${activeImage}`] || []}
@@ -241,35 +288,35 @@ function AnnotationImage({
             </Grid>
             <Grid xs={3}>
               <Item>
-                <div
-                  style={{
-                    background: "#f1f1f1",
-                    flex: "1",
-                    padding: "1rem",
-                    borderRadius: "0.25rem",
-                    marginLeft: "4px",
-                  }}
-                >
-                  <h5>Boxes</h5>
-                  <ol style={{ width: "100%", textAlign: "left" }}>
-                    {!!annotations[`${activeImage}`] &&
-                      !!annotations[`${activeImage}`].length &&
-                      annotations[`${activeImage}`].map((annotate: any) => (
+                <AnnotationBoxes>
+                  <h5 style={{ color: "white", fontSize: "1.1em", fontWeight: 500 }}>BOXES</h5>
+
+                  {!!annotations[`${activeImage}`] &&
+                    !!annotations[`${activeImage}`].length &&
+                    annotations[`${activeImage}`].map((annotate: any) => (
+                      <AnnotationBox
+                        onMouseOver={handleMouseOver(annotate?.data?.id)}
+                        onMouseOut={handleMouseOut(annotate?.data?.id)}
+                        key={annotate[activeImage]}
+                      >
                         <li
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
                             alignItems: "center",
+                            color: "white",
                           }}
                         >
-                          <div>{annotate.data.text}</div>
-                          <div onClick={() => deleteObject(activeImage, annotate?.data?.id)}>
-                            Delete
-                          </div>
+                          <div style={{ color: "inherit" }}>{annotate.data.text}</div>
+                          <Button
+                            style={{ color: "inherit" }}
+                            onClick={() => deleteObject(activeImage, annotate?.data?.id)}
+                            startIcon={<DeleteOutlineIcon size={20} />}
+                          />
                         </li>
-                      ))}
-                  </ol>
-                </div>
+                      </AnnotationBox>
+                    ))}
+                </AnnotationBoxes>
               </Item>
             </Grid>
           </Grid>
