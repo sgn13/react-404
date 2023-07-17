@@ -14,6 +14,8 @@ import ImageIcon from "@mui/icons-material/Image";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import AddModal from "src/components/AddModal/AddModal";
 import env from "src/constants/env";
+import { readFileContent } from "src/utils/file";
+import network from "src/utils/network";
 import FolderStyles from "./Folder.styled";
 import Form from "./Form";
 
@@ -29,10 +31,12 @@ function Folder({
   const [showModal, setShowModal] = useState("");
   const [lightboxDisplay, setLightBoxDisplay] = useState(false);
   const [textToShow, setTextToShow] = useState("");
+  const [textContent, setTextContent] = useState("");
 
   useEffect(() => {
     fetchFolders({ query: { url: "/", perPage: 99 } });
   }, []);
+
   // function to show a specific image in the lightbox, amd make lightbox visible
   const showImage = (image: any) => {
     setImageToShow(image);
@@ -49,29 +53,42 @@ function Folder({
     setLightBoxDisplay(false);
   };
 
-  // show next image in lightbox
-  const showNext = (e: any) => {
-    e.stopPropagation();
-    const currentIndex = folders?.directory.indexOf(imageToShow);
-    if (currentIndex >= folders?.directory.length - 1) {
-      setLightBoxDisplay(false);
-    } else {
-      const nextImage = folders?.directory[currentIndex + 1];
-      setImageToShow(nextImage?.url);
-    }
+  const fetchFileContent = async (url: string) => {
+    const { data, status } = await network({}).get(`${env.api.host}${url}`, {
+      responseType: "blob",
+      timeout: 30000,
+    });
+
+    console.log("data", data);
+
+    const content: unknown = await readFileContent(data);
+    setTextContent(content);
+    console.log({ content });
   };
 
+  // show next image in lightbox
+  // const showNext = (e: any) => {
+  //   e.stopPropagation();
+  //   const currentIndex = folders?.directory.indexOf(imageToShow);
+  //   if (currentIndex >= folders?.directory.length - 1) {
+  //     setLightBoxDisplay(false);
+  //   } else {
+  //     const nextImage = folders?.directory[currentIndex + 1];
+  //     setImageToShow(nextImage?.url);
+  //   }
+  // };
+
   // show previous image in lightbox
-  const showPrev = (e: any) => {
-    e.stopPropagation();
-    const currentIndex = folders?.directory.indexOf(imageToShow);
-    if (currentIndex <= 0) {
-      setLightBoxDisplay(false);
-    } else {
-      const nextImage = folders?.directory[currentIndex - 1];
-      setImageToShow(nextImage?.url);
-    }
-  };
+  // const showPrev = (e: any) => {
+  //   e.stopPropagation();
+  //   const currentIndex = folders?.directory.indexOf(imageToShow);
+  //   if (currentIndex <= 0) {
+  //     setLightBoxDisplay(false);
+  //   } else {
+  //     const nextImage = folders?.directory[currentIndex - 1];
+  //     setImageToShow(nextImage?.url);
+  //   }
+  // };
 
   return (
     <FolderStyles>
@@ -148,6 +165,7 @@ function Folder({
                         <div
                           onDoubleClick={() => {
                             showText(dir.url);
+                            fetchFileContent(dir.url);
                           }}
                         >
                           <TextSnippetIcon style={{ fontSize: "3rem", color: "#154794" }} />
@@ -156,6 +174,7 @@ function Folder({
                         <div
                           onDoubleClick={() => {
                             showText(dir.url);
+                            fetchFileContent(dir.url);
                           }}
                         >
                           <TextSnippetIcon style={{ fontSize: "3rem", color: "#154794" }} />
@@ -190,7 +209,7 @@ function Folder({
             <Form
               onClose={() => setShowModal("")}
               // isSubmitting={isSubmitting}
-              // editData={showModal === "text" ? selected : null}
+              formData={showModal === "text" ? { code_source: textContent } : null}
               // onAdd={async (values: any, { resetForm }) => {
               //   if (await createFeature({ values })) {
               //     handleModalClose();

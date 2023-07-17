@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import app from "src/constants/app";
-import FileExplorer from "src/features/file-explorer/index";
+import FileExplorer from "src/features/workspace/index";
 import withProtectedRoute from "src/hoc/withProtectedRoute";
 import withProtectedSidebar from "src/hoc/withProtectedSidebar";
 

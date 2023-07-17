@@ -10,7 +10,6 @@ import fileUploadRoutes from "src/features/data/file-upload/routes";
 import imageRoutes from "src/features/data/image/routes";
 import environmentRoutes from "src/features/environment/routes";
 import featureEngineeringRoutes from "src/features/feature-engineering/routes";
-import fileExplorerRoutes from "src/features/file-explorer/routes";
 import finetuneRoutes from "src/features/finetune/routes";
 import ImagePredictionRoutes from "src/features/image-prediction/routes";
 import modelRoutes from "src/features/model/routes";
@@ -18,6 +17,7 @@ import predictRoutes from "src/features/predict/routes";
 import folderRoutes from "src/features/source/folder/routes";
 import streamingRoutes from "src/features/source/streaming/routes";
 import trainRoutes from "src/features/train/routes";
+import fileExplorerRoutes from "src/features/workspace/routes";
 
 import { Login } from "src/features/auth";
 import Index from "src/features/dashboard/index";

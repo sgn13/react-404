@@ -24,27 +24,24 @@ const validationSchema = Yup.object().shape({
   deleted: Yup.boolean().optional().label("Deleted"),
 });
 
-const pythonCode = "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\n";
-const fromSever = "import pandas as pd\\nimport numpy as np\\nimport matplotlib.pyplot as plt\\n";
-
-function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
+function FileViewerForm({ onEdit, onAdd, formData, onClose, isSubmitting }: any) {
   const [text, setText] = useState("");
   return (
     <FormikBase
       initialValues={
-        editData
+        formData
           ? {
-              name: editData.name,
-              code_file: editData?.code_file,
-              code_source: editData?.code_source,
-              code_type: editData?.code_type,
-              output_variable: editData?.output_variable,
-              class_name: editData?.class_name,
-              module_name: editData?.module_name,
-              effective_from: editData.effective_from,
-              effective_to: editData.effective_to,
-              status: editData.status,
-              deleted: editData.deleted,
+              name: formData.name,
+              code_file: formData?.code_file,
+              code_source: formData?.code_source,
+              code_type: formData?.code_type,
+              output_variable: formData?.output_variable,
+              class_name: formData?.class_name,
+              module_name: formData?.module_name,
+              effective_from: formData.effective_from,
+              effective_to: formData.effective_to,
+              status: formData.status,
+              deleted: formData.deleted,
             }
           : {
               name: "",
@@ -84,7 +81,7 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
           delete values.code_file;
           delete values.code_source;
           console.log("submitting", values);
-          editData ? onEdit(values, formikHelpers) : onAdd(values, formikHelpers);
+          formData ? onEdit(values, formikHelpers) : onAdd(values, formikHelpers);
         } catch (err) {
           console.error("formik submit error", err);
         }
@@ -122,7 +119,7 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
                       <FileInput
                         id="code_file"
                         name="code_file"
-                        formData={editData}
+                        formData={formData}
                         showOnlyBrowseButton
                         buttonName="Import code file"
                         buttonStyle={{
@@ -191,7 +188,7 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
                 </Grid>
                 <Grid item>
                   <Button variant="contained" type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Submittting..." : editData ? "Update" : "Add"}
+                    {isSubmitting ? "Submittting..." : formData ? "Update" : "Add"}
                   </Button>
                 </Grid>
               </Grid>
@@ -203,4 +200,4 @@ function LibraryForm({ onEdit, onAdd, editData, onClose, isSubmitting }: any) {
   );
 }
 
-export default LibraryForm;
+export default FileViewerForm;
